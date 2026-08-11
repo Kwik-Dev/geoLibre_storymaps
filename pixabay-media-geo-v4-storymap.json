@@ -1,0 +1,1433 @@
+{
+  "style": "https://tiles.openfreemap.org/styles/liberty",
+  "projection": "globe",
+  "showMarkers": true,
+  "markerColor": "#3fb1ce",
+  "inset": true,
+  "insetPosition": "bottom-left",
+  "insetStyle": "https://basemaps.cartocdn.com/gl/positron-gl-style/style.json",
+  "insetZoom": 1,
+  "theme": "dark",
+  "auto": false,
+  "hideChapterNav": false,
+  "startSlide": "none",
+  "endSlide": "none",
+  "globalView": {
+    "center": [
+      0,
+      20
+    ],
+    "zoom": 0.6,
+    "pitch": 0,
+    "bearing": 0
+  },
+  "startStepId": "__story_start__",
+  "endStepId": "__story_end__",
+  "navToggleLabel": "Toggle chapter list",
+  "title": "Ocean sound Videos",
+  "subtitle": "A scrollytelling tour of ocean sound film from Pixabay",
+  "byline": "Videos: Pixabay contributors",
+  "footer": "Videos: <a href=\"https://pixabay.com/users/undefined-9433365/\" target=\"_blank\" rel=\"noopener noreferrer\">undefined</a> via <a href=\"https://pixabay.com/\" target=\"_blank\" rel=\"noopener noreferrer\">Pixabay</a> (Pixabay Content License). Built with <a href=\"https://github.com/opengeos/GeoLibre\" target=\"_blank\" rel=\"noopener noreferrer\">GeoLibre</a>.",
+  "chapters": [
+    {
+      "id": "pixabay-media-geo-v4-30902",
+      "title": "Chapter 1",
+      "description": "Recorded by <b>undefined</b>. <br><br>Duration: 24 s · Not geotagged — shown at a default position · <a href=\"https://pixabay.com/videos/id-30902/\" target=\"_blank\" rel=\"noopener noreferrer\">Source #30902</a>",
+      "alignment": "left",
+      "hidden": false,
+      "location": {
+        "center": [
+          0,
+          20
+        ],
+        "zoom": 2,
+        "pitch": 0,
+        "bearing": 0
+      },
+      "mapAnimation": "flyTo",
+      "rotateAnimation": false,
+      "onChapterEnter": [],
+      "onChapterExit": [],
+      "source": {
+        "id": 30902,
+        "license": null,
+        "durationSec": 24,
+        "url": "https://pixabay.com/videos/id-30902/"
+      },
+      "video": "https://cdn.pixabay.com/video/2020/01/05/30902-383991325_medium.mp4",
+      "image": "https://cdn.pixabay.com/video/2020/01/05/30902-383991325_medium.jpg"
+    },
+    {
+      "id": "pixabay-media-geo-v4-137126",
+      "title": "Chapter 2",
+      "description": "Recorded by <b>undefined</b>. <br><br>Duration: 60 s · Not geotagged — shown at a default position · <a href=\"https://pixabay.com/videos/id-137126/\" target=\"_blank\" rel=\"noopener noreferrer\">Source #137126</a>",
+      "alignment": "right",
+      "hidden": false,
+      "location": {
+        "center": [
+          0,
+          20
+        ],
+        "zoom": 2,
+        "pitch": 0,
+        "bearing": 0
+      },
+      "mapAnimation": "flyTo",
+      "rotateAnimation": false,
+      "onChapterEnter": [],
+      "onChapterExit": [],
+      "source": {
+        "id": 137126,
+        "license": null,
+        "durationSec": 60,
+        "url": "https://pixabay.com/videos/id-137126/"
+      },
+      "video": "https://cdn.pixabay.com/video/2022/10/30/137126-765701219_medium.mp4",
+      "image": "https://cdn.pixabay.com/video/2022/10/30/137126-765701219_medium.jpg"
+    },
+    {
+      "id": "pixabay-media-geo-v4-30904",
+      "title": "Chapter 3",
+      "description": "Recorded by <b>undefined</b>. <br><br>Duration: 30 s · Not geotagged — shown at a default position · <a href=\"https://pixabay.com/videos/id-30904/\" target=\"_blank\" rel=\"noopener noreferrer\">Source #30904</a>",
+      "alignment": "left",
+      "hidden": false,
+      "location": {
+        "center": [
+          0,
+          20
+        ],
+        "zoom": 2,
+        "pitch": 0,
+        "bearing": 0
+      },
+      "mapAnimation": "flyTo",
+      "rotateAnimation": false,
+      "onChapterEnter": [],
+      "onChapterExit": [],
+      "source": {
+        "id": 30904,
+        "license": null,
+        "durationSec": 30,
+        "url": "https://pixabay.com/videos/id-30904/"
+      },
+      "video": "https://cdn.pixabay.com/video/2020/01/05/30904-383991333_medium.mp4",
+      "image": "https://cdn.pixabay.com/video/2020/01/05/30904-383991333_medium.jpg"
+    },
+    {
+      "id": "pixabay-media-geo-v4-30901",
+      "title": "Chapter 4",
+      "description": "Recorded by <b>undefined</b>. <br><br>Duration: 13 s · Not geotagged — shown at a default position · <a href=\"https://pixabay.com/videos/id-30901/\" target=\"_blank\" rel=\"noopener noreferrer\">Source #30901</a>",
+      "alignment": "right",
+      "hidden": false,
+      "location": {
+        "center": [
+          0,
+          20
+        ],
+        "zoom": 2,
+        "pitch": 0,
+        "bearing": 0
+      },
+      "mapAnimation": "flyTo",
+      "rotateAnimation": false,
+      "onChapterEnter": [],
+      "onChapterExit": [],
+      "source": {
+        "id": 30901,
+        "license": null,
+        "durationSec": 13,
+        "url": "https://pixabay.com/videos/id-30901/"
+      },
+      "video": "https://cdn.pixabay.com/video/2020/01/05/30901-383991318_medium.mp4",
+      "image": "https://cdn.pixabay.com/video/2020/01/05/30901-383991318_medium.jpg"
+    },
+    {
+      "id": "pixabay-media-geo-v4-124869",
+      "title": "Chapter 5",
+      "description": "Recorded by <b>undefined</b>. <br><br>Duration: 59 s · Not geotagged — shown at a default position · <a href=\"https://pixabay.com/videos/id-124869/\" target=\"_blank\" rel=\"noopener noreferrer\">Source #124869</a>",
+      "alignment": "left",
+      "hidden": false,
+      "location": {
+        "center": [
+          0,
+          20
+        ],
+        "zoom": 2,
+        "pitch": 0,
+        "bearing": 0
+      },
+      "mapAnimation": "flyTo",
+      "rotateAnimation": false,
+      "onChapterEnter": [],
+      "onChapterExit": [],
+      "source": {
+        "id": 124869,
+        "license": null,
+        "durationSec": 59,
+        "url": "https://pixabay.com/videos/id-124869/"
+      },
+      "video": "https://cdn.pixabay.com/video/2022/07/20/124869-732319039_medium.mp4",
+      "image": "https://cdn.pixabay.com/video/2022/07/20/124869-732319039_medium.jpg"
+    },
+    {
+      "id": "pixabay-media-geo-v4-122896",
+      "title": "Chapter 6",
+      "description": "Recorded by <b>undefined</b>. <br><br>Duration: 30 s · Not geotagged — shown at a default position · <a href=\"https://pixabay.com/videos/id-122896/\" target=\"_blank\" rel=\"noopener noreferrer\">Source #122896</a>",
+      "alignment": "right",
+      "hidden": false,
+      "location": {
+        "center": [
+          0,
+          20
+        ],
+        "zoom": 2,
+        "pitch": 0,
+        "bearing": 0
+      },
+      "mapAnimation": "flyTo",
+      "rotateAnimation": false,
+      "onChapterEnter": [],
+      "onChapterExit": [],
+      "source": {
+        "id": 122896,
+        "license": null,
+        "durationSec": 30,
+        "url": "https://pixabay.com/videos/id-122896/"
+      },
+      "video": "https://cdn.pixabay.com/video/2022/07/02/122896-726392015_medium.mp4",
+      "image": "https://cdn.pixabay.com/video/2022/07/02/122896-726392015_medium.jpg"
+    },
+    {
+      "id": "pixabay-media-geo-v4-133601",
+      "title": "Chapter 7",
+      "description": "Recorded by <b>undefined</b>. <br><br>Duration: 59 s · Not geotagged — shown at a default position · <a href=\"https://pixabay.com/videos/id-133601/\" target=\"_blank\" rel=\"noopener noreferrer\">Source #133601</a>",
+      "alignment": "left",
+      "hidden": false,
+      "location": {
+        "center": [
+          0,
+          20
+        ],
+        "zoom": 2,
+        "pitch": 0,
+        "bearing": 0
+      },
+      "mapAnimation": "flyTo",
+      "rotateAnimation": false,
+      "onChapterEnter": [],
+      "onChapterExit": [],
+      "source": {
+        "id": 133601,
+        "license": null,
+        "durationSec": 59,
+        "url": "https://pixabay.com/videos/id-133601/"
+      },
+      "video": "https://cdn.pixabay.com/video/2022/10/04/133601-757274749_medium.mp4",
+      "image": "https://cdn.pixabay.com/video/2022/10/04/133601-757274749_medium.jpg"
+    },
+    {
+      "id": "pixabay-media-geo-v4-322718",
+      "title": "Chapter 8",
+      "description": "Recorded by <b>undefined</b>. <br><br>Duration: 59 s · Not geotagged — shown at a default position · <a href=\"https://pixabay.com/videos/id-322718/\" target=\"_blank\" rel=\"noopener noreferrer\">Source #322718</a>",
+      "alignment": "right",
+      "hidden": false,
+      "location": {
+        "center": [
+          0,
+          20
+        ],
+        "zoom": 2,
+        "pitch": 0,
+        "bearing": 0
+      },
+      "mapAnimation": "flyTo",
+      "rotateAnimation": false,
+      "onChapterEnter": [],
+      "onChapterExit": [],
+      "source": {
+        "id": 322718,
+        "license": null,
+        "durationSec": 59,
+        "url": "https://pixabay.com/videos/id-322718/"
+      },
+      "video": "https://cdn.pixabay.com/video/2025/12/18/322718_medium.mp4",
+      "image": "https://cdn.pixabay.com/video/2025/12/18/322718_medium.jpg"
+    },
+    {
+      "id": "pixabay-media-geo-v4-309811",
+      "title": "Chapter 9",
+      "description": "Recorded by <b>undefined</b>. <br><br>Duration: 10 s · Not geotagged — shown at a default position · <a href=\"https://pixabay.com/videos/id-309811/\" target=\"_blank\" rel=\"noopener noreferrer\">Source #309811</a>",
+      "alignment": "left",
+      "hidden": false,
+      "location": {
+        "center": [
+          0,
+          20
+        ],
+        "zoom": 2,
+        "pitch": 0,
+        "bearing": 0
+      },
+      "mapAnimation": "flyTo",
+      "rotateAnimation": false,
+      "onChapterEnter": [],
+      "onChapterExit": [],
+      "source": {
+        "id": 309811,
+        "license": null,
+        "durationSec": 10,
+        "url": "https://pixabay.com/videos/id-309811/"
+      },
+      "video": "https://cdn.pixabay.com/video/2025/10/14/309811_medium.mp4",
+      "image": "https://cdn.pixabay.com/video/2025/10/14/309811_medium.jpg"
+    },
+    {
+      "id": "pixabay-media-geo-v4-124867",
+      "title": "Chapter 10",
+      "description": "Recorded by <b>undefined</b>. <br><br>Duration: 7 s · Not geotagged — shown at a default position · <a href=\"https://pixabay.com/videos/id-124867/\" target=\"_blank\" rel=\"noopener noreferrer\">Source #124867</a>",
+      "alignment": "right",
+      "hidden": false,
+      "location": {
+        "center": [
+          0,
+          20
+        ],
+        "zoom": 2,
+        "pitch": 0,
+        "bearing": 0
+      },
+      "mapAnimation": "flyTo",
+      "rotateAnimation": false,
+      "onChapterEnter": [],
+      "onChapterExit": [],
+      "source": {
+        "id": 124867,
+        "license": null,
+        "durationSec": 7,
+        "url": "https://pixabay.com/videos/id-124867/"
+      },
+      "video": "https://cdn.pixabay.com/video/2022/07/20/124867-732633127_medium.mp4",
+      "image": "https://cdn.pixabay.com/video/2022/07/20/124867-732633127_medium.jpg"
+    },
+    {
+      "id": "pixabay-media-geo-v4-41765",
+      "title": "Chapter 11",
+      "description": "Recorded by <b>undefined</b>. <br><br>Duration: 37 s · Not geotagged — shown at a default position · <a href=\"https://pixabay.com/videos/id-41765/\" target=\"_blank\" rel=\"noopener noreferrer\">Source #41765</a>",
+      "alignment": "left",
+      "hidden": false,
+      "location": {
+        "center": [
+          0,
+          20
+        ],
+        "zoom": 2,
+        "pitch": 0,
+        "bearing": 0
+      },
+      "mapAnimation": "flyTo",
+      "rotateAnimation": false,
+      "onChapterEnter": [],
+      "onChapterExit": [],
+      "source": {
+        "id": 41765,
+        "license": null,
+        "durationSec": 37,
+        "url": "https://pixabay.com/videos/id-41765/"
+      },
+      "video": "https://cdn.pixabay.com/video/2020/06/11/41765-430090793_medium.mp4",
+      "image": "https://cdn.pixabay.com/video/2020/06/11/41765-430090793_medium.jpg"
+    },
+    {
+      "id": "pixabay-media-geo-v4-123710",
+      "title": "Chapter 12",
+      "description": "Recorded by <b>undefined</b>. <br><br>Duration: 26 s · Not geotagged — shown at a default position · <a href=\"https://pixabay.com/videos/id-123710/\" target=\"_blank\" rel=\"noopener noreferrer\">Source #123710</a>",
+      "alignment": "right",
+      "hidden": false,
+      "location": {
+        "center": [
+          0,
+          20
+        ],
+        "zoom": 2,
+        "pitch": 0,
+        "bearing": 0
+      },
+      "mapAnimation": "flyTo",
+      "rotateAnimation": false,
+      "onChapterEnter": [],
+      "onChapterExit": [],
+      "source": {
+        "id": 123710,
+        "license": null,
+        "durationSec": 26,
+        "url": "https://pixabay.com/videos/id-123710/"
+      },
+      "video": "https://cdn.pixabay.com/video/2022/07/10/123710-728698107_medium.mp4",
+      "image": "https://cdn.pixabay.com/video/2022/07/10/123710-728698107_medium.jpg"
+    },
+    {
+      "id": "pixabay-media-geo-v4-2171",
+      "title": "Chapter 13",
+      "description": "Recorded by <b>undefined</b>. <br><br>Duration: 20 s · Not geotagged — shown at a default position · <a href=\"https://pixabay.com/videos/id-2171/\" target=\"_blank\" rel=\"noopener noreferrer\">Source #2171</a>",
+      "alignment": "left",
+      "hidden": false,
+      "location": {
+        "center": [
+          0,
+          20
+        ],
+        "zoom": 2,
+        "pitch": 0,
+        "bearing": 0
+      },
+      "mapAnimation": "flyTo",
+      "rotateAnimation": false,
+      "onChapterEnter": [],
+      "onChapterExit": [],
+      "source": {
+        "id": 2171,
+        "license": null,
+        "durationSec": 20,
+        "url": "https://pixabay.com/videos/id-2171/"
+      },
+      "video": "https://cdn.pixabay.com/video/2016/02/15/2171-155411671_medium.mp4",
+      "image": "https://cdn.pixabay.com/video/2016/02/15/2171-155411671_medium.jpg"
+    },
+    {
+      "id": "pixabay-media-geo-v4-2737",
+      "title": "Chapter 14",
+      "description": "Recorded by <b>undefined</b>. <br><br>Duration: 14 s · Not geotagged — shown at a default position · <a href=\"https://pixabay.com/videos/id-2737/\" target=\"_blank\" rel=\"noopener noreferrer\">Source #2737</a>",
+      "alignment": "right",
+      "hidden": false,
+      "location": {
+        "center": [
+          0,
+          20
+        ],
+        "zoom": 2,
+        "pitch": 0,
+        "bearing": 0
+      },
+      "mapAnimation": "flyTo",
+      "rotateAnimation": false,
+      "onChapterEnter": [],
+      "onChapterExit": [],
+      "source": {
+        "id": 2737,
+        "license": null,
+        "durationSec": 14,
+        "url": "https://pixabay.com/videos/id-2737/"
+      },
+      "video": "https://cdn.pixabay.com/video/2016/04/07/2737-162239848_medium.mp4",
+      "image": "https://cdn.pixabay.com/video/2016/04/07/2737-162239848_medium.jpg"
+    },
+    {
+      "id": "pixabay-media-geo-v4-64540",
+      "title": "Chapter 15",
+      "description": "Recorded by <b>undefined</b>. <br><br>Duration: 42 s · Not geotagged — shown at a default position · <a href=\"https://pixabay.com/videos/id-64540/\" target=\"_blank\" rel=\"noopener noreferrer\">Source #64540</a>",
+      "alignment": "left",
+      "hidden": false,
+      "location": {
+        "center": [
+          0,
+          20
+        ],
+        "zoom": 2,
+        "pitch": 0,
+        "bearing": 0
+      },
+      "mapAnimation": "flyTo",
+      "rotateAnimation": false,
+      "onChapterEnter": [],
+      "onChapterExit": [],
+      "source": {
+        "id": 64540,
+        "license": null,
+        "durationSec": 42,
+        "url": "https://pixabay.com/videos/id-64540/"
+      },
+      "video": "https://cdn.pixabay.com/video/2021/02/08/64540-510542047_medium.mp4",
+      "image": "https://cdn.pixabay.com/video/2021/02/08/64540-510542047_medium.jpg"
+    },
+    {
+      "id": "pixabay-media-geo-v4-125963",
+      "title": "Chapter 16",
+      "description": "Recorded by <b>undefined</b>. <br><br>Duration: 26 s · Not geotagged — shown at a default position · <a href=\"https://pixabay.com/videos/id-125963/\" target=\"_blank\" rel=\"noopener noreferrer\">Source #125963</a>",
+      "alignment": "right",
+      "hidden": false,
+      "location": {
+        "center": [
+          0,
+          20
+        ],
+        "zoom": 2,
+        "pitch": 0,
+        "bearing": 0
+      },
+      "mapAnimation": "flyTo",
+      "rotateAnimation": false,
+      "onChapterEnter": [],
+      "onChapterExit": [],
+      "source": {
+        "id": 125963,
+        "license": null,
+        "durationSec": 26,
+        "url": "https://pixabay.com/videos/id-125963/"
+      },
+      "video": "https://cdn.pixabay.com/video/2022/07/29/125963-735666698_medium.mp4",
+      "image": "https://cdn.pixabay.com/video/2022/07/29/125963-735666698_medium.jpg"
+    },
+    {
+      "id": "pixabay-media-geo-v4-246297",
+      "title": "Chapter 17",
+      "description": "Recorded by <b>undefined</b>. <br><br>Duration: 13 s · Not geotagged — shown at a default position · <a href=\"https://pixabay.com/videos/id-246297/\" target=\"_blank\" rel=\"noopener noreferrer\">Source #246297</a>",
+      "alignment": "left",
+      "hidden": false,
+      "location": {
+        "center": [
+          0,
+          20
+        ],
+        "zoom": 2,
+        "pitch": 0,
+        "bearing": 0
+      },
+      "mapAnimation": "flyTo",
+      "rotateAnimation": false,
+      "onChapterEnter": [],
+      "onChapterExit": [],
+      "source": {
+        "id": 246297,
+        "license": null,
+        "durationSec": 13,
+        "url": "https://pixabay.com/videos/id-246297/"
+      },
+      "video": "https://cdn.pixabay.com/video/2024/12/12/246297_medium.mp4",
+      "image": "https://cdn.pixabay.com/video/2024/12/12/246297_medium.jpg"
+    },
+    {
+      "id": "pixabay-media-geo-v4-271782",
+      "title": "Chapter 18",
+      "description": "Recorded by <b>undefined</b>. <br><br>Duration: 5 s · Not geotagged — shown at a default position · <a href=\"https://pixabay.com/videos/id-271782/\" target=\"_blank\" rel=\"noopener noreferrer\">Source #271782</a>",
+      "alignment": "right",
+      "hidden": false,
+      "location": {
+        "center": [
+          0,
+          20
+        ],
+        "zoom": 2,
+        "pitch": 0,
+        "bearing": 0
+      },
+      "mapAnimation": "flyTo",
+      "rotateAnimation": false,
+      "onChapterEnter": [],
+      "onChapterExit": [],
+      "source": {
+        "id": 271782,
+        "license": null,
+        "durationSec": 5,
+        "url": "https://pixabay.com/videos/id-271782/"
+      },
+      "video": "https://cdn.pixabay.com/video/2025/04/13/271782_medium.mp4",
+      "image": "https://cdn.pixabay.com/video/2025/04/13/271782_medium.jpg"
+    },
+    {
+      "id": "pixabay-media-geo-v4-39860",
+      "title": "Chapter 19",
+      "description": "Recorded by <b>undefined</b>. <br><br>Duration: 9 s · Not geotagged — shown at a default position · <a href=\"https://pixabay.com/videos/id-39860/\" target=\"_blank\" rel=\"noopener noreferrer\">Source #39860</a>",
+      "alignment": "left",
+      "hidden": false,
+      "location": {
+        "center": [
+          0,
+          20
+        ],
+        "zoom": 2,
+        "pitch": 0,
+        "bearing": 0
+      },
+      "mapAnimation": "flyTo",
+      "rotateAnimation": false,
+      "onChapterEnter": [],
+      "onChapterExit": [],
+      "source": {
+        "id": 39860,
+        "license": null,
+        "durationSec": 9,
+        "url": "https://pixabay.com/videos/id-39860/"
+      },
+      "video": "https://cdn.pixabay.com/video/2020/05/23/39860-424022815_medium.mp4",
+      "image": "https://cdn.pixabay.com/video/2020/05/23/39860-424022815_medium.jpg"
+    },
+    {
+      "id": "pixabay-media-geo-v4-271783",
+      "title": "Chapter 20",
+      "description": "Recorded by <b>undefined</b>. <br><br>Duration: 5 s · Not geotagged — shown at a default position · <a href=\"https://pixabay.com/videos/id-271783/\" target=\"_blank\" rel=\"noopener noreferrer\">Source #271783</a>",
+      "alignment": "right",
+      "hidden": false,
+      "location": {
+        "center": [
+          0,
+          20
+        ],
+        "zoom": 2,
+        "pitch": 0,
+        "bearing": 0
+      },
+      "mapAnimation": "flyTo",
+      "rotateAnimation": false,
+      "onChapterEnter": [],
+      "onChapterExit": [],
+      "source": {
+        "id": 271783,
+        "license": null,
+        "durationSec": 5,
+        "url": "https://pixabay.com/videos/id-271783/"
+      },
+      "video": "https://cdn.pixabay.com/video/2025/04/13/271783_medium.mp4",
+      "image": "https://cdn.pixabay.com/video/2025/04/13/271783_medium.jpg"
+    },
+    {
+      "id": "pixabay-media-geo-v4-271784",
+      "title": "Chapter 21",
+      "description": "Recorded by <b>undefined</b>. <br><br>Duration: 5 s · Not geotagged — shown at a default position · <a href=\"https://pixabay.com/videos/id-271784/\" target=\"_blank\" rel=\"noopener noreferrer\">Source #271784</a>",
+      "alignment": "left",
+      "hidden": false,
+      "location": {
+        "center": [
+          0,
+          20
+        ],
+        "zoom": 2,
+        "pitch": 0,
+        "bearing": 0
+      },
+      "mapAnimation": "flyTo",
+      "rotateAnimation": false,
+      "onChapterEnter": [],
+      "onChapterExit": [],
+      "source": {
+        "id": 271784,
+        "license": null,
+        "durationSec": 5,
+        "url": "https://pixabay.com/videos/id-271784/"
+      },
+      "video": "https://cdn.pixabay.com/video/2025/04/13/271784_medium.mp4",
+      "image": "https://cdn.pixabay.com/video/2025/04/13/271784_medium.jpg"
+    },
+    {
+      "id": "pixabay-media-geo-v4-127776",
+      "title": "Chapter 22",
+      "description": "Recorded by <b>undefined</b>. <br><br>Duration: 9 s · Not geotagged — shown at a default position · <a href=\"https://pixabay.com/videos/id-127776/\" target=\"_blank\" rel=\"noopener noreferrer\">Source #127776</a>",
+      "alignment": "right",
+      "hidden": false,
+      "location": {
+        "center": [
+          0,
+          20
+        ],
+        "zoom": 2,
+        "pitch": 0,
+        "bearing": 0
+      },
+      "mapAnimation": "flyTo",
+      "rotateAnimation": false,
+      "onChapterEnter": [],
+      "onChapterExit": [],
+      "source": {
+        "id": 127776,
+        "license": null,
+        "durationSec": 9,
+        "url": "https://pixabay.com/videos/id-127776/"
+      },
+      "video": "https://cdn.pixabay.com/video/2022/08/13/127776-739316012_medium.mp4",
+      "image": "https://cdn.pixabay.com/video/2022/08/13/127776-739316012_medium.jpg"
+    },
+    {
+      "id": "pixabay-media-geo-v4-30903",
+      "title": "Chapter 23",
+      "description": "Recorded by <b>undefined</b>. <br><br>Duration: 16 s · Not geotagged — shown at a default position · <a href=\"https://pixabay.com/videos/id-30903/\" target=\"_blank\" rel=\"noopener noreferrer\">Source #30903</a>",
+      "alignment": "left",
+      "hidden": false,
+      "location": {
+        "center": [
+          0,
+          20
+        ],
+        "zoom": 2,
+        "pitch": 0,
+        "bearing": 0
+      },
+      "mapAnimation": "flyTo",
+      "rotateAnimation": false,
+      "onChapterEnter": [],
+      "onChapterExit": [],
+      "source": {
+        "id": 30903,
+        "license": null,
+        "durationSec": 16,
+        "url": "https://pixabay.com/videos/id-30903/"
+      },
+      "video": "https://cdn.pixabay.com/video/2020/01/05/30903-383991331_medium.mp4",
+      "image": "https://cdn.pixabay.com/video/2020/01/05/30903-383991331_medium.jpg"
+    },
+    {
+      "id": "pixabay-media-geo-v4-15697",
+      "title": "Chapter 24",
+      "description": "Recorded by <b>undefined</b>. <br><br>Duration: 14 s · Not geotagged — shown at a default position · <a href=\"https://pixabay.com/videos/id-15697/\" target=\"_blank\" rel=\"noopener noreferrer\">Source #15697</a>",
+      "alignment": "right",
+      "hidden": false,
+      "location": {
+        "center": [
+          0,
+          20
+        ],
+        "zoom": 2,
+        "pitch": 0,
+        "bearing": 0
+      },
+      "mapAnimation": "flyTo",
+      "rotateAnimation": false,
+      "onChapterEnter": [],
+      "onChapterExit": [],
+      "source": {
+        "id": 15697,
+        "license": null,
+        "durationSec": 14,
+        "url": "https://pixabay.com/videos/id-15697/"
+      },
+      "video": "https://cdn.pixabay.com/video/2018/04/19/15697-266043556_medium.mp4",
+      "image": "https://cdn.pixabay.com/video/2018/04/19/15697-266043556_medium.jpg"
+    },
+    {
+      "id": "pixabay-media-geo-v4-53575",
+      "title": "Chapter 25",
+      "description": "Recorded by <b>undefined</b>. <br><br>Duration: 25 s · Geolocated to Eilat, Red Sea coast, Israel (29.56°, 34.95°) · <a href=\"https://pixabay.com/videos/id-53575/\" target=\"_blank\" rel=\"noopener noreferrer\">Source #53575</a>",
+      "alignment": "left",
+      "hidden": false,
+      "location": {
+        "center": [
+          34.9482,
+          29.5581
+        ],
+        "zoom": 11,
+        "pitch": 40,
+        "bearing": 0
+      },
+      "mapAnimation": "flyTo",
+      "rotateAnimation": false,
+      "onChapterEnter": [],
+      "onChapterExit": [],
+      "source": {
+        "id": 53575,
+        "license": null,
+        "durationSec": 25,
+        "url": "https://pixabay.com/videos/id-53575/"
+      },
+      "video": "videos/53575_clear-water.mp4",
+      "image": "https://cdn.pixabay.com/video/2020/10/27/53575-474703706_medium.jpg"
+    },
+    {
+      "id": "pixabay-media-geo-v4-13971",
+      "title": "Chapter 26",
+      "description": "Recorded by <b>undefined</b>. <br><br>Duration: 10 s · Not geotagged — shown at a default position · <a href=\"https://pixabay.com/videos/id-13971/\" target=\"_blank\" rel=\"noopener noreferrer\">Source #13971</a>",
+      "alignment": "right",
+      "hidden": false,
+      "location": {
+        "center": [
+          0,
+          20
+        ],
+        "zoom": 2,
+        "pitch": 0,
+        "bearing": 0
+      },
+      "mapAnimation": "flyTo",
+      "rotateAnimation": false,
+      "onChapterEnter": [],
+      "onChapterExit": [],
+      "source": {
+        "id": 13971,
+        "license": null,
+        "durationSec": 10,
+        "url": "https://pixabay.com/videos/id-13971/"
+      },
+      "video": "https://cdn.pixabay.com/video/2018/01/29/13971-253734374_medium.mp4",
+      "image": "https://cdn.pixabay.com/video/2018/01/29/13971-253734374_medium.jpg"
+    },
+    {
+      "id": "pixabay-media-geo-v4-290900",
+      "title": "Chapter 27",
+      "description": "Recorded by <b>undefined</b>. <br><br>Duration: 25 s · Not geotagged — shown at a default position · <a href=\"https://pixabay.com/videos/id-290900/\" target=\"_blank\" rel=\"noopener noreferrer\">Source #290900</a>",
+      "alignment": "left",
+      "hidden": false,
+      "location": {
+        "center": [
+          0,
+          20
+        ],
+        "zoom": 2,
+        "pitch": 0,
+        "bearing": 0
+      },
+      "mapAnimation": "flyTo",
+      "rotateAnimation": false,
+      "onChapterEnter": [],
+      "onChapterExit": [],
+      "source": {
+        "id": 290900,
+        "license": null,
+        "durationSec": 25,
+        "url": "https://pixabay.com/videos/id-290900/"
+      },
+      "video": "https://cdn.pixabay.com/video/2025/07/12/290900_medium.mp4",
+      "image": "https://cdn.pixabay.com/video/2025/07/12/290900_medium.jpg"
+    },
+    {
+      "id": "pixabay-media-geo-v4-365201",
+      "title": "Chapter 28",
+      "description": "Recorded by <b>undefined</b>. <br><br>Duration: 15 s · Not geotagged — shown at a default position · <a href=\"https://pixabay.com/videos/id-365201/\" target=\"_blank\" rel=\"noopener noreferrer\">Source #365201</a>",
+      "alignment": "right",
+      "hidden": false,
+      "location": {
+        "center": [
+          0,
+          20
+        ],
+        "zoom": 2,
+        "pitch": 0,
+        "bearing": 0
+      },
+      "mapAnimation": "flyTo",
+      "rotateAnimation": false,
+      "onChapterEnter": [],
+      "onChapterExit": [],
+      "source": {
+        "id": 365201,
+        "license": null,
+        "durationSec": 15,
+        "url": "https://pixabay.com/videos/id-365201/"
+      },
+      "video": "https://cdn.pixabay.com/video/2026/07/20/365201_medium.mp4",
+      "image": "https://cdn.pixabay.com/video/2026/07/20/365201_medium.jpg"
+    },
+    {
+      "id": "pixabay-media-geo-v4-369508",
+      "title": "Chapter 29",
+      "description": "Recorded by <b>undefined</b>. <br><br>Duration: 10 s · Not geotagged — shown at a default position · <a href=\"https://pixabay.com/videos/id-369508/\" target=\"_blank\" rel=\"noopener noreferrer\">Source #369508</a>",
+      "alignment": "left",
+      "hidden": false,
+      "location": {
+        "center": [
+          0,
+          20
+        ],
+        "zoom": 2,
+        "pitch": 0,
+        "bearing": 0
+      },
+      "mapAnimation": "flyTo",
+      "rotateAnimation": false,
+      "onChapterEnter": [],
+      "onChapterExit": [],
+      "source": {
+        "id": 369508,
+        "license": null,
+        "durationSec": 10,
+        "url": "https://pixabay.com/videos/id-369508/"
+      },
+      "video": "https://cdn.pixabay.com/video/2026/08/09/369508_medium.mp4",
+      "image": "https://cdn.pixabay.com/video/2026/08/09/369508_medium.jpg"
+    },
+    {
+      "id": "pixabay-media-geo-v4-292845",
+      "title": "Chapter 30",
+      "description": "Recorded by <b>undefined</b>. <br><br>Duration: 30 s · Not geotagged — shown at a default position · <a href=\"https://pixabay.com/videos/id-292845/\" target=\"_blank\" rel=\"noopener noreferrer\">Source #292845</a>",
+      "alignment": "right",
+      "hidden": false,
+      "location": {
+        "center": [
+          0,
+          20
+        ],
+        "zoom": 2,
+        "pitch": 0,
+        "bearing": 0
+      },
+      "mapAnimation": "flyTo",
+      "rotateAnimation": false,
+      "onChapterEnter": [],
+      "onChapterExit": [],
+      "source": {
+        "id": 292845,
+        "license": null,
+        "durationSec": 30,
+        "url": "https://pixabay.com/videos/id-292845/"
+      },
+      "video": "https://cdn.pixabay.com/video/2025/07/22/292845_medium.mp4",
+      "image": "https://cdn.pixabay.com/video/2025/07/22/292845_medium.jpg"
+    },
+    {
+      "id": "pixabay-media-geo-v4-106564",
+      "title": "Chapter 31",
+      "description": "Recorded by <b>undefined</b>. <br><br>Duration: 10 s · Not geotagged — shown at a default position · <a href=\"https://pixabay.com/videos/id-106564/\" target=\"_blank\" rel=\"noopener noreferrer\">Source #106564</a>",
+      "alignment": "left",
+      "hidden": false,
+      "location": {
+        "center": [
+          0,
+          20
+        ],
+        "zoom": 2,
+        "pitch": 0,
+        "bearing": 0
+      },
+      "mapAnimation": "flyTo",
+      "rotateAnimation": false,
+      "onChapterEnter": [],
+      "onChapterExit": [],
+      "source": {
+        "id": 106564,
+        "license": null,
+        "durationSec": 10,
+        "url": "https://pixabay.com/videos/id-106564/"
+      },
+      "video": "https://cdn.pixabay.com/video/2022/02/03/106564-673518315_medium.mp4",
+      "image": "https://cdn.pixabay.com/video/2022/02/03/106564-673518315_medium.jpg"
+    },
+    {
+      "id": "pixabay-media-geo-v4-343503",
+      "title": "Chapter 32",
+      "description": "Recorded by <b>undefined</b>. <br><br>Duration: 59 s · Not geotagged — shown at a default position · <a href=\"https://pixabay.com/videos/id-343503/\" target=\"_blank\" rel=\"noopener noreferrer\">Source #343503</a>",
+      "alignment": "right",
+      "hidden": false,
+      "location": {
+        "center": [
+          0,
+          20
+        ],
+        "zoom": 2,
+        "pitch": 0,
+        "bearing": 0
+      },
+      "mapAnimation": "flyTo",
+      "rotateAnimation": false,
+      "onChapterEnter": [],
+      "onChapterExit": [],
+      "source": {
+        "id": 343503,
+        "license": null,
+        "durationSec": 59,
+        "url": "https://pixabay.com/videos/id-343503/"
+      },
+      "video": "https://cdn.pixabay.com/video/2026/03/31/343503_medium.mp4",
+      "image": "https://cdn.pixabay.com/video/2026/03/31/343503_medium.jpg"
+    },
+    {
+      "id": "pixabay-media-geo-v4-355604",
+      "title": "Chapter 33",
+      "description": "Recorded by <b>undefined</b>. <br><br>Duration: 9 s · Not geotagged — shown at a default position · <a href=\"https://pixabay.com/videos/id-355604/\" target=\"_blank\" rel=\"noopener noreferrer\">Source #355604</a>",
+      "alignment": "left",
+      "hidden": false,
+      "location": {
+        "center": [
+          0,
+          20
+        ],
+        "zoom": 2,
+        "pitch": 0,
+        "bearing": 0
+      },
+      "mapAnimation": "flyTo",
+      "rotateAnimation": false,
+      "onChapterEnter": [],
+      "onChapterExit": [],
+      "source": {
+        "id": 355604,
+        "license": null,
+        "durationSec": 9,
+        "url": "https://pixabay.com/videos/id-355604/"
+      },
+      "video": "https://cdn.pixabay.com/video/2026/05/30/355604_medium.mp4",
+      "image": "https://cdn.pixabay.com/video/2026/05/30/355604_medium.jpg"
+    },
+    {
+      "id": "pixabay-media-geo-v4-355037",
+      "title": "Chapter 34",
+      "description": "Recorded by <b>undefined</b>. <br><br>Duration: 10 s · Not geotagged — shown at a default position · <a href=\"https://pixabay.com/videos/id-355037/\" target=\"_blank\" rel=\"noopener noreferrer\">Source #355037</a>",
+      "alignment": "right",
+      "hidden": false,
+      "location": {
+        "center": [
+          0,
+          20
+        ],
+        "zoom": 2,
+        "pitch": 0,
+        "bearing": 0
+      },
+      "mapAnimation": "flyTo",
+      "rotateAnimation": false,
+      "onChapterEnter": [],
+      "onChapterExit": [],
+      "source": {
+        "id": 355037,
+        "license": null,
+        "durationSec": 10,
+        "url": "https://pixabay.com/videos/id-355037/"
+      },
+      "video": "https://cdn.pixabay.com/video/2026/05/27/355037_medium.mp4",
+      "image": "https://cdn.pixabay.com/video/2026/05/27/355037_medium.jpg"
+    },
+    {
+      "id": "pixabay-media-geo-v4-356119",
+      "title": "Chapter 35",
+      "description": "Recorded by <b>undefined</b>. <br><br>Duration: 8 s · Not geotagged — shown at a default position · <a href=\"https://pixabay.com/videos/id-356119/\" target=\"_blank\" rel=\"noopener noreferrer\">Source #356119</a>",
+      "alignment": "left",
+      "hidden": false,
+      "location": {
+        "center": [
+          0,
+          20
+        ],
+        "zoom": 2,
+        "pitch": 0,
+        "bearing": 0
+      },
+      "mapAnimation": "flyTo",
+      "rotateAnimation": false,
+      "onChapterEnter": [],
+      "onChapterExit": [],
+      "source": {
+        "id": 356119,
+        "license": null,
+        "durationSec": 8,
+        "url": "https://pixabay.com/videos/id-356119/"
+      },
+      "video": "https://cdn.pixabay.com/video/2026/06/02/356119_medium.mp4",
+      "image": "https://cdn.pixabay.com/video/2026/06/02/356119_medium.jpg"
+    },
+    {
+      "id": "pixabay-media-geo-v4-322717",
+      "title": "Chapter 36",
+      "description": "Recorded by <b>undefined</b>. <br><br>Duration: 58 s · Not geotagged — shown at a default position · <a href=\"https://pixabay.com/videos/id-322717/\" target=\"_blank\" rel=\"noopener noreferrer\">Source #322717</a>",
+      "alignment": "right",
+      "hidden": false,
+      "location": {
+        "center": [
+          0,
+          20
+        ],
+        "zoom": 2,
+        "pitch": 0,
+        "bearing": 0
+      },
+      "mapAnimation": "flyTo",
+      "rotateAnimation": false,
+      "onChapterEnter": [],
+      "onChapterExit": [],
+      "source": {
+        "id": 322717,
+        "license": null,
+        "durationSec": 58,
+        "url": "https://pixabay.com/videos/id-322717/"
+      },
+      "video": "https://cdn.pixabay.com/video/2025/12/18/322717_medium.mp4",
+      "image": "https://cdn.pixabay.com/video/2025/12/18/322717_medium.jpg"
+    },
+    {
+      "id": "pixabay-media-geo-v4-363439",
+      "title": "Chapter 37",
+      "description": "Recorded by <b>undefined</b>. <br><br>Duration: 10 s · Not geotagged — shown at a default position · <a href=\"https://pixabay.com/videos/id-363439/\" target=\"_blank\" rel=\"noopener noreferrer\">Source #363439</a>",
+      "alignment": "left",
+      "hidden": false,
+      "location": {
+        "center": [
+          0,
+          20
+        ],
+        "zoom": 2,
+        "pitch": 0,
+        "bearing": 0
+      },
+      "mapAnimation": "flyTo",
+      "rotateAnimation": false,
+      "onChapterEnter": [],
+      "onChapterExit": [],
+      "source": {
+        "id": 363439,
+        "license": null,
+        "durationSec": 10,
+        "url": "https://pixabay.com/videos/id-363439/"
+      },
+      "video": "https://cdn.pixabay.com/video/2026/07/11/363439_medium.mp4",
+      "image": "https://cdn.pixabay.com/video/2026/07/11/363439_medium.jpg"
+    },
+    {
+      "id": "pixabay-media-geo-v4-351320",
+      "title": "Chapter 38",
+      "description": "Recorded by <b>undefined</b>. <br><br>Duration: 28 s · Not geotagged — shown at a default position · <a href=\"https://pixabay.com/videos/id-351320/\" target=\"_blank\" rel=\"noopener noreferrer\">Source #351320</a>",
+      "alignment": "right",
+      "hidden": false,
+      "location": {
+        "center": [
+          0,
+          20
+        ],
+        "zoom": 2,
+        "pitch": 0,
+        "bearing": 0
+      },
+      "mapAnimation": "flyTo",
+      "rotateAnimation": false,
+      "onChapterEnter": [],
+      "onChapterExit": [],
+      "source": {
+        "id": 351320,
+        "license": null,
+        "durationSec": 28,
+        "url": "https://pixabay.com/videos/id-351320/"
+      },
+      "video": "https://cdn.pixabay.com/video/2026/05/08/351320_medium.mp4",
+      "image": "https://cdn.pixabay.com/video/2026/05/08/351320_medium.jpg"
+    },
+    {
+      "id": "pixabay-media-geo-v4-275350",
+      "title": "Chapter 39",
+      "description": "Recorded by <b>undefined</b>. <br><br>Duration: 5 s · Not geotagged — shown at a default position · <a href=\"https://pixabay.com/videos/id-275350/\" target=\"_blank\" rel=\"noopener noreferrer\">Source #275350</a>",
+      "alignment": "left",
+      "hidden": false,
+      "location": {
+        "center": [
+          0,
+          20
+        ],
+        "zoom": 2,
+        "pitch": 0,
+        "bearing": 0
+      },
+      "mapAnimation": "flyTo",
+      "rotateAnimation": false,
+      "onChapterEnter": [],
+      "onChapterExit": [],
+      "source": {
+        "id": 275350,
+        "license": null,
+        "durationSec": 5,
+        "url": "https://pixabay.com/videos/id-275350/"
+      },
+      "video": "https://cdn.pixabay.com/video/2025/04/28/275350_medium.mp4",
+      "image": "https://cdn.pixabay.com/video/2025/04/28/275350_medium.jpg"
+    },
+    {
+      "id": "pixabay-media-geo-v4-309814",
+      "title": "Chapter 40",
+      "description": "Recorded by <b>undefined</b>. <br><br>Duration: 16 s · Not geotagged — shown at a default position · <a href=\"https://pixabay.com/videos/id-309814/\" target=\"_blank\" rel=\"noopener noreferrer\">Source #309814</a>",
+      "alignment": "right",
+      "hidden": false,
+      "location": {
+        "center": [
+          0,
+          20
+        ],
+        "zoom": 2,
+        "pitch": 0,
+        "bearing": 0
+      },
+      "mapAnimation": "flyTo",
+      "rotateAnimation": false,
+      "onChapterEnter": [],
+      "onChapterExit": [],
+      "source": {
+        "id": 309814,
+        "license": null,
+        "durationSec": 16,
+        "url": "https://pixabay.com/videos/id-309814/"
+      },
+      "video": "https://cdn.pixabay.com/video/2025/10/14/309814_medium.mp4",
+      "image": "https://cdn.pixabay.com/video/2025/10/14/309814_medium.jpg"
+    },
+    {
+      "id": "pixabay-media-geo-v4-275351",
+      "title": "Chapter 41",
+      "description": "Recorded by <b>undefined</b>. <br><br>Duration: 5 s · Not geotagged — shown at a default position · <a href=\"https://pixabay.com/videos/id-275351/\" target=\"_blank\" rel=\"noopener noreferrer\">Source #275351</a>",
+      "alignment": "left",
+      "hidden": false,
+      "location": {
+        "center": [
+          0,
+          20
+        ],
+        "zoom": 2,
+        "pitch": 0,
+        "bearing": 0
+      },
+      "mapAnimation": "flyTo",
+      "rotateAnimation": false,
+      "onChapterEnter": [],
+      "onChapterExit": [],
+      "source": {
+        "id": 275351,
+        "license": null,
+        "durationSec": 5,
+        "url": "https://pixabay.com/videos/id-275351/"
+      },
+      "video": "https://cdn.pixabay.com/video/2025/04/28/275351_medium.mp4",
+      "image": "https://cdn.pixabay.com/video/2025/04/28/275351_medium.jpg"
+    },
+    {
+      "id": "pixabay-media-geo-v4-286308",
+      "title": "Chapter 42",
+      "description": "Recorded by <b>undefined</b>. <br><br>Duration: 61 s · Not geotagged — shown at a default position · <a href=\"https://pixabay.com/videos/id-286308/\" target=\"_blank\" rel=\"noopener noreferrer\">Source #286308</a>",
+      "alignment": "right",
+      "hidden": false,
+      "location": {
+        "center": [
+          0,
+          20
+        ],
+        "zoom": 2,
+        "pitch": 0,
+        "bearing": 0
+      },
+      "mapAnimation": "flyTo",
+      "rotateAnimation": false,
+      "onChapterEnter": [],
+      "onChapterExit": [],
+      "source": {
+        "id": 286308,
+        "license": null,
+        "durationSec": 61,
+        "url": "https://pixabay.com/videos/id-286308/"
+      },
+      "video": "https://cdn.pixabay.com/video/2025/06/17/286308_medium.mp4",
+      "image": "https://cdn.pixabay.com/video/2025/06/17/286308_medium.jpg"
+    },
+    {
+      "id": "pixabay-media-geo-v4-309822",
+      "title": "Chapter 43",
+      "description": "Recorded by <b>undefined</b>. <br><br>Duration: 23 s · Not geotagged — shown at a default position · <a href=\"https://pixabay.com/videos/id-309822/\" target=\"_blank\" rel=\"noopener noreferrer\">Source #309822</a>",
+      "alignment": "left",
+      "hidden": false,
+      "location": {
+        "center": [
+          0,
+          20
+        ],
+        "zoom": 2,
+        "pitch": 0,
+        "bearing": 0
+      },
+      "mapAnimation": "flyTo",
+      "rotateAnimation": false,
+      "onChapterEnter": [],
+      "onChapterExit": [],
+      "source": {
+        "id": 309822,
+        "license": null,
+        "durationSec": 23,
+        "url": "https://pixabay.com/videos/id-309822/"
+      },
+      "video": "https://cdn.pixabay.com/video/2025/10/14/309822_medium.mp4",
+      "image": "https://cdn.pixabay.com/video/2025/10/14/309822_medium.jpg"
+    },
+    {
+      "id": "pixabay-media-geo-v4-135658",
+      "title": "Chapter 44",
+      "description": "Recorded by <b>undefined</b>. <br><br>Duration: 9 s · Not geotagged — shown at a default position · <a href=\"https://pixabay.com/videos/id-135658/\" target=\"_blank\" rel=\"noopener noreferrer\">Source #135658</a>",
+      "alignment": "right",
+      "hidden": false,
+      "location": {
+        "center": [
+          0,
+          20
+        ],
+        "zoom": 2,
+        "pitch": 0,
+        "bearing": 0
+      },
+      "mapAnimation": "flyTo",
+      "rotateAnimation": false,
+      "onChapterEnter": [],
+      "onChapterExit": [],
+      "source": {
+        "id": 135658,
+        "license": null,
+        "durationSec": 9,
+        "url": "https://pixabay.com/videos/id-135658/"
+      },
+      "video": "https://cdn.pixabay.com/video/2022/10/19/135658-764361528_medium.mp4",
+      "image": "https://cdn.pixabay.com/video/2022/10/19/135658-764361528_medium.jpg"
+    },
+    {
+      "id": "pixabay-media-geo-v4-204565",
+      "title": "Chapter 45",
+      "description": "Recorded by <b>undefined</b>. <br><br>Duration: 33 s · Not geotagged — shown at a default position · <a href=\"https://pixabay.com/videos/id-204565/\" target=\"_blank\" rel=\"noopener noreferrer\">Source #204565</a>",
+      "alignment": "left",
+      "hidden": false,
+      "location": {
+        "center": [
+          0,
+          20
+        ],
+        "zoom": 2,
+        "pitch": 0,
+        "bearing": 0
+      },
+      "mapAnimation": "flyTo",
+      "rotateAnimation": false,
+      "onChapterEnter": [],
+      "onChapterExit": [],
+      "source": {
+        "id": 204565,
+        "license": null,
+        "durationSec": 33,
+        "url": "https://pixabay.com/videos/id-204565/"
+      },
+      "video": "https://cdn.pixabay.com/video/2024/03/18/204565-924698132_medium.mp4",
+      "image": "https://cdn.pixabay.com/video/2024/03/18/204565-924698132_medium.jpg"
+    },
+    {
+      "id": "pixabay-media-geo-v4-5058",
+      "title": "Chapter 46",
+      "description": "Recorded by <b>undefined</b>. <br><br>Duration: 10 s · Not geotagged — shown at a default position · <a href=\"https://pixabay.com/videos/id-5058/\" target=\"_blank\" rel=\"noopener noreferrer\">Source #5058</a>",
+      "alignment": "right",
+      "hidden": false,
+      "location": {
+        "center": [
+          0,
+          20
+        ],
+        "zoom": 2,
+        "pitch": 0,
+        "bearing": 0
+      },
+      "mapAnimation": "flyTo",
+      "rotateAnimation": false,
+      "onChapterEnter": [],
+      "onChapterExit": [],
+      "source": {
+        "id": 5058,
+        "license": null,
+        "durationSec": 10,
+        "url": "https://pixabay.com/videos/id-5058/"
+      },
+      "video": "https://cdn.pixabay.com/video/2016/09/13/5058-182666741_medium.mp4",
+      "image": "https://cdn.pixabay.com/video/2016/09/13/5058-182666741_medium.jpg"
+    },
+    {
+      "id": "pixabay-media-geo-v4-321952",
+      "title": "Chapter 47",
+      "description": "Recorded by <b>undefined</b>. <br><br>Duration: 14 s · Not geotagged — shown at a default position · <a href=\"https://pixabay.com/videos/id-321952/\" target=\"_blank\" rel=\"noopener noreferrer\">Source #321952</a>",
+      "alignment": "left",
+      "hidden": false,
+      "location": {
+        "center": [
+          0,
+          20
+        ],
+        "zoom": 2,
+        "pitch": 0,
+        "bearing": 0
+      },
+      "mapAnimation": "flyTo",
+      "rotateAnimation": false,
+      "onChapterEnter": [],
+      "onChapterExit": [],
+      "source": {
+        "id": 321952,
+        "license": null,
+        "durationSec": 14,
+        "url": "https://pixabay.com/videos/id-321952/"
+      },
+      "video": "https://cdn.pixabay.com/video/2025/12/14/321952_medium.mp4",
+      "image": "https://cdn.pixabay.com/video/2025/12/14/321952_medium.jpg"
+    },
+    {
+      "id": "pixabay-media-geo-v4-112722",
+      "title": "Chapter 48",
+      "description": "Recorded by <b>undefined</b>. <br><br>Duration: 30 s · Not geotagged — shown at a default position · <a href=\"https://pixabay.com/videos/id-112722/\" target=\"_blank\" rel=\"noopener noreferrer\">Source #112722</a>",
+      "alignment": "right",
+      "hidden": false,
+      "location": {
+        "center": [
+          0,
+          20
+        ],
+        "zoom": 2,
+        "pitch": 0,
+        "bearing": 0
+      },
+      "mapAnimation": "flyTo",
+      "rotateAnimation": false,
+      "onChapterEnter": [],
+      "onChapterExit": [],
+      "source": {
+        "id": 112722,
+        "license": null,
+        "durationSec": 30,
+        "url": "https://pixabay.com/videos/id-112722/"
+      },
+      "video": "https://cdn.pixabay.com/video/2022/04/02/112722-695433093_medium.mp4",
+      "image": "https://cdn.pixabay.com/video/2022/04/02/112722-695433093_medium.jpg"
+    },
+    {
+      "id": "pixabay-media-geo-v4-13704",
+      "title": "Chapter 49",
+      "description": "Recorded by <b>undefined</b>. <br><br>Duration: 12 s · Not geotagged — shown at a default position · <a href=\"https://pixabay.com/videos/id-13704/\" target=\"_blank\" rel=\"noopener noreferrer\">Source #13704</a>",
+      "alignment": "left",
+      "hidden": false,
+      "location": {
+        "center": [
+          0,
+          20
+        ],
+        "zoom": 2,
+        "pitch": 0,
+        "bearing": 0
+      },
+      "mapAnimation": "flyTo",
+      "rotateAnimation": false,
+      "onChapterEnter": [],
+      "onChapterExit": [],
+      "source": {
+        "id": 13704,
+        "license": null,
+        "durationSec": 12,
+        "url": "https://pixabay.com/videos/id-13704/"
+      },
+      "video": "https://cdn.pixabay.com/video/2018/01/06/13704-250154065_medium.mp4",
+      "image": "https://cdn.pixabay.com/video/2018/01/06/13704-250154065_medium.jpg"
+    },
+    {
+      "id": "pixabay-media-geo-v4-22183",
+      "title": "Chapter 50",
+      "description": "Recorded by <b>undefined</b>. <br><br>Duration: 31 s · Not geotagged — shown at a default position · <a href=\"https://pixabay.com/videos/id-22183/\" target=\"_blank\" rel=\"noopener noreferrer\">Source #22183</a>",
+      "alignment": "right",
+      "hidden": false,
+      "location": {
+        "center": [
+          0,
+          20
+        ],
+        "zoom": 2,
+        "pitch": 0,
+        "bearing": 0
+      },
+      "mapAnimation": "flyTo",
+      "rotateAnimation": false,
+      "onChapterEnter": [],
+      "onChapterExit": [],
+      "source": {
+        "id": 22183,
+        "license": null,
+        "durationSec": 31,
+        "url": "https://pixabay.com/videos/id-22183/"
+      },
+      "video": "https://cdn.pixabay.com/video/2019/03/21/22183-712840599_medium.mp4",
+      "image": "https://cdn.pixabay.com/video/2019/03/21/22183-712840599_medium.jpg"
+    }
+  ]
+}

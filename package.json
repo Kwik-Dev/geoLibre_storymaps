@@ -1,0 +1,24 @@
+{
+  "name": "geo-libre-storymaps-react",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "description": "A Tour of Five Cities — scrollytelling map story (React refactor of a-tour-of-five-cities.html) with per-chapter audio playback",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "convert": "node scripts/convert-storymaps.mjs"
+  },
+  "dependencies": {
+    "maplibre-gl": "^5.24.0",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "scrollama": "^3.2.0"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-react": "^4.4.1",
+    "vite": "^6.3.5",
+    "vite-plugin-singlefile": "^2.3.3"
+  }
+}

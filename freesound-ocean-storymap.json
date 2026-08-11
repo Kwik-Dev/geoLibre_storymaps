@@ -1,0 +1,108 @@
+{
+  "style": "https://tiles.openfreemap.org/styles/liberty",
+  "projection": "globe",
+  "showMarkers": true,
+  "markerColor": "#3fb1ce",
+  "inset": true,
+  "insetPosition": "bottom-left",
+  "insetStyle": "https://basemaps.cartocdn.com/gl/positron-gl-style/style.json",
+  "insetZoom": 1,
+  "theme": "dark",
+  "auto": false,
+  "hideChapterNav": false,
+  "startSlide": "none",
+  "endSlide": "none",
+  "globalView": {
+    "center": [0, 20],
+    "zoom": 0.6,
+    "pitch": 0,
+    "bearing": 0
+  },
+  "startStepId": "__story_start__",
+  "endStepId": "__story_end__",
+  "navToggleLabel": "Toggle chapter list",
+  "title": "Ocean Soundscapes",
+  "subtitle": "A scrollytelling tour of geotagged ocean field recordings from freesound.org",
+  "byline": "Recordings: freesound.org · CC BY 4.0",
+  "footer": "Audio: <a href=\"https://freesound.org/people/xserra/\" target=\"_blank\" rel=\"noopener noreferrer\">xserra</a> &amp; <a href=\"https://freesound.org/people/tim.kahn/\" target=\"_blank\" rel=\"noopener noreferrer\">tim.kahn</a> on <a href=\"https://freesound.org/\" target=\"_blank\" rel=\"noopener noreferrer\">freesound.org</a> (CC BY 4.0). Image: Kanenori via <a href=\"https://pixabay.com/photos/sea-wave-splash-big-wave-ocean-5499649/\" target=\"_blank\" rel=\"noopener noreferrer\">Pixabay</a>. Built with <a href=\"https://github.com/opengeos/GeoLibre\" target=\"_blank\" rel=\"noopener noreferrer\">GeoLibre</a>.",
+  "chapters": [
+    {
+      "id": "ocean-161697-miami-beach",
+      "title": "Miami Beach — ocean-1.wav",
+      "description": "Shore waves rolling onto Miami Beach, recorded by <b>xserra</b> on 2012-07-24. Tags: Miami-Beach, Ocean, Sea, beach, shore, water, waves. <br><br>Duration: 161.6 s · Geotagged at Miami Beach, Florida (25.82° N, 80.12° W) · <a href=\"https://freesound.org/s/161697/\" target=\"_blank\" rel=\"noopener noreferrer\">Freesound #161697</a>",
+      "audio": "audio/161697_ocean-1.mp3",
+      "autoPlayAudio": true,
+      "source": {
+        "freesoundId": 161697,
+        "username": "xserra",
+        "license": "https://creativecommons.org/licenses/by/4.0/",
+        "durationSec": 161.611,
+        "previewURL": "https://cdn.freesound.org/previews/161/161697_43-hq.mp3"
+      },
+      "alignment": "left",
+      "hidden": false,
+      "location": {
+        "center": [-80.1201581954956, 25.818513005989537],
+        "zoom": 12,
+        "pitch": 45,
+        "bearing": 0
+      },
+      "mapAnimation": "flyTo",
+      "rotateAnimation": false,
+      "onChapterEnter": [],
+      "onChapterExit": []
+    },
+    {
+      "id": "ocean-161698-miami-beach-plane",
+      "title": "Miami Beach — ocean-and-plane.wav",
+      "description": "Miami Beach waves with a low plane flyby mixed into the surf, recorded by <b>xserra</b> on 2012-07-24. Tags: Miami-Beach, beach, ocean, plane, sea, water, waves. <br><br>Duration: 23.7 s · Geotagged at Miami Beach, Florida (25.83° N, 80.12° W) · <a href=\"https://freesound.org/s/161698/\" target=\"_blank\" rel=\"noopener noreferrer\">Freesound #161698</a>",
+      "audio": "audio/161698_ocean-and-plane.mp3",
+      "autoPlayAudio": true,
+      "source": {
+        "freesoundId": 161698,
+        "username": "xserra",
+        "license": "https://creativecommons.org/licenses/by/4.0/",
+        "durationSec": 23.6609,
+        "previewURL": "https://cdn.freesound.org/previews/161/161698_43-hq.mp3"
+      },
+      "alignment": "left",
+      "hidden": false,
+      "location": {
+        "center": [-80.11942863464355, 25.825543721679516],
+        "zoom": 12,
+        "pitch": 45,
+        "bearing": 0
+      },
+      "mapAnimation": "flyTo",
+      "rotateAnimation": false,
+      "onChapterEnter": [],
+      "onChapterExit": []
+    },
+    {
+      "id": "ocean-174763-pacific",
+      "title": "Pacific Ocean — Pacific Ocean.flac",
+      "description": "An ambient field recording of surf and splash on the Pacific coast, recorded by <b>tim.kahn</b> on 2013-01-18. Tags: ambient, atmosphere, field-recording, nature, ocean, outside, relaxing, sea, splash, water, waves. <br><br>Duration: 511.5 s · Geotagged on the Oregon coast (45.46° N, 123.97° W) · <a href=\"https://freesound.org/s/174763/\" target=\"_blank\" rel=\"noopener noreferrer\">Freesound #174763</a>",
+      "audio": "audio/174763_pacific-ocean.mp3",
+      "autoPlayAudio": true,
+      "source": {
+        "freesoundId": 174763,
+        "username": "tim.kahn",
+        "license": "https://creativecommons.org/licenses/by/4.0/",
+        "durationSec": 511.547,
+        "previewURL": "https://cdn.freesound.org/previews/174/174763_7037-hq.mp3"
+      },
+      "alignment": "right",
+      "hidden": false,
+      "location": {
+        "center": [-123.97328853607178, 45.46349433043828],
+        "zoom": 9,
+        "pitch": 40,
+        "bearing": 0
+      },
+      "mapAnimation": "flyTo",
+      "rotateAnimation": false,
+      "onChapterEnter": [],
+      "onChapterExit": []
+    }
+  ]
+}

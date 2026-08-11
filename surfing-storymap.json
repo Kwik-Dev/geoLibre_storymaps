@@ -1,0 +1,150 @@
+{
+  "style": "https://tiles.openfreemap.org/styles/liberty",
+  "projection": "globe",
+  "showMarkers": true,
+  "markerColor": "#3fb1ce",
+  "inset": true,
+  "insetPosition": "bottom-left",
+  "insetStyle": "https://basemaps.cartocdn.com/gl/positron-gl-style/style.json",
+  "insetZoom": 1,
+  "theme": "dark",
+  "auto": false,
+  "hideChapterNav": false,
+  "startSlide": "none",
+  "endSlide": "none",
+  "globalView": {
+    "center": [
+      0,
+      20
+    ],
+    "zoom": 0.6,
+    "pitch": 0,
+    "bearing": 0
+  },
+  "startStepId": "__story_start__",
+  "endStepId": "__story_end__",
+  "navToggleLabel": "Toggle chapter list",
+  "title": "Surfing Videos",
+  "subtitle": "A scrollytelling tour of surfing film from Pixabay",
+  "byline": "Videos: Pixabay contributors",
+  "footer": "Videos: Pixabay contributors via <a href=\"https://pixabay.com/\" target=\"_blank\" rel=\"noopener noreferrer\">Pixabay</a> (Pixabay Content License). Built with <a href=\"https://github.com/opengeos/GeoLibre\" target=\"_blank\" rel=\"noopener noreferrer\">GeoLibre</a>.",
+  "chapters": [
+    {
+      "id": "surfing-13772",
+      "title": "Surfer",
+      "description": "Recorded by <b>Pixabay contributor</b>. Tags: surfer, portugal, algarve, coast, sea, surfing, waves, atlantic, surfboard, nature, vacations, bordeira, arrifana, wind, beach, ocean, drone, aerial view, drone flight. <br><br>Geolocated to Arrifana, Algarve, Portugal (37.19°, -8.89°) · <a href=\"https://pixabay.com/videos/id-13772/\" target=\"_blank\" rel=\"noopener noreferrer\">Source #13772</a>",
+      "alignment": "left",
+      "hidden": false,
+      "location": {
+        "center": [
+          -8.889,
+          37.194
+        ],
+        "zoom": 11,
+        "pitch": 40,
+        "bearing": 0
+      },
+      "mapAnimation": "flyTo",
+      "rotateAnimation": false,
+      "onChapterEnter": [],
+      "onChapterExit": [],
+      "source": {
+        "id": 13772,
+        "username": null,
+        "user_id": null,
+        "userURL": null,
+        "userImageURL": null,
+        "license": null,
+        "durationSec": null,
+        "created": null,
+        "width": null,
+        "height": null,
+        "views": null,
+        "downloads": null,
+        "likes": null,
+        "comments": null,
+        "url": "https://pixabay.com/videos/id-13772/"
+      },
+      "video": "videos/13772_surfer.mp4",
+      "image": "https://cdn.pixabay.com/video/2018/01/10/13772-251867974_medium.jpg"
+    },
+    {
+      "id": "surfing-36609",
+      "title": "Surf",
+      "description": "Recorded by <b>Pixabay contributor</b>. Tags: surf, sea, ocean, wave, beach, water, surfing, travel, surfer, nature, surfboard, zenith, drone, live wallpaper, aerial. <br><br>Geolocated to Bondi Beach, Australia (-33.89°, 151.27°) · <a href=\"https://pixabay.com/videos/id-36609/\" target=\"_blank\" rel=\"noopener noreferrer\">Source #36609</a>",
+      "alignment": "right",
+      "hidden": false,
+      "location": {
+        "center": [
+          151.2743,
+          -33.8908
+        ],
+        "zoom": 8,
+        "pitch": 40,
+        "bearing": 0
+      },
+      "mapAnimation": "flyTo",
+      "rotateAnimation": false,
+      "onChapterEnter": [],
+      "onChapterExit": [],
+      "source": {
+        "id": 36609,
+        "username": null,
+        "user_id": null,
+        "userURL": null,
+        "userImageURL": null,
+        "license": null,
+        "durationSec": null,
+        "created": null,
+        "width": null,
+        "height": null,
+        "views": null,
+        "downloads": null,
+        "likes": null,
+        "comments": null,
+        "url": "https://pixabay.com/videos/id-36609/"
+      },
+      "video": "videos/36609_surf.mp4",
+      "image": "https://cdn.pixabay.com/video/2020/04/19/36609-411342371_medium.jpg"
+    },
+    {
+      "id": "surfing-158104",
+      "title": "Surfing",
+      "description": "Recorded by <b>Pixabay contributor</b>. Tags: surfing, ocean, sunset, water, couple, walking, beach, sand. <br><br>Geolocated to Monterey Bay, USA (36.60°, -121.89°) · <a href=\"https://pixabay.com/videos/id-158104/\" target=\"_blank\" rel=\"noopener noreferrer\">Source #158104</a>",
+      "alignment": "left",
+      "hidden": false,
+      "location": {
+        "center": [
+          -121.8947,
+          36.6002
+        ],
+        "zoom": 8,
+        "pitch": 40,
+        "bearing": 0
+      },
+      "mapAnimation": "flyTo",
+      "rotateAnimation": false,
+      "onChapterEnter": [],
+      "onChapterExit": [],
+      "source": {
+        "id": 158104,
+        "username": null,
+        "user_id": null,
+        "userURL": null,
+        "userImageURL": null,
+        "license": null,
+        "durationSec": null,
+        "created": null,
+        "width": null,
+        "height": null,
+        "views": null,
+        "downloads": null,
+        "likes": null,
+        "comments": null,
+        "url": "https://pixabay.com/videos/id-158104/"
+      },
+      "video": "videos/158104_surfing.mp4",
+      "image": "https://cdn.pixabay.com/video/2023/04/09/158104-816068522_medium.jpg"
+    }
+  ]
+}

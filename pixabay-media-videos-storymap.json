@@ -1,0 +1,111 @@
+{
+  "style": "https://tiles.openfreemap.org/styles/liberty",
+  "projection": "globe",
+  "showMarkers": true,
+  "markerColor": "#3fb1ce",
+  "inset": true,
+  "insetPosition": "bottom-left",
+  "insetStyle": "https://basemaps.cartocdn.com/gl/positron-gl-style/style.json",
+  "insetZoom": 1,
+  "theme": "dark",
+  "auto": false,
+  "hideChapterNav": false,
+  "startSlide": "none",
+  "endSlide": "none",
+  "globalView": {
+    "center": [
+      0,
+      20
+    ],
+    "zoom": 0.6,
+    "pitch": 0,
+    "bearing": 0
+  },
+  "startStepId": "__story_start__",
+  "endStepId": "__story_end__",
+  "navToggleLabel": "Toggle chapter list",
+  "title": "Ocean Videos",
+  "subtitle": "A scrollytelling tour of ocean film from Pixabay",
+  "byline": "Videos: Pixabay contributors",
+  "footer": "Videos: <a href=\"https://pixabay.com/users/BlenderTimer-9538909/\" target=\"_blank\" rel=\"noopener noreferrer\">BlenderTimer</a> &amp; <a href=\"https://pixabay.com/users/PaulsAdventures-29857114/\" target=\"_blank\" rel=\"noopener noreferrer\">PaulsAdventures</a> via <a href=\"https://pixabay.com/\" target=\"_blank\" rel=\"noopener noreferrer\">Pixabay</a> (Pixabay Content License). Built with <a href=\"https://github.com/opengeos/GeoLibre\" target=\"_blank\" rel=\"noopener noreferrer\">GeoLibre</a>.",
+  "chapters": [
+    {
+      "id": "pixabay-media-videos-283533",
+      "title": "Chapter 1",
+      "description": "Recorded by <b>BlenderTimer</b>. Tags: wave, breaking, sea, ocean, water, coast, slow motion, slowmo. <br><br>Duration: 40 s · Not geotagged — shown at a default position · <a href=\"https://pixabay.com/videos/id-283533/\" target=\"_blank\" rel=\"noopener noreferrer\">Source #283533</a>",
+      "alignment": "left",
+      "hidden": false,
+      "location": {
+        "center": [
+          0,
+          20
+        ],
+        "zoom": 2,
+        "pitch": 0,
+        "bearing": 0
+      },
+      "mapAnimation": "flyTo",
+      "rotateAnimation": false,
+      "onChapterEnter": [],
+      "onChapterExit": [],
+      "source": {
+        "id": 283533,
+        "username": "BlenderTimer",
+        "user_id": 9538909,
+        "userURL": null,
+        "userImageURL": null,
+        "license": null,
+        "durationSec": 40,
+        "created": null,
+        "width": 0,
+        "height": 0,
+        "views": 132524,
+        "downloads": 120090,
+        "likes": 1442,
+        "comments": 374,
+        "url": "https://pixabay.com/videos/id-283533/"
+      },
+      "video": "videos/283533_wave.mp4",
+      "image": "https://cdn.pixabay.com/video/2025/06/03/283533_medium.jpg"
+    },
+    {
+      "id": "pixabay-media-videos-244754",
+      "title": "Chapter 2",
+      "description": "Recorded by <b>PaulsAdventures</b>. Tags: turtle, ocean, tortoise, wildlife, underwater, snorkeling, marine life, sea life. <br><br>Duration: 30 s · Geolocated to Hawaii (Coastal Waters), United States (20.80°, -156.33°) · <a href=\"https://pixabay.com/videos/id-244754/\" target=\"_blank\" rel=\"noopener noreferrer\">Source #244754</a>",
+      "alignment": "right",
+      "hidden": false,
+      "location": {
+        "center": [
+          -156.3319,
+          20.7967
+        ],
+        "zoom": 11,
+        "pitch": 40,
+        "bearing": 0
+      },
+      "mapAnimation": "flyTo",
+      "rotateAnimation": false,
+      "onChapterEnter": [],
+      "onChapterExit": [],
+      "source": {
+        "id": 244754,
+        "username": "PaulsAdventures",
+        "user_id": 29857114,
+        "userURL": null,
+        "userImageURL": null,
+        "license": null,
+        "durationSec": 30,
+        "created": null,
+        "width": 0,
+        "height": 0,
+        "views": 163142,
+        "downloads": 123607,
+        "likes": 1606,
+        "comments": 215,
+        "url": "https://pixabay.com/videos/id-244754/"
+      },
+      "video": "videos/244754_turtle.mp4",
+      "image": "https://cdn.pixabay.com/video/2024/12/03/244754_medium.jpg"
+    }
+  ]
+}

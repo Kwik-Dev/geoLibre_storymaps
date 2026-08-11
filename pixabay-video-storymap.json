@@ -1,0 +1,68 @@
+{
+  "style": "https://tiles.openfreemap.org/styles/liberty",
+  "projection": "globe",
+  "showMarkers": true,
+  "markerColor": "#3fb1ce",
+  "inset": true,
+  "insetPosition": "bottom-left",
+  "insetStyle": "https://basemaps.cartocdn.com/gl/positron-gl-style/style.json",
+  "insetZoom": 1,
+  "theme": "dark",
+  "auto": false,
+  "hideChapterNav": false,
+  "startSlide": "none",
+  "endSlide": "none",
+  "globalView": {
+    "center": [0, 20],
+    "zoom": 0.6,
+    "pitch": 0,
+    "bearing": 0
+  },
+  "startStepId": "__story_start__",
+  "endStepId": "__story_end__",
+  "navToggleLabel": "Toggle chapter list",
+  "title": "Ocean Videos",
+  "subtitle": "A scrollytelling gallery of ocean film from Pixabay",
+  "byline": "Videos: Pixabay contributors",
+  "footer": "Videos: <a href=\"https://pixabay.com/videos/id-283533/\" target=\"_blank\" rel=\"noopener noreferrer\">BlenderTimer</a> &amp; <a href=\"https://pixabay.com/videos/id-244754/\" target=\"_blank\" rel=\"noopener noreferrer\">PaulsAdventures</a> via <a href=\"https://pixabay.com/\" target=\"_blank\" rel=\"noopener noreferrer\">Pixabay</a> (Pixabay Content License). Built with <a href=\"https://github.com/opengeos/GeoLibre\" target=\"_blank\" rel=\"noopener noreferrer\">GeoLibre</a>.",
+  "chapters": [
+    {
+      "id": "pixabay-video-283533",
+      "title": "Breaking Wave — Slow Motion",
+      "image": "https://cdn.pixabay.com/video/2025/06/03/283533_medium.jpg",
+      "video": "videos/283533_wave.mp4",
+      "description": "A breaking wave in slow motion, filmed by <b>BlenderTimer</b>. Tags: wave, breaking, sea, ocean, water, coast, slow motion, slowmo. <br><br>Duration: 40 s · Not geotagged — the camera sits at Nazaré, Portugal (39.6° N, 9.1° W), famous for giant waves, for this story · <a href=\"https://pixabay.com/videos/id-283533/\" target=\"_blank\" rel=\"noopener noreferrer\">Pixabay video #283533</a>",
+      "alignment": "left",
+      "hidden": false,
+      "location": {
+        "center": [-9.08, 39.6],
+        "zoom": 9,
+        "pitch": 40,
+        "bearing": 0
+      },
+      "mapAnimation": "flyTo",
+      "rotateAnimation": false,
+      "onChapterEnter": [],
+      "onChapterExit": []
+    },
+    {
+      "id": "pixabay-video-244754",
+      "title": "Sea Turtle — Hawaii",
+      "image": "https://cdn.pixabay.com/video/2024/12/03/244754_medium.jpg",
+      "video": "videos/244754_turtle.mp4",
+      "description": "A sea turtle swimming through clear tropical waters, filmed by <b>PaulsAdventures</b>. Tags: turtle, ocean, tortoise, wildlife, underwater, snorkeling, marine life, sea life. <br><br>Duration: 30 s · Geolocated to Hawaiian coastal waters (20.8° N, 156.3° W) · <a href=\"https://pixabay.com/videos/id-244754/\" target=\"_blank\" rel=\"noopener noreferrer\">Pixabay video #244754</a>",
+      "alignment": "right",
+      "hidden": false,
+      "location": {
+        "center": [-156.3319, 20.7967],
+        "zoom": 8,
+        "pitch": 35,
+        "bearing": 0
+      },
+      "mapAnimation": "flyTo",
+      "rotateAnimation": false,
+      "onChapterEnter": [],
+      "onChapterExit": []
+    }
+  ]
+}

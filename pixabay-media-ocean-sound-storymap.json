@@ -1,0 +1,593 @@
+{
+  "style": "https://tiles.openfreemap.org/styles/liberty",
+  "projection": "globe",
+  "showMarkers": true,
+  "markerColor": "#3fb1ce",
+  "inset": true,
+  "insetPosition": "bottom-left",
+  "insetStyle": "https://basemaps.cartocdn.com/gl/positron-gl-style/style.json",
+  "insetZoom": 1,
+  "theme": "dark",
+  "auto": false,
+  "hideChapterNav": false,
+  "startSlide": "none",
+  "endSlide": "none",
+  "globalView": {
+    "center": [
+      0,
+      20
+    ],
+    "zoom": 0.6,
+    "pitch": 0,
+    "bearing": 0
+  },
+  "startStepId": "__story_start__",
+  "endStepId": "__story_end__",
+  "navToggleLabel": "Toggle chapter list",
+  "title": "Surfing Videos",
+  "subtitle": "A scrollytelling tour of surfing film from Pixabay",
+  "byline": "Videos: Pixabay contributors",
+  "footer": "Videos: <a href=\"https://pixabay.com/users/undefined-16110295/\" target=\"_blank\" rel=\"noopener noreferrer\">undefined</a> via <a href=\"https://pixabay.com/\" target=\"_blank\" rel=\"noopener noreferrer\">Pixabay</a> (Pixabay Content License). Built with <a href=\"https://github.com/opengeos/GeoLibre\" target=\"_blank\" rel=\"noopener noreferrer\">GeoLibre</a>.",
+  "chapters": [
+    {
+      "id": "pixabay-media-ocean-sound-36609",
+      "title": "Chapter 1",
+      "description": "Recorded by <b>undefined</b>. <br><br>Duration: 19 s · Geolocated to La Réunion Island, France (-21.16°, 55.53°) · <a href=\"https://pixabay.com/videos/id-36609/\" target=\"_blank\" rel=\"noopener noreferrer\">Source #36609</a>",
+      "alignment": "left",
+      "hidden": false,
+      "location": {
+        "center": [
+          55.5339,
+          -21.1609
+        ],
+        "zoom": 8,
+        "pitch": 40,
+        "bearing": 0
+      },
+      "mapAnimation": "flyTo",
+      "rotateAnimation": false,
+      "onChapterEnter": [],
+      "onChapterExit": [],
+      "source": {
+        "id": 36609,
+        "license": null,
+        "durationSec": 19,
+        "url": "https://pixabay.com/videos/id-36609/"
+      },
+      "video": "videos/36609_surf.mp4",
+      "image": "https://cdn.pixabay.com/video/2020/04/19/36609-411342371_medium.jpg"
+    },
+    {
+      "id": "pixabay-media-ocean-sound-339840",
+      "title": "Chapter 2",
+      "description": "Recorded by <b>undefined</b>. <br><br>Duration: 29 s · Not geotagged — shown at a default position · <a href=\"https://pixabay.com/videos/id-339840/\" target=\"_blank\" rel=\"noopener noreferrer\">Source #339840</a>",
+      "alignment": "right",
+      "hidden": false,
+      "location": {
+        "center": [
+          0,
+          20
+        ],
+        "zoom": 2,
+        "pitch": 0,
+        "bearing": 0
+      },
+      "mapAnimation": "flyTo",
+      "rotateAnimation": false,
+      "onChapterEnter": [],
+      "onChapterExit": [],
+      "source": {
+        "id": 339840,
+        "license": null,
+        "durationSec": 29,
+        "url": "https://pixabay.com/videos/id-339840/"
+      },
+      "video": "https://cdn.pixabay.com/video/2026/03/12/339840_medium.mp4",
+      "image": "https://cdn.pixabay.com/video/2026/03/12/339840_medium.jpg"
+    },
+    {
+      "id": "pixabay-media-ocean-sound-214592",
+      "title": "Chapter 3",
+      "description": "Recorded by <b>undefined</b>. <br><br>Duration: 28 s · Not geotagged — shown at a default position · <a href=\"https://pixabay.com/videos/id-214592/\" target=\"_blank\" rel=\"noopener noreferrer\">Source #214592</a>",
+      "alignment": "left",
+      "hidden": false,
+      "location": {
+        "center": [
+          0,
+          20
+        ],
+        "zoom": 2,
+        "pitch": 0,
+        "bearing": 0
+      },
+      "mapAnimation": "flyTo",
+      "rotateAnimation": false,
+      "onChapterEnter": [],
+      "onChapterExit": [],
+      "source": {
+        "id": 214592,
+        "license": null,
+        "durationSec": 28,
+        "url": "https://pixabay.com/videos/id-214592/"
+      },
+      "video": "https://cdn.pixabay.com/video/2024/05/31/214592_medium.mp4",
+      "image": "https://cdn.pixabay.com/video/2024/05/31/214592_medium.jpg"
+    },
+    {
+      "id": "pixabay-media-ocean-sound-13772",
+      "title": "Chapter 4",
+      "description": "Recorded by <b>undefined</b>. <br><br>Duration: 16 s · Geolocated to Arrifana Beach, Algarve, Portugal (37.21°, -8.86°) · <a href=\"https://pixabay.com/videos/id-13772/\" target=\"_blank\" rel=\"noopener noreferrer\">Source #13772</a>",
+      "alignment": "right",
+      "hidden": false,
+      "location": {
+        "center": [
+          -8.864,
+          37.207
+        ],
+        "zoom": 11,
+        "pitch": 40,
+        "bearing": 0
+      },
+      "mapAnimation": "flyTo",
+      "rotateAnimation": false,
+      "onChapterEnter": [],
+      "onChapterExit": [],
+      "source": {
+        "id": 13772,
+        "license": null,
+        "durationSec": 16,
+        "url": "https://pixabay.com/videos/id-13772/"
+      },
+      "video": "videos/13772_surfer.mp4",
+      "image": "https://cdn.pixabay.com/video/2018/01/10/13772-251867974_medium.jpg"
+    },
+    {
+      "id": "pixabay-media-ocean-sound-31517",
+      "title": "Chapter 5",
+      "description": "Recorded by <b>undefined</b>. <br><br>Duration: 15 s · Not geotagged — shown at a default position · <a href=\"https://pixabay.com/videos/id-31517/\" target=\"_blank\" rel=\"noopener noreferrer\">Source #31517</a>",
+      "alignment": "left",
+      "hidden": false,
+      "location": {
+        "center": [
+          0,
+          20
+        ],
+        "zoom": 2,
+        "pitch": 0,
+        "bearing": 0
+      },
+      "mapAnimation": "flyTo",
+      "rotateAnimation": false,
+      "onChapterEnter": [],
+      "onChapterExit": [],
+      "source": {
+        "id": 31517,
+        "license": null,
+        "durationSec": 15,
+        "url": "https://pixabay.com/videos/id-31517/"
+      },
+      "video": "https://cdn.pixabay.com/video/2020/01/23/31517-387662255_medium.mp4",
+      "image": "https://cdn.pixabay.com/video/2020/01/23/31517-387662255_medium.jpg"
+    },
+    {
+      "id": "pixabay-media-ocean-sound-368",
+      "title": "Chapter 6",
+      "description": "Recorded by <b>undefined</b>. <br><br>Duration: 39 s · Not geotagged — shown at a default position · <a href=\"https://pixabay.com/videos/id-368/\" target=\"_blank\" rel=\"noopener noreferrer\">Source #368</a>",
+      "alignment": "right",
+      "hidden": false,
+      "location": {
+        "center": [
+          0,
+          20
+        ],
+        "zoom": 2,
+        "pitch": 0,
+        "bearing": 0
+      },
+      "mapAnimation": "flyTo",
+      "rotateAnimation": false,
+      "onChapterEnter": [],
+      "onChapterExit": [],
+      "source": {
+        "id": 368,
+        "license": null,
+        "durationSec": 39,
+        "url": "https://pixabay.com/videos/id-368/"
+      },
+      "video": "https://cdn.pixabay.com/video/2015/08/12/368-136082428_medium.mp4",
+      "image": "https://cdn.pixabay.com/video/2015/08/12/368-136082428_medium.jpg"
+    },
+    {
+      "id": "pixabay-media-ocean-sound-158104",
+      "title": "Chapter 7",
+      "description": "Recorded by <b>undefined</b>. <br><br>Duration: 16 s · Geolocated to Waikiki Beach, United States (21.28°, -157.82°) · <a href=\"https://pixabay.com/videos/id-158104/\" target=\"_blank\" rel=\"noopener noreferrer\">Source #158104</a>",
+      "alignment": "left",
+      "hidden": false,
+      "location": {
+        "center": [
+          -157.8223,
+          21.2767
+        ],
+        "zoom": 8,
+        "pitch": 40,
+        "bearing": 0
+      },
+      "mapAnimation": "flyTo",
+      "rotateAnimation": false,
+      "onChapterEnter": [],
+      "onChapterExit": [],
+      "source": {
+        "id": 158104,
+        "license": null,
+        "durationSec": 16,
+        "url": "https://pixabay.com/videos/id-158104/"
+      },
+      "video": "videos/158104_surfing.mp4",
+      "image": "https://cdn.pixabay.com/video/2023/04/09/158104-816068522_medium.jpg"
+    },
+    {
+      "id": "pixabay-media-ocean-sound-35774",
+      "title": "Chapter 8",
+      "description": "Recorded by <b>undefined</b>. <br><br>Duration: 10 s · Geolocated to Manila Bay, Philippines (14.60°, 120.98°) · <a href=\"https://pixabay.com/videos/id-35774/\" target=\"_blank\" rel=\"noopener noreferrer\">Source #35774</a>",
+      "alignment": "right",
+      "hidden": false,
+      "location": {
+        "center": [
+          120.9842,
+          14.5995
+        ],
+        "zoom": 8,
+        "pitch": 40,
+        "bearing": 0
+      },
+      "mapAnimation": "flyTo",
+      "rotateAnimation": false,
+      "onChapterEnter": [],
+      "onChapterExit": [],
+      "source": {
+        "id": 35774,
+        "license": null,
+        "durationSec": 10,
+        "url": "https://pixabay.com/videos/id-35774/"
+      },
+      "video": "https://cdn.pixabay.com/video/2020/04/12/35774-408600310_medium.mp4",
+      "image": "https://cdn.pixabay.com/video/2020/04/12/35774-408600310_medium.jpg"
+    },
+    {
+      "id": "pixabay-media-ocean-sound-64782",
+      "title": "Chapter 9",
+      "description": "Recorded by <b>undefined</b>. <br><br>Duration: 41 s · Not geotagged — shown at a default position · <a href=\"https://pixabay.com/videos/id-64782/\" target=\"_blank\" rel=\"noopener noreferrer\">Source #64782</a>",
+      "alignment": "left",
+      "hidden": false,
+      "location": {
+        "center": [
+          0,
+          20
+        ],
+        "zoom": 2,
+        "pitch": 0,
+        "bearing": 0
+      },
+      "mapAnimation": "flyTo",
+      "rotateAnimation": false,
+      "onChapterEnter": [],
+      "onChapterExit": [],
+      "source": {
+        "id": 64782,
+        "license": null,
+        "durationSec": 41,
+        "url": "https://pixabay.com/videos/id-64782/"
+      },
+      "video": "https://cdn.pixabay.com/video/2021/02/10/64782-510850984_medium.mp4",
+      "image": "https://cdn.pixabay.com/video/2021/02/10/64782-510850984_medium.jpg"
+    },
+    {
+      "id": "pixabay-media-ocean-sound-236273",
+      "title": "Chapter 10",
+      "description": "Recorded by <b>undefined</b>. <br><br>Duration: 45 s · Not geotagged — shown at a default position · <a href=\"https://pixabay.com/videos/id-236273/\" target=\"_blank\" rel=\"noopener noreferrer\">Source #236273</a>",
+      "alignment": "right",
+      "hidden": false,
+      "location": {
+        "center": [
+          0,
+          20
+        ],
+        "zoom": 2,
+        "pitch": 0,
+        "bearing": 0
+      },
+      "mapAnimation": "flyTo",
+      "rotateAnimation": false,
+      "onChapterEnter": [],
+      "onChapterExit": [],
+      "source": {
+        "id": 236273,
+        "license": null,
+        "durationSec": 45,
+        "url": "https://pixabay.com/videos/id-236273/"
+      },
+      "video": "https://cdn.pixabay.com/video/2024/10/14/236273_medium.mp4",
+      "image": "https://cdn.pixabay.com/video/2024/10/14/236273_medium.jpg"
+    },
+    {
+      "id": "pixabay-media-ocean-sound-189547",
+      "title": "Chapter 11",
+      "description": "Recorded by <b>undefined</b>. <br><br>Duration: 12 s · Not geotagged — shown at a default position · <a href=\"https://pixabay.com/videos/id-189547/\" target=\"_blank\" rel=\"noopener noreferrer\">Source #189547</a>",
+      "alignment": "left",
+      "hidden": false,
+      "location": {
+        "center": [
+          0,
+          20
+        ],
+        "zoom": 2,
+        "pitch": 0,
+        "bearing": 0
+      },
+      "mapAnimation": "flyTo",
+      "rotateAnimation": false,
+      "onChapterEnter": [],
+      "onChapterExit": [],
+      "source": {
+        "id": 189547,
+        "license": null,
+        "durationSec": 12,
+        "url": "https://pixabay.com/videos/id-189547/"
+      },
+      "video": "https://cdn.pixabay.com/video/2023/11/18/189547-886016203_medium.mp4",
+      "image": "https://cdn.pixabay.com/video/2023/11/18/189547-886016203_medium.jpg"
+    },
+    {
+      "id": "pixabay-media-ocean-sound-36610",
+      "title": "Chapter 12",
+      "description": "Recorded by <b>undefined</b>. <br><br>Duration: 9 s · Geolocated to Waikiki Beach, United States (21.31°, -157.86°) · <a href=\"https://pixabay.com/videos/id-36610/\" target=\"_blank\" rel=\"noopener noreferrer\">Source #36610</a>",
+      "alignment": "right",
+      "hidden": false,
+      "location": {
+        "center": [
+          -157.8583,
+          21.3069
+        ],
+        "zoom": 8,
+        "pitch": 40,
+        "bearing": 0
+      },
+      "mapAnimation": "flyTo",
+      "rotateAnimation": false,
+      "onChapterEnter": [],
+      "onChapterExit": [],
+      "source": {
+        "id": 36610,
+        "license": null,
+        "durationSec": 9,
+        "url": "https://pixabay.com/videos/id-36610/"
+      },
+      "video": "https://cdn.pixabay.com/video/2020/04/19/36610-411342375_medium.mp4",
+      "image": "https://cdn.pixabay.com/video/2020/04/19/36610-411342375_medium.jpg"
+    },
+    {
+      "id": "pixabay-media-ocean-sound-222180",
+      "title": "Chapter 13",
+      "description": "Recorded by <b>undefined</b>. <br><br>Duration: 25 s · Not geotagged — shown at a default position · <a href=\"https://pixabay.com/videos/id-222180/\" target=\"_blank\" rel=\"noopener noreferrer\">Source #222180</a>",
+      "alignment": "left",
+      "hidden": false,
+      "location": {
+        "center": [
+          0,
+          20
+        ],
+        "zoom": 2,
+        "pitch": 0,
+        "bearing": 0
+      },
+      "mapAnimation": "flyTo",
+      "rotateAnimation": false,
+      "onChapterEnter": [],
+      "onChapterExit": [],
+      "source": {
+        "id": 222180,
+        "license": null,
+        "durationSec": 25,
+        "url": "https://pixabay.com/videos/id-222180/"
+      },
+      "video": "https://cdn.pixabay.com/video/2024/07/20/222180_medium.mp4",
+      "image": "https://cdn.pixabay.com/video/2024/07/20/222180_medium.jpg"
+    },
+    {
+      "id": "pixabay-media-ocean-sound-92838",
+      "title": "Chapter 14",
+      "description": "Recorded by <b>undefined</b>. <br><br>Duration: 6 s · Not geotagged — shown at a default position · <a href=\"https://pixabay.com/videos/id-92838/\" target=\"_blank\" rel=\"noopener noreferrer\">Source #92838</a>",
+      "alignment": "right",
+      "hidden": false,
+      "location": {
+        "center": [
+          0,
+          20
+        ],
+        "zoom": 2,
+        "pitch": 0,
+        "bearing": 0
+      },
+      "mapAnimation": "flyTo",
+      "rotateAnimation": false,
+      "onChapterEnter": [],
+      "onChapterExit": [],
+      "source": {
+        "id": 92838,
+        "license": null,
+        "durationSec": 6,
+        "url": "https://pixabay.com/videos/id-92838/"
+      },
+      "video": "https://cdn.pixabay.com/video/2021/10/22/92838-638016610_medium.mp4",
+      "image": "https://cdn.pixabay.com/video/2021/10/22/92838-638016610_medium.jpg"
+    },
+    {
+      "id": "pixabay-media-ocean-sound-140117",
+      "title": "Chapter 15",
+      "description": "Recorded by <b>undefined</b>. <br><br>Duration: 38 s · Not geotagged — shown at a default position · <a href=\"https://pixabay.com/videos/id-140117/\" target=\"_blank\" rel=\"noopener noreferrer\">Source #140117</a>",
+      "alignment": "left",
+      "hidden": false,
+      "location": {
+        "center": [
+          0,
+          20
+        ],
+        "zoom": 2,
+        "pitch": 0,
+        "bearing": 0
+      },
+      "mapAnimation": "flyTo",
+      "rotateAnimation": false,
+      "onChapterEnter": [],
+      "onChapterExit": [],
+      "source": {
+        "id": 140117,
+        "license": null,
+        "durationSec": 38,
+        "url": "https://pixabay.com/videos/id-140117/"
+      },
+      "video": "https://cdn.pixabay.com/video/2022/11/22/140117-774507976_medium.mp4",
+      "image": "https://cdn.pixabay.com/video/2022/11/22/140117-774507976_medium.jpg"
+    },
+    {
+      "id": "pixabay-media-ocean-sound-92836",
+      "title": "Chapter 16",
+      "description": "Recorded by <b>undefined</b>. <br><br>Duration: 7 s · Not geotagged — shown at a default position · <a href=\"https://pixabay.com/videos/id-92836/\" target=\"_blank\" rel=\"noopener noreferrer\">Source #92836</a>",
+      "alignment": "right",
+      "hidden": false,
+      "location": {
+        "center": [
+          0,
+          20
+        ],
+        "zoom": 2,
+        "pitch": 0,
+        "bearing": 0
+      },
+      "mapAnimation": "flyTo",
+      "rotateAnimation": false,
+      "onChapterEnter": [],
+      "onChapterExit": [],
+      "source": {
+        "id": 92836,
+        "license": null,
+        "durationSec": 7,
+        "url": "https://pixabay.com/videos/id-92836/"
+      },
+      "video": "https://cdn.pixabay.com/video/2021/10/22/92836-638016601_medium.mp4",
+      "image": "https://cdn.pixabay.com/video/2021/10/22/92836-638016601_medium.jpg"
+    },
+    {
+      "id": "pixabay-media-ocean-sound-122968",
+      "title": "Chapter 17",
+      "description": "Recorded by <b>undefined</b>. <br><br>Duration: 6 s · Not geotagged — shown at a default position · <a href=\"https://pixabay.com/videos/id-122968/\" target=\"_blank\" rel=\"noopener noreferrer\">Source #122968</a>",
+      "alignment": "left",
+      "hidden": false,
+      "location": {
+        "center": [
+          0,
+          20
+        ],
+        "zoom": 2,
+        "pitch": 0,
+        "bearing": 0
+      },
+      "mapAnimation": "flyTo",
+      "rotateAnimation": false,
+      "onChapterEnter": [],
+      "onChapterExit": [],
+      "source": {
+        "id": 122968,
+        "license": null,
+        "durationSec": 6,
+        "url": "https://pixabay.com/videos/id-122968/"
+      },
+      "video": "https://cdn.pixabay.com/video/2022/07/03/122968-726547940_medium.mp4",
+      "image": "https://cdn.pixabay.com/video/2022/07/03/122968-726547940_medium.jpg"
+    },
+    {
+      "id": "pixabay-media-ocean-sound-138381",
+      "title": "Chapter 18",
+      "description": "Recorded by <b>undefined</b>. <br><br>Duration: 6 s · Not geotagged — shown at a default position · <a href=\"https://pixabay.com/videos/id-138381/\" target=\"_blank\" rel=\"noopener noreferrer\">Source #138381</a>",
+      "alignment": "right",
+      "hidden": false,
+      "location": {
+        "center": [
+          0,
+          20
+        ],
+        "zoom": 2,
+        "pitch": 0,
+        "bearing": 0
+      },
+      "mapAnimation": "flyTo",
+      "rotateAnimation": false,
+      "onChapterEnter": [],
+      "onChapterExit": [],
+      "source": {
+        "id": 138381,
+        "license": null,
+        "durationSec": 6,
+        "url": "https://pixabay.com/videos/id-138381/"
+      },
+      "video": "https://cdn.pixabay.com/video/2022/11/09/138381-769163911_medium.mp4",
+      "image": "https://cdn.pixabay.com/video/2022/11/09/138381-769163911_medium.jpg"
+    },
+    {
+      "id": "pixabay-media-ocean-sound-135121",
+      "title": "Chapter 19",
+      "description": "Recorded by <b>undefined</b>. <br><br>Duration: 10 s · Not geotagged — shown at a default position · <a href=\"https://pixabay.com/videos/id-135121/\" target=\"_blank\" rel=\"noopener noreferrer\">Source #135121</a>",
+      "alignment": "left",
+      "hidden": false,
+      "location": {
+        "center": [
+          0,
+          20
+        ],
+        "zoom": 2,
+        "pitch": 0,
+        "bearing": 0
+      },
+      "mapAnimation": "flyTo",
+      "rotateAnimation": false,
+      "onChapterEnter": [],
+      "onChapterExit": [],
+      "source": {
+        "id": 135121,
+        "license": null,
+        "durationSec": 10,
+        "url": "https://pixabay.com/videos/id-135121/"
+      },
+      "video": "https://cdn.pixabay.com/video/2022/10/16/135121-761273401_medium.mp4",
+      "image": "https://cdn.pixabay.com/video/2022/10/16/135121-761273401_medium.jpg"
+    },
+    {
+      "id": "pixabay-media-ocean-sound-339823",
+      "title": "Chapter 20",
+      "description": "Recorded by <b>undefined</b>. <br><br>Duration: 22 s · Not geotagged — shown at a default position · <a href=\"https://pixabay.com/videos/id-339823/\" target=\"_blank\" rel=\"noopener noreferrer\">Source #339823</a>",
+      "alignment": "right",
+      "hidden": false,
+      "location": {
+        "center": [
+          0,
+          20
+        ],
+        "zoom": 2,
+        "pitch": 0,
+        "bearing": 0
+      },
+      "mapAnimation": "flyTo",
+      "rotateAnimation": false,
+      "onChapterEnter": [],
+      "onChapterExit": [],
+      "source": {
+        "id": 339823,
+        "license": null,
+        "durationSec": 22,
+        "url": "https://pixabay.com/videos/id-339823/"
+      },
+      "video": "https://cdn.pixabay.com/video/2026/03/12/339823_medium.mp4",
+      "image": "https://cdn.pixabay.com/video/2026/03/12/339823_medium.jpg"
+    }
+  ]
+}

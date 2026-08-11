@@ -1,0 +1,109 @@
+{
+  "style": "https://tiles.openfreemap.org/styles/liberty",
+  "projection": "globe",
+  "showMarkers": true,
+  "markerColor": "#3fb1ce",
+  "inset": true,
+  "insetPosition": "bottom-left",
+  "insetStyle": "https://basemaps.cartocdn.com/gl/positron-gl-style/style.json",
+  "insetZoom": 1,
+  "theme": "dark",
+  "auto": false,
+  "hideChapterNav": false,
+  "startSlide": "none",
+  "endSlide": "none",
+  "globalView": {
+    "center": [
+      0,
+      20
+    ],
+    "zoom": 0.6,
+    "pitch": 0,
+    "bearing": 0
+  },
+  "startStepId": "__story_start__",
+  "endStepId": "__story_end__",
+  "navToggleLabel": "Toggle chapter list",
+  "title": "Ocean Images",
+  "subtitle": "A scrollytelling tour of ocean photography from Pixabay",
+  "byline": "Photos: Pixabay contributors",
+  "footer": "Photos: <a href=\"https://pixabay.com/users/Kanenori-4749850/\" target=\"_blank\" rel=\"noopener noreferrer\">Kanenori</a> &amp; <a href=\"https://pixabay.com/users/Leonhard_Niederwimmer-1131094/\" target=\"_blank\" rel=\"noopener noreferrer\">Leonhard_Niederwimmer</a> via <a href=\"https://pixabay.com/\" target=\"_blank\" rel=\"noopener noreferrer\">Pixabay</a> (Pixabay Content License). Built with <a href=\"https://github.com/opengeos/GeoLibre\" target=\"_blank\" rel=\"noopener noreferrer\">GeoLibre</a>.",
+  "chapters": [
+    {
+      "id": "pixabay-media-images-5499649",
+      "title": "Chapter 1",
+      "description": "Recorded by <b>Kanenori</b>. Tags: sea, wave, splash, nature, big wave, ocean, water, indian ocean, seascape. <br><br>Geolocated to Malaga Beach, Spain (36.72°, -4.42°) · <a href=\"https://pixabay.com/photos/sea-wave-splash-big-wave-ocean-5499649/\" target=\"_blank\" rel=\"noopener noreferrer\">Source #5499649</a>",
+      "alignment": "left",
+      "hidden": false,
+      "location": {
+        "center": [
+          -4.42034,
+          36.72016
+        ],
+        "zoom": 8,
+        "pitch": 40,
+        "bearing": 0
+      },
+      "mapAnimation": "flyTo",
+      "rotateAnimation": false,
+      "onChapterEnter": [],
+      "onChapterExit": [],
+      "source": {
+        "id": 5499649,
+        "username": "Kanenori",
+        "user_id": 4749850,
+        "userURL": null,
+        "userImageURL": null,
+        "license": null,
+        "durationSec": null,
+        "created": null,
+        "width": 3750,
+        "height": 2500,
+        "views": 142441,
+        "downloads": 103573,
+        "likes": 746,
+        "comments": 103,
+        "url": "https://pixabay.com/photos/sea-wave-splash-big-wave-ocean-5499649/"
+      },
+      "image": "images/5499649_sea.jpg"
+    },
+    {
+      "id": "pixabay-media-images-7320516",
+      "title": "Chapter 2",
+      "description": "Recorded by <b>Leonhard_Niederwimmer</b>. Tags: jellyfish, sea, underwater, underwater world, sea animals, ocean, animals, wildlife, nature, atlantic ocean, deep sea. <br><br>Not geotagged — shown at a default position · <a href=\"https://pixabay.com/photos/jellyfish-sea-underwater-7320516/\" target=\"_blank\" rel=\"noopener noreferrer\">Source #7320516</a>",
+      "alignment": "right",
+      "hidden": false,
+      "location": {
+        "center": [
+          0,
+          20
+        ],
+        "zoom": 2,
+        "pitch": 0,
+        "bearing": 0
+      },
+      "mapAnimation": "flyTo",
+      "rotateAnimation": false,
+      "onChapterEnter": [],
+      "onChapterExit": [],
+      "source": {
+        "id": 7320516,
+        "username": "Leonhard_Niederwimmer",
+        "user_id": 1131094,
+        "userURL": null,
+        "userImageURL": null,
+        "license": null,
+        "durationSec": null,
+        "created": null,
+        "width": 4612,
+        "height": 7000,
+        "views": 164020,
+        "downloads": 148812,
+        "likes": 292,
+        "comments": 26,
+        "url": "https://pixabay.com/photos/jellyfish-sea-underwater-7320516/"
+      },
+      "image": "images/7320516_jellyfish.jpg"
+    }
+  ]
+}

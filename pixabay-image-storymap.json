@@ -1,0 +1,66 @@
+{
+  "style": "https://tiles.openfreemap.org/styles/liberty",
+  "projection": "globe",
+  "showMarkers": true,
+  "markerColor": "#3fb1ce",
+  "inset": true,
+  "insetPosition": "bottom-left",
+  "insetStyle": "https://basemaps.cartocdn.com/gl/positron-gl-style/style.json",
+  "insetZoom": 1,
+  "theme": "dark",
+  "auto": false,
+  "hideChapterNav": false,
+  "startSlide": "none",
+  "endSlide": "none",
+  "globalView": {
+    "center": [0, 20],
+    "zoom": 0.6,
+    "pitch": 0,
+    "bearing": 0
+  },
+  "startStepId": "__story_start__",
+  "endStepId": "__story_end__",
+  "navToggleLabel": "Toggle chapter list",
+  "title": "Ocean Images",
+  "subtitle": "A scrollytelling gallery of ocean photography from Pixabay",
+  "byline": "Photos: Pixabay contributors",
+  "footer": "Images: <a href=\"https://pixabay.com/photos/sea-wave-splash-big-wave-ocean-5499649/\" target=\"_blank\" rel=\"noopener noreferrer\">Kanenori</a> &amp; <a href=\"https://pixabay.com/photos/jellyfish-sea-underwater-7320516/\" target=\"_blank\" rel=\"noopener noreferrer\">Leonhard_Niederwimmer</a> via <a href=\"https://pixabay.com/\" target=\"_blank\" rel=\"noopener noreferrer\">Pixabay</a> (Pixabay Content License). Built with <a href=\"https://github.com/opengeos/GeoLibre\" target=\"_blank\" rel=\"noopener noreferrer\">GeoLibre</a>.",
+  "chapters": [
+    {
+      "id": "pixabay-image-5499649",
+      "title": "Malaga Beach — Big Wave",
+      "image": "images/ocean-sea.jpg",
+      "description": "A big wave rolling over a coastal beach, photographed by <b>Kanenori</b>. Tags: sea, wave, splash, big wave, ocean, water, indian ocean, seascape. <br><br>Geolocated to Malaga Beach, Spain (36.72° N, 4.42° W) · <a href=\"https://pixabay.com/photos/sea-wave-splash-big-wave-ocean-5499649/\" target=\"_blank\" rel=\"noopener noreferrer\">Pixabay photo #5499649</a>",
+      "alignment": "left",
+      "hidden": false,
+      "location": {
+        "center": [-4.42034, 36.72016],
+        "zoom": 11,
+        "pitch": 40,
+        "bearing": 0
+      },
+      "mapAnimation": "flyTo",
+      "rotateAnimation": false,
+      "onChapterEnter": [],
+      "onChapterExit": []
+    },
+    {
+      "id": "pixabay-image-7320516",
+      "title": "Jellyfish — Deep Sea",
+      "image": "images/ocean-jellyfish.jpg",
+      "description": "A jellyfish drifting through open water, photographed by <b>Leonhard_Niederwimmer</b>. Tags: jellyfish, sea, underwater, underwater world, sea animals, ocean, animals, wildlife, nature, atlantic ocean, deep sea. <br><br>Not geotagged — the camera sits at an approximate Atlantic position (33° N, 45° W) for this story · <a href=\"https://pixabay.com/photos/jellyfish-sea-underwater-7320516/\" target=\"_blank\" rel=\"noopener noreferrer\">Pixabay photo #7320516</a>",
+      "alignment": "right",
+      "hidden": false,
+      "location": {
+        "center": [-45, 35],
+        "zoom": 3,
+        "pitch": 20,
+        "bearing": 0
+      },
+      "mapAnimation": "flyTo",
+      "rotateAnimation": false,
+      "onChapterEnter": [],
+      "onChapterExit": []
+    }
+  ]
+}

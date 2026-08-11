@@ -1,0 +1,369 @@
+{
+  "style": "https://tiles.openfreemap.org/styles/liberty",
+  "projection": "globe",
+  "showMarkers": true,
+  "markerColor": "#3fb1ce",
+  "inset": true,
+  "insetPosition": "bottom-left",
+  "insetStyle": "https://basemaps.cartocdn.com/gl/positron-gl-style/style.json",
+  "insetZoom": 1,
+  "theme": "dark",
+  "auto": false,
+  "hideChapterNav": false,
+  "startSlide": "none",
+  "endSlide": "none",
+  "globalView": {
+    "center": [
+      0,
+      20
+    ],
+    "zoom": 0.6,
+    "pitch": 0,
+    "bearing": 0
+  },
+  "startStepId": "__story_start__",
+  "endStepId": "__story_end__",
+  "navToggleLabel": "Toggle chapter list",
+  "title": "Ocean sound Videos",
+  "subtitle": "A scrollytelling tour of ocean sound film from Pixabay",
+  "byline": "Videos: Pixabay contributors",
+  "footer": "Videos: <a href=\"https://pixabay.com/users/undefined-9433365/\" target=\"_blank\" rel=\"noopener noreferrer\">undefined</a> via <a href=\"https://pixabay.com/\" target=\"_blank\" rel=\"noopener noreferrer\">Pixabay</a> (Pixabay Content License). Built with <a href=\"https://github.com/opengeos/GeoLibre\" target=\"_blank\" rel=\"noopener noreferrer\">GeoLibre</a>.",
+  "chapters": [
+    {
+      "id": "pixabay-media-geo-30902",
+      "title": "Chapter 1",
+      "description": "Recorded by <b>undefined</b>. <br><br>Duration: 24 s · Geolocated to Eiffel Tower, France (48.86°, 2.29°) · <a href=\"https://pixabay.com/videos/id-30902/\" target=\"_blank\" rel=\"noopener noreferrer\">Source #30902</a>",
+      "alignment": "left",
+      "hidden": false,
+      "location": {
+        "center": [
+          2.2945,
+          48.8584
+        ],
+        "zoom": 11,
+        "pitch": 40,
+        "bearing": 0
+      },
+      "mapAnimation": "flyTo",
+      "rotateAnimation": false,
+      "onChapterEnter": [],
+      "onChapterExit": [],
+      "source": {
+        "id": 30902,
+        "license": null,
+        "durationSec": 24,
+        "url": "https://pixabay.com/videos/id-30902/"
+      },
+      "video": "videos/30902_hang.mp4",
+      "image": "https://cdn.pixabay.com/video/2020/01/05/30902-383991325_medium.jpg"
+    },
+    {
+      "id": "pixabay-media-geo-137126",
+      "title": "Chapter 2",
+      "description": "Recorded by <b>undefined</b>. <br><br>Duration: 60 s · Geolocated to San Francisco, United States (37.77°, -122.42°) · <a href=\"https://pixabay.com/videos/id-137126/\" target=\"_blank\" rel=\"noopener noreferrer\">Source #137126</a>",
+      "alignment": "right",
+      "hidden": false,
+      "location": {
+        "center": [
+          -122.4194,
+          37.7749
+        ],
+        "zoom": 11,
+        "pitch": 40,
+        "bearing": 0
+      },
+      "mapAnimation": "flyTo",
+      "rotateAnimation": false,
+      "onChapterEnter": [],
+      "onChapterExit": [],
+      "source": {
+        "id": 137126,
+        "license": null,
+        "durationSec": 60,
+        "url": "https://pixabay.com/videos/id-137126/"
+      },
+      "video": "https://cdn.pixabay.com/video/2022/10/30/137126-765701219_medium.mp4",
+      "image": "https://cdn.pixabay.com/video/2022/10/30/137126-765701219_medium.jpg"
+    },
+    {
+      "id": "pixabay-media-geo-30904",
+      "title": "Chapter 3",
+      "description": "Recorded by <b>undefined</b>. <br><br>Duration: 30 s · Geolocated to Golden Gate Bridge, United States (37.82°, -122.48°) · <a href=\"https://pixabay.com/videos/id-30904/\" target=\"_blank\" rel=\"noopener noreferrer\">Source #30904</a>",
+      "alignment": "left",
+      "hidden": false,
+      "location": {
+        "center": [
+          -122.4783,
+          37.8199
+        ],
+        "zoom": 11,
+        "pitch": 40,
+        "bearing": 0
+      },
+      "mapAnimation": "flyTo",
+      "rotateAnimation": false,
+      "onChapterEnter": [],
+      "onChapterExit": [],
+      "source": {
+        "id": 30904,
+        "license": null,
+        "durationSec": 30,
+        "url": "https://pixabay.com/videos/id-30904/"
+      },
+      "video": "videos/30904_hang.mp4",
+      "image": "https://cdn.pixabay.com/video/2020/01/05/30904-383991333_medium.jpg"
+    },
+    {
+      "id": "pixabay-media-geo-30901",
+      "title": "Chapter 4",
+      "description": "Recorded by <b>undefined</b>. <br><br>Duration: 13 s · Geolocated to New York City, United States (40.71°, -74.01°) · <a href=\"https://pixabay.com/videos/id-30901/\" target=\"_blank\" rel=\"noopener noreferrer\">Source #30901</a>",
+      "alignment": "right",
+      "hidden": false,
+      "location": {
+        "center": [
+          -74.006,
+          40.7128
+        ],
+        "zoom": 11,
+        "pitch": 40,
+        "bearing": 0
+      },
+      "mapAnimation": "flyTo",
+      "rotateAnimation": false,
+      "onChapterEnter": [],
+      "onChapterExit": [],
+      "source": {
+        "id": 30901,
+        "license": null,
+        "durationSec": 13,
+        "url": "https://pixabay.com/videos/id-30901/"
+      },
+      "video": "https://cdn.pixabay.com/video/2020/01/05/30901-383991318_medium.mp4",
+      "image": "https://cdn.pixabay.com/video/2020/01/05/30901-383991318_medium.jpg"
+    },
+    {
+      "id": "pixabay-media-geo-124869",
+      "title": "Chapter 5",
+      "description": "Recorded by <b>undefined</b>. <br><br>Duration: 59 s · Geolocated to Eiffel Tower, Paris, France (48.86°, 2.29°) · <a href=\"https://pixabay.com/videos/id-124869/\" target=\"_blank\" rel=\"noopener noreferrer\">Source #124869</a>",
+      "alignment": "left",
+      "hidden": false,
+      "location": {
+        "center": [
+          2.2945,
+          48.8584
+        ],
+        "zoom": 11,
+        "pitch": 40,
+        "bearing": 0
+      },
+      "mapAnimation": "flyTo",
+      "rotateAnimation": false,
+      "onChapterEnter": [],
+      "onChapterExit": [],
+      "source": {
+        "id": 124869,
+        "license": null,
+        "durationSec": 59,
+        "url": "https://pixabay.com/videos/id-124869/"
+      },
+      "video": "https://cdn.pixabay.com/video/2022/07/20/124869-732319039_medium.mp4",
+      "image": "https://cdn.pixabay.com/video/2022/07/20/124869-732319039_medium.jpg"
+    },
+    {
+      "id": "pixabay-media-geo-122896",
+      "title": "Chapter 6",
+      "description": "Recorded by <b>undefined</b>. <br><br>Duration: 30 s · Geolocated to Eiffel Tower, France (48.86°, 2.29°) · <a href=\"https://pixabay.com/videos/id-122896/\" target=\"_blank\" rel=\"noopener noreferrer\">Source #122896</a>",
+      "alignment": "right",
+      "hidden": false,
+      "location": {
+        "center": [
+          2.2945,
+          48.8584
+        ],
+        "zoom": 11,
+        "pitch": 40,
+        "bearing": 0
+      },
+      "mapAnimation": "flyTo",
+      "rotateAnimation": false,
+      "onChapterEnter": [],
+      "onChapterExit": [],
+      "source": {
+        "id": 122896,
+        "license": null,
+        "durationSec": 30,
+        "url": "https://pixabay.com/videos/id-122896/"
+      },
+      "video": "https://cdn.pixabay.com/video/2022/07/02/122896-726392015_medium.mp4",
+      "image": "https://cdn.pixabay.com/video/2022/07/02/122896-726392015_medium.jpg"
+    },
+    {
+      "id": "pixabay-media-geo-133601",
+      "title": "Chapter 7",
+      "description": "Recorded by <b>undefined</b>. <br><br>Duration: 59 s · Geolocated to Eiffel Tower, Paris, France (48.86°, 2.29°) · <a href=\"https://pixabay.com/videos/id-133601/\" target=\"_blank\" rel=\"noopener noreferrer\">Source #133601</a>",
+      "alignment": "left",
+      "hidden": false,
+      "location": {
+        "center": [
+          2.2945,
+          48.8584
+        ],
+        "zoom": 11,
+        "pitch": 40,
+        "bearing": 0
+      },
+      "mapAnimation": "flyTo",
+      "rotateAnimation": false,
+      "onChapterEnter": [],
+      "onChapterExit": [],
+      "source": {
+        "id": 133601,
+        "license": null,
+        "durationSec": 59,
+        "url": "https://pixabay.com/videos/id-133601/"
+      },
+      "video": "https://cdn.pixabay.com/video/2022/10/04/133601-757274749_medium.mp4",
+      "image": "https://cdn.pixabay.com/video/2022/10/04/133601-757274749_medium.jpg"
+    },
+    {
+      "id": "pixabay-media-geo-322718",
+      "title": "Chapter 8",
+      "description": "Recorded by <b>undefined</b>. <br><br>Duration: 59 s · Geolocated to Tokyo, Japan (35.69°, 139.69°) · <a href=\"https://pixabay.com/videos/id-322718/\" target=\"_blank\" rel=\"noopener noreferrer\">Source #322718</a>",
+      "alignment": "right",
+      "hidden": false,
+      "location": {
+        "center": [
+          139.6917,
+          35.6895
+        ],
+        "zoom": 11,
+        "pitch": 40,
+        "bearing": 0
+      },
+      "mapAnimation": "flyTo",
+      "rotateAnimation": false,
+      "onChapterEnter": [],
+      "onChapterExit": [],
+      "source": {
+        "id": 322718,
+        "license": null,
+        "durationSec": 59,
+        "url": "https://pixabay.com/videos/id-322718/"
+      },
+      "video": "https://cdn.pixabay.com/video/2025/12/18/322718_medium.mp4",
+      "image": "https://cdn.pixabay.com/video/2025/12/18/322718_medium.jpg"
+    },
+    {
+      "id": "pixabay-media-geo-309811",
+      "title": "Chapter 9",
+      "description": "Recorded by <b>undefined</b>. <br><br>Duration: 10 s · Geolocated to Statue of Liberty, United States (40.69°, -74.04°) · <a href=\"https://pixabay.com/videos/id-309811/\" target=\"_blank\" rel=\"noopener noreferrer\">Source #309811</a>",
+      "alignment": "left",
+      "hidden": false,
+      "location": {
+        "center": [
+          -74.0445,
+          40.6892
+        ],
+        "zoom": 11,
+        "pitch": 40,
+        "bearing": 0
+      },
+      "mapAnimation": "flyTo",
+      "rotateAnimation": false,
+      "onChapterEnter": [],
+      "onChapterExit": [],
+      "source": {
+        "id": 309811,
+        "license": null,
+        "durationSec": 10,
+        "url": "https://pixabay.com/videos/id-309811/"
+      },
+      "video": "https://cdn.pixabay.com/video/2025/10/14/309811_medium.mp4",
+      "image": "https://cdn.pixabay.com/video/2025/10/14/309811_medium.jpg"
+    },
+    {
+      "id": "pixabay-media-geo-124867",
+      "title": "Chapter 10",
+      "description": "Recorded by <b>undefined</b>. <br><br>Duration: 7 s · Geolocated to Eiffel Tower, France (48.86°, 2.29°) · <a href=\"https://pixabay.com/videos/id-124867/\" target=\"_blank\" rel=\"noopener noreferrer\">Source #124867</a>",
+      "alignment": "right",
+      "hidden": false,
+      "location": {
+        "center": [
+          2.2945,
+          48.8584
+        ],
+        "zoom": 11,
+        "pitch": 40,
+        "bearing": 0
+      },
+      "mapAnimation": "flyTo",
+      "rotateAnimation": false,
+      "onChapterEnter": [],
+      "onChapterExit": [],
+      "source": {
+        "id": 124867,
+        "license": null,
+        "durationSec": 7,
+        "url": "https://pixabay.com/videos/id-124867/"
+      },
+      "video": "https://cdn.pixabay.com/video/2022/07/20/124867-732633127_medium.mp4",
+      "image": "https://cdn.pixabay.com/video/2022/07/20/124867-732633127_medium.jpg"
+    },
+    {
+      "id": "pixabay-media-geo-41765",
+      "title": "Chapter 11",
+      "description": "Recorded by <b>undefined</b>. <br><br>Duration: 37 s · Geolocated to Eiffel Tower, Paris, France (48.86°, 2.29°) · <a href=\"https://pixabay.com/videos/id-41765/\" target=\"_blank\" rel=\"noopener noreferrer\">Source #41765</a>",
+      "alignment": "left",
+      "hidden": false,
+      "location": {
+        "center": [
+          2.2945,
+          48.8584
+        ],
+        "zoom": 11,
+        "pitch": 40,
+        "bearing": 0
+      },
+      "mapAnimation": "flyTo",
+      "rotateAnimation": false,
+      "onChapterEnter": [],
+      "onChapterExit": [],
+      "source": {
+        "id": 41765,
+        "license": null,
+        "durationSec": 37,
+        "url": "https://pixabay.com/videos/id-41765/"
+      },
+      "video": "https://cdn.pixabay.com/video/2020/06/11/41765-430090793_medium.mp4",
+      "image": "https://cdn.pixabay.com/video/2020/06/11/41765-430090793_medium.jpg"
+    },
+    {
+      "id": "pixabay-media-geo-123710",
+      "title": "Chapter 12",
+      "description": "Recorded by <b>undefined</b>. <br><br>Duration: 26 s · Geolocated to New York City, United States (40.75°, -73.99°) · <a href=\"https://pixabay.com/videos/id-123710/\" target=\"_blank\" rel=\"noopener noreferrer\">Source #123710</a>",
+      "alignment": "right",
+      "hidden": false,
+      "location": {
+        "center": [
+          -73.985428,
+          40.748817
+        ],
+        "zoom": 11,
+        "pitch": 40,
+        "bearing": 0
+      },
+      "mapAnimation": "flyTo",
+      "rotateAnimation": false,
+      "onChapterEnter": [],
+      "onChapterExit": [],
+      "source": {
+        "id": 123710,
+        "license": null,
+        "durationSec": 26,
+        "url": "https://pixabay.com/videos/id-123710/"
+      },
+      "video": "https://cdn.pixabay.com/video/2022/07/10/123710-728698107_medium.mp4",
+      "image": "https://cdn.pixabay.com/video/2022/07/10/123710-728698107_medium.jpg"
+    }
+  ]
+}

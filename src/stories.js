@@ -3,13 +3,13 @@
 import freesoundOcean from '../freesound-ocean-storymap.json';
 import pixabayImages from '../pixabay-image-storymap.json';
 import pixabayVideos from '../pixabay-video-storymap.json';
-import pixabayOceanSound from '../pixabay-media-ocean-sound-storymap.json';
+import surfing from '../surfing-storymap.json';
 
 export const stories = [
     { id: 'freesound-ocean', label: 'Freesound · Ocean recordings', config: freesoundOcean },
     { id: 'pixabay-images', label: 'Pixabay · Ocean images', config: pixabayImages },
     { id: 'pixabay-videos', label: 'Pixabay · Ocean videos', config: pixabayVideos },
-    { id: 'pixabay-ocean-sound', label: 'Pixabay · Ocean sound videos', config: pixabayOceanSound },
+    { id: 'surfing', label: 'Pixabay · Surfing videos', config: surfing },
 ];
 
 export const defaultStoryId = 'freesound-ocean';

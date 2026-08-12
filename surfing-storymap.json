@@ -27,18 +27,18 @@
   "title": "Surfing Videos",
   "subtitle": "A scrollytelling tour of surfing film from Pixabay",
   "byline": "Videos: Pixabay contributors",
-  "footer": "Videos: Pixabay contributors via <a href=\"https://pixabay.com/\" target=\"_blank\" rel=\"noopener noreferrer\">Pixabay</a> (Pixabay Content License). Built with <a href=\"https://github.com/opengeos/GeoLibre\" target=\"_blank\" rel=\"noopener noreferrer\">GeoLibre</a>.",
+  "footer": "Videos: <a href=\"https://pixabay.com/users/7649734/\" target=\"_blank\" rel=\"noopener noreferrer\">Wowa84</a> &amp; <a href=\"https://pixabay.com/users/15717673/\" target=\"_blank\" rel=\"noopener noreferrer\">prolandph</a> &amp; <a href=\"https://pixabay.com/users/16110295/\" target=\"_blank\" rel=\"noopener noreferrer\">averproductora</a> via <a href=\"https://pixabay.com/\" target=\"_blank\" rel=\"noopener noreferrer\">Pixabay</a> (Pixabay Content License). Built with <a href=\"https://github.com/opengeos/GeoLibre\" target=\"_blank\" rel=\"noopener noreferrer\">GeoLibre</a>.",
   "chapters": [
     {
       "id": "surfing-13772",
-      "title": "Surfer",
-      "description": "Recorded by <b>Pixabay contributor</b>. Tags: surfer, portugal, algarve, coast, sea, surfing, waves, atlantic, surfboard, nature, vacations, bordeira, arrifana, wind, beach, ocean, drone, aerial view, drone flight. <br><br>Geolocated to Arrifana, Algarve, Portugal (37.19°, -8.89°) · <a href=\"https://pixabay.com/videos/id-13772/\" target=\"_blank\" rel=\"noopener noreferrer\">Source #13772</a>",
+      "title": "surfer, portugal, algarve",
+      "description": "Recorded by <b>Wowa84</b>. Tags: surfer, portugal, algarve, coast, sea, surfing, waves, atlantic, surfboard, nature, vacations, bordeira, arrifana, wind, beach, ocean, drone, aerial view, drone flight. <br><br>Duration: 16 s · Geolocated to Arrifana Beach, Algarve, Portugal (37.29°, -8.86°) · <a href=\"https://pixabay.com/videos/id-13772/\" target=\"_blank\" rel=\"noopener noreferrer\">Source #13772</a>",
       "alignment": "left",
       "hidden": false,
       "location": {
         "center": [
-          -8.889,
-          37.194
+          -8.86498921743344,
+          37.29230463202018
         ],
         "zoom": 11,
         "pitch": 40,
@@ -50,36 +50,36 @@
       "onChapterExit": [],
       "source": {
         "id": 13772,
-        "username": null,
-        "user_id": null,
-        "userURL": null,
-        "userImageURL": null,
+        "username": "Wowa84",
+        "user_id": 7649734,
+        "userURL": "https://pixabay.com/users/7649734/",
+        "userImageURL": "https://cdn.pixabay.com/user/2018/01/10/07-33-39-586_250x250.jpg",
         "license": null,
-        "durationSec": null,
+        "durationSec": 16,
         "created": null,
-        "width": null,
-        "height": null,
-        "views": null,
-        "downloads": null,
-        "likes": null,
-        "comments": null,
+        "width": 0,
+        "height": 0,
+        "views": 232190,
+        "downloads": 101377,
+        "likes": 1061,
+        "comments": 206,
         "url": "https://pixabay.com/videos/id-13772/"
       },
       "video": "videos/13772_surfer.mp4",
       "image": "https://cdn.pixabay.com/video/2018/01/10/13772-251867974_medium.jpg"
     },
     {
-      "id": "surfing-36609",
-      "title": "Surf",
-      "description": "Recorded by <b>Pixabay contributor</b>. Tags: surf, sea, ocean, wave, beach, water, surfing, travel, surfer, nature, surfboard, zenith, drone, live wallpaper, aerial. <br><br>Geolocated to Bondi Beach, Australia (-33.89°, 151.27°) · <a href=\"https://pixabay.com/videos/id-36609/\" target=\"_blank\" rel=\"noopener noreferrer\">Source #36609</a>",
+      "id": "surfing-35774",
+      "title": "surfing, shores, sea",
+      "description": "Recorded by <b>prolandph</b>. Tags: surfing, shores, sea, ocean, waves, philippines, beaches, surf. <br><br>Duration: 10 s · Geolocated to Siargao Island, Philippines (9.88°, 126.07°) · <a href=\"https://pixabay.com/videos/id-35774/\" target=\"_blank\" rel=\"noopener noreferrer\">Source #35774</a>",
       "alignment": "right",
       "hidden": false,
       "location": {
         "center": [
-          151.2743,
-          -33.8908
+          126.0695288,
+          9.8802474
         ],
-        "zoom": 8,
+        "zoom": 11,
         "pitch": 40,
         "bearing": 0
       },
@@ -88,37 +88,37 @@
       "onChapterEnter": [],
       "onChapterExit": [],
       "source": {
-        "id": 36609,
-        "username": null,
-        "user_id": null,
-        "userURL": null,
+        "id": 35774,
+        "username": "prolandph",
+        "user_id": 15717673,
+        "userURL": "https://pixabay.com/users/15717673/",
         "userImageURL": null,
         "license": null,
-        "durationSec": null,
+        "durationSec": 10,
         "created": null,
-        "width": null,
-        "height": null,
-        "views": null,
-        "downloads": null,
-        "likes": null,
-        "comments": null,
-        "url": "https://pixabay.com/videos/id-36609/"
+        "width": 0,
+        "height": 0,
+        "views": 21060,
+        "downloads": 12725,
+        "likes": 139,
+        "comments": 43,
+        "url": "https://pixabay.com/videos/id-35774/"
       },
-      "video": "videos/36609_surf.mp4",
-      "image": "https://cdn.pixabay.com/video/2020/04/19/36609-411342371_medium.jpg"
+      "video": "videos/35774_surfing.mp4",
+      "image": "https://cdn.pixabay.com/video/2020/04/12/35774-408600310_medium.jpg"
     },
     {
-      "id": "surfing-158104",
-      "title": "Surfing",
-      "description": "Recorded by <b>Pixabay contributor</b>. Tags: surfing, ocean, sunset, water, couple, walking, beach, sand. <br><br>Geolocated to Monterey Bay, USA (36.60°, -121.89°) · <a href=\"https://pixabay.com/videos/id-158104/\" target=\"_blank\" rel=\"noopener noreferrer\">Source #158104</a>",
+      "id": "surfing-36610",
+      "title": "surf, sea, ocean",
+      "description": "Recorded by <b>averproductora</b>. Tags: surf, sea, ocean, wave, beach, water, surfing, travel, surfer, nature, surfboard, zenith, drone. <br><br>Duration: 9 s · Geolocated to Waikiki Beach, United States (21.28°, -157.82°) · <a href=\"https://pixabay.com/videos/id-36610/\" target=\"_blank\" rel=\"noopener noreferrer\">Source #36610</a>",
       "alignment": "left",
       "hidden": false,
       "location": {
         "center": [
-          -121.8947,
-          36.6002
+          -157.8223,
+          21.2766
         ],
-        "zoom": 8,
+        "zoom": 11,
         "pitch": 40,
         "bearing": 0
       },
@@ -127,24 +127,24 @@
       "onChapterEnter": [],
       "onChapterExit": [],
       "source": {
-        "id": 158104,
-        "username": null,
-        "user_id": null,
-        "userURL": null,
-        "userImageURL": null,
+        "id": 36610,
+        "username": "averproductora",
+        "user_id": 16110295,
+        "userURL": "https://pixabay.com/users/16110295/",
+        "userImageURL": "https://cdn.pixabay.com/user/2023/09/04/16-16-03-55_250x250.jpg",
         "license": null,
-        "durationSec": null,
+        "durationSec": 9,
         "created": null,
-        "width": null,
-        "height": null,
-        "views": null,
-        "downloads": null,
-        "likes": null,
-        "comments": null,
-        "url": "https://pixabay.com/videos/id-158104/"
+        "width": 0,
+        "height": 0,
+        "views": 13376,
+        "downloads": 7429,
+        "likes": 95,
+        "comments": 13,
+        "url": "https://pixabay.com/videos/id-36610/"
       },
-      "video": "videos/158104_surfing.mp4",
-      "image": "https://cdn.pixabay.com/video/2023/04/09/158104-816068522_medium.jpg"
+      "video": "videos/36610_surf.mp4",
+      "image": "https://cdn.pixabay.com/video/2020/04/19/36610-411342375_medium.jpg"
     }
   ]
 }

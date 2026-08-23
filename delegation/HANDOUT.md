@@ -31,8 +31,11 @@ at a time** and finish it without a long-lived run.
      (rendered + sanitized in React). No HTML→Markdown migration of old stories.
   5. **Backend = Go + SQLite + a "simple" REST API.**
 - **Repo / branch:** `/Users/ymmtny/workspace/ocean/geoLibre_storymaps`,
-  branch `gitbutler/workspace`. Use GitButler (`but`) for git writes; **do not**
-  create commits/PRs unless the human says so.
+  branch `gitbutler/workspace`. Use GitButler (`but`) for git writes. Each card
+  commits its own work to a dedicated virtual branch `storymap-<card-id>`
+  (e.g. `storymap-P1.1`) via `but commit -b storymap-<card-id> -m "..."`.
+  **Commit only — do NOT `but push` and do NOT open a PR** (integration is a
+  human step).
 
 ## 1. Environment a worker needs (verify once per machine)
 
@@ -243,8 +246,11 @@ A card edits only its own rows here; that partition keeps workers from colliding
 - **`STATUS.md`** is the live board: every card's state, owner, last verify
   output. One card may be `running` per worker; a worker claims by flipping its
   card `running` before starting.
-- **No PR / no commit** by any card. Integration + commit/PR is a human step
-  (`but`, per `AGENTS.md`).
+- **Commit per card, no push.** When a card's `VERIFY` passes, commit its
+  changes to a dedicated virtual branch `storymap-<card-id>` with `but commit
+  -b storymap-<card-id> -m "<card-id>: <title>"`. **Commit only — do NOT `but
+  push` and do NOT open a PR.** Integration + push/PR is a human step (`but`,
+  per `AGENTS.md`).
 
 ## 7. Known environment facts (verified 2026-08-17)
 

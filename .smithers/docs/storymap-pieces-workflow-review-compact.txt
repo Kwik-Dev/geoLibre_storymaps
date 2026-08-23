@@ -1,0 +1,3060 @@
+runId: graph
+frameNo: 0
+xml:
+  kind: element
+  tag: "smithers:workflow"
+  props:
+    name: storymap-pieces
+  children[1]:
+    - kind: element
+      tag: "smithers:sequence"
+      props:
+      children[10]:
+        - kind: element
+          tag: "smithers:task"
+          props:
+            id: env-check
+            waitAsync: "false"
+          children: []
+        - kind: element
+          tag: "smithers:task"
+          props:
+            id: env-gate
+            needsApproval: "true"
+            waitAsync: "false"
+            approvalMode: decision
+            approvalOnDeny: continue
+            label: Environment readiness
+          children: []
+        - kind: element
+          tag: "smithers:sequence"
+          props:
+          children[6]:
+            - kind: element
+              tag: "smithers:ralph"
+              props:
+                id: card-P1.1
+                until: "false"
+                maxIterations: "2"
+                onMaxReached: return-last
+              children[1]:
+                - kind: element
+                  tag: "smithers:sequence"
+                  props:
+                  children[1]:
+                    - kind: element
+                      tag: "smithers:task"
+                      props:
+                        id: card-P1.1-produce
+                        waitAsync: "false"
+                      children[1]{kind,text}:
+                        text,"<text omitted: 1166 chars>"
+            - kind: element
+              tag: "smithers:ralph"
+              props:
+                id: card-P1.2
+                until: "false"
+                maxIterations: "2"
+                onMaxReached: return-last
+              children[1]:
+                - kind: element
+                  tag: "smithers:sequence"
+                  props:
+                  children[1]:
+                    - kind: element
+                      tag: "smithers:task"
+                      props:
+                        id: card-P1.2-produce
+                        waitAsync: "false"
+                      children[1]{kind,text}:
+                        text,"<text omitted: 1204 chars>"
+            - kind: element
+              tag: "smithers:ralph"
+              props:
+                id: card-P1.3
+                until: "false"
+                maxIterations: "2"
+                onMaxReached: return-last
+              children[1]:
+                - kind: element
+                  tag: "smithers:sequence"
+                  props:
+                  children[1]:
+                    - kind: element
+                      tag: "smithers:task"
+                      props:
+                        id: card-P1.3-produce
+                        waitAsync: "false"
+                      children[1]{kind,text}:
+                        text,"<text omitted: 1190 chars>"
+            - kind: element
+              tag: "smithers:ralph"
+              props:
+                id: card-P1.4
+                until: "false"
+                maxIterations: "2"
+                onMaxReached: return-last
+              children[1]:
+                - kind: element
+                  tag: "smithers:sequence"
+                  props:
+                  children[1]:
+                    - kind: element
+                      tag: "smithers:task"
+                      props:
+                        id: card-P1.4-produce
+                        waitAsync: "false"
+                      children[1]{kind,text}:
+                        text,"<text omitted: 1156 chars>"
+            - kind: element
+              tag: "smithers:sequence"
+              props:
+              children[2]:
+                - kind: element
+                  tag: "smithers:task"
+                  props:
+                    id: escalate-M1-level-0
+                    continueOnFail: "true"
+                    label: diagnose
+                    waitAsync: "false"
+                  children[1]{kind,text}:
+                    text,"<text omitted: 399 chars>"
+                - kind: element
+                  tag: "smithers:branch"
+                  props:
+                  children[1]:
+                    - kind: element
+                      tag: "smithers:task"
+                      props:
+                        id: escalate-M1-human-fallback
+                        needsApproval: "true"
+                        waitAsync: "false"
+                        approvalMode: decision
+                        approvalOnDeny: continue
+                        continueOnFail: "true"
+                        label: "Milestone M1: a card did not recover"
+                      children: []
+            - kind: element
+              tag: "smithers:task"
+              props:
+                id: M1-gate
+                needsApproval: "true"
+                waitAsync: "false"
+                approvalMode: decision
+                approvalOnDeny: continue
+                label: Approve M1
+              children: []
+        - kind: element
+          tag: "smithers:sequence"
+          props:
+          children[6]:
+            - kind: element
+              tag: "smithers:ralph"
+              props:
+                id: card-P2.1
+                until: "false"
+                maxIterations: "2"
+                onMaxReached: return-last
+              children[1]:
+                - kind: element
+                  tag: "smithers:sequence"
+                  props:
+                  children[1]:
+                    - kind: element
+                      tag: "smithers:task"
+                      props:
+                        id: card-P2.1-produce
+                        waitAsync: "false"
+                      children[1]{kind,text}:
+                        text,"<text omitted: 1187 chars>"
+            - kind: element
+              tag: "smithers:ralph"
+              props:
+                id: card-P2.2
+                until: "false"
+                maxIterations: "2"
+                onMaxReached: return-last
+              children[1]:
+                - kind: element
+                  tag: "smithers:sequence"
+                  props:
+                  children[1]:
+                    - kind: element
+                      tag: "smithers:task"
+                      props:
+                        id: card-P2.2-produce
+                        waitAsync: "false"
+                      children[1]{kind,text}:
+                        text,"<text omitted: 1187 chars>"
+            - kind: element
+              tag: "smithers:ralph"
+              props:
+                id: card-P2.3
+                until: "false"
+                maxIterations: "2"
+                onMaxReached: return-last
+              children[1]:
+                - kind: element
+                  tag: "smithers:sequence"
+                  props:
+                  children[1]:
+                    - kind: element
+                      tag: "smithers:task"
+                      props:
+                        id: card-P2.3-produce
+                        waitAsync: "false"
+                      children[1]{kind,text}:
+                        text,"<text omitted: 1189 chars>"
+            - kind: element
+              tag: "smithers:ralph"
+              props:
+                id: card-P2.4
+                until: "false"
+                maxIterations: "2"
+                onMaxReached: return-last
+              children[1]:
+                - kind: element
+                  tag: "smithers:sequence"
+                  props:
+                  children[1]:
+                    - kind: element
+                      tag: "smithers:task"
+                      props:
+                        id: card-P2.4-produce
+                        waitAsync: "false"
+                      children[1]{kind,text}:
+                        text,"<text omitted: 1121 chars>"
+            - kind: element
+              tag: "smithers:sequence"
+              props:
+              children[2]:
+                - kind: element
+                  tag: "smithers:task"
+                  props:
+                    id: escalate-M2-level-0
+                    continueOnFail: "true"
+                    label: diagnose
+                    waitAsync: "false"
+                  children[1]{kind,text}:
+                    text,"<text omitted: 399 chars>"
+                - kind: element
+                  tag: "smithers:branch"
+                  props:
+                  children[1]:
+                    - kind: element
+                      tag: "smithers:task"
+                      props:
+                        id: escalate-M2-human-fallback
+                        needsApproval: "true"
+                        waitAsync: "false"
+                        approvalMode: decision
+                        approvalOnDeny: continue
+                        continueOnFail: "true"
+                        label: "Milestone M2: a card did not recover"
+                      children: []
+            - kind: element
+              tag: "smithers:task"
+              props:
+                id: M2-gate
+                needsApproval: "true"
+                waitAsync: "false"
+                approvalMode: decision
+                approvalOnDeny: continue
+                label: Approve M2
+              children: []
+        - kind: element
+          tag: "smithers:sequence"
+          props:
+          children[6]:
+            - kind: element
+              tag: "smithers:ralph"
+              props:
+                id: card-P3.1
+                until: "false"
+                maxIterations: "2"
+                onMaxReached: return-last
+              children[1]:
+                - kind: element
+                  tag: "smithers:sequence"
+                  props:
+                  children[1]:
+                    - kind: element
+                      tag: "smithers:task"
+                      props:
+                        id: card-P3.1-produce
+                        waitAsync: "false"
+                      children[1]{kind,text}:
+                        text,"<text omitted: 1171 chars>"
+            - kind: element
+              tag: "smithers:ralph"
+              props:
+                id: card-P3.2
+                until: "false"
+                maxIterations: "2"
+                onMaxReached: return-last
+              children[1]:
+                - kind: element
+                  tag: "smithers:sequence"
+                  props:
+                  children[1]:
+                    - kind: element
+                      tag: "smithers:task"
+                      props:
+                        id: card-P3.2-produce
+                        waitAsync: "false"
+                      children[1]{kind,text}:
+                        text,"<text omitted: 1169 chars>"
+            - kind: element
+              tag: "smithers:ralph"
+              props:
+                id: card-P3.3
+                until: "false"
+                maxIterations: "2"
+                onMaxReached: return-last
+              children[1]:
+                - kind: element
+                  tag: "smithers:sequence"
+                  props:
+                  children[1]:
+                    - kind: element
+                      tag: "smithers:task"
+                      props:
+                        id: card-P3.3-produce
+                        waitAsync: "false"
+                      children[1]{kind,text}:
+                        text,"<text omitted: 1177 chars>"
+            - kind: element
+              tag: "smithers:ralph"
+              props:
+                id: card-P3.4
+                until: "false"
+                maxIterations: "2"
+                onMaxReached: return-last
+              children[1]:
+                - kind: element
+                  tag: "smithers:sequence"
+                  props:
+                  children[1]:
+                    - kind: element
+                      tag: "smithers:task"
+                      props:
+                        id: card-P3.4-produce
+                        waitAsync: "false"
+                      children[1]{kind,text}:
+                        text,"<text omitted: 1167 chars>"
+            - kind: element
+              tag: "smithers:sequence"
+              props:
+              children[2]:
+                - kind: element
+                  tag: "smithers:task"
+                  props:
+                    id: escalate-M3-level-0
+                    continueOnFail: "true"
+                    label: diagnose
+                    waitAsync: "false"
+                  children[1]{kind,text}:
+                    text,"<text omitted: 399 chars>"
+                - kind: element
+                  tag: "smithers:branch"
+                  props:
+                  children[1]:
+                    - kind: element
+                      tag: "smithers:task"
+                      props:
+                        id: escalate-M3-human-fallback
+                        needsApproval: "true"
+                        waitAsync: "false"
+                        approvalMode: decision
+                        approvalOnDeny: continue
+                        continueOnFail: "true"
+                        label: "Milestone M3: a card did not recover"
+                      children: []
+            - kind: element
+              tag: "smithers:task"
+              props:
+                id: M3-gate
+                needsApproval: "true"
+                waitAsync: "false"
+                approvalMode: decision
+                approvalOnDeny: continue
+                label: Approve M3
+              children: []
+        - kind: element
+          tag: "smithers:sequence"
+          props:
+          children[6]:
+            - kind: element
+              tag: "smithers:ralph"
+              props:
+                id: card-P4.1
+                until: "false"
+                maxIterations: "2"
+                onMaxReached: return-last
+              children[1]:
+                - kind: element
+                  tag: "smithers:sequence"
+                  props:
+                  children[1]:
+                    - kind: element
+                      tag: "smithers:task"
+                      props:
+                        id: card-P4.1-produce
+                        waitAsync: "false"
+                      children[1]{kind,text}:
+                        text,"<text omitted: 1166 chars>"
+            - kind: element
+              tag: "smithers:ralph"
+              props:
+                id: card-P4.2
+                until: "false"
+                maxIterations: "2"
+                onMaxReached: return-last
+              children[1]:
+                - kind: element
+                  tag: "smithers:sequence"
+                  props:
+                  children[1]:
+                    - kind: element
+                      tag: "smithers:task"
+                      props:
+                        id: card-P4.2-produce
+                        waitAsync: "false"
+                      children[1]{kind,text}:
+                        text,"<text omitted: 1156 chars>"
+            - kind: element
+              tag: "smithers:ralph"
+              props:
+                id: card-P4.3
+                until: "false"
+                maxIterations: "2"
+                onMaxReached: return-last
+              children[1]:
+                - kind: element
+                  tag: "smithers:sequence"
+                  props:
+                  children[1]:
+                    - kind: element
+                      tag: "smithers:task"
+                      props:
+                        id: card-P4.3-produce
+                        waitAsync: "false"
+                      children[1]{kind,text}:
+                        text,"<text omitted: 1176 chars>"
+            - kind: element
+              tag: "smithers:ralph"
+              props:
+                id: card-P4.4
+                until: "false"
+                maxIterations: "2"
+                onMaxReached: return-last
+              children[1]:
+                - kind: element
+                  tag: "smithers:sequence"
+                  props:
+                  children[1]:
+                    - kind: element
+                      tag: "smithers:task"
+                      props:
+                        id: card-P4.4-produce
+                        waitAsync: "false"
+                      children[1]{kind,text}:
+                        text,"<text omitted: 1184 chars>"
+            - kind: element
+              tag: "smithers:sequence"
+              props:
+              children[2]:
+                - kind: element
+                  tag: "smithers:task"
+                  props:
+                    id: escalate-M4-level-0
+                    continueOnFail: "true"
+                    label: diagnose
+                    waitAsync: "false"
+                  children[1]{kind,text}:
+                    text,"<text omitted: 399 chars>"
+                - kind: element
+                  tag: "smithers:branch"
+                  props:
+                  children[1]:
+                    - kind: element
+                      tag: "smithers:task"
+                      props:
+                        id: escalate-M4-human-fallback
+                        needsApproval: "true"
+                        waitAsync: "false"
+                        approvalMode: decision
+                        approvalOnDeny: continue
+                        continueOnFail: "true"
+                        label: "Milestone M4: a card did not recover"
+                      children: []
+            - kind: element
+              tag: "smithers:task"
+              props:
+                id: M4-gate
+                needsApproval: "true"
+                waitAsync: "false"
+                approvalMode: decision
+                approvalOnDeny: continue
+                label: Approve M4
+              children: []
+        - kind: element
+          tag: "smithers:sequence"
+          props:
+          children[7]:
+            - kind: element
+              tag: "smithers:ralph"
+              props:
+                id: card-P5.1
+                until: "false"
+                maxIterations: "2"
+                onMaxReached: return-last
+              children[1]:
+                - kind: element
+                  tag: "smithers:sequence"
+                  props:
+                  children[1]:
+                    - kind: element
+                      tag: "smithers:task"
+                      props:
+                        id: card-P5.1-produce
+                        waitAsync: "false"
+                      children[1]{kind,text}:
+                        text,"<text omitted: 1167 chars>"
+            - kind: element
+              tag: "smithers:ralph"
+              props:
+                id: card-P5.2
+                until: "false"
+                maxIterations: "2"
+                onMaxReached: return-last
+              children[1]:
+                - kind: element
+                  tag: "smithers:sequence"
+                  props:
+                  children[1]:
+                    - kind: element
+                      tag: "smithers:task"
+                      props:
+                        id: card-P5.2-produce
+                        waitAsync: "false"
+                      children[1]{kind,text}:
+                        text,"<text omitted: 1165 chars>"
+            - kind: element
+              tag: "smithers:ralph"
+              props:
+                id: card-P5.3
+                until: "false"
+                maxIterations: "2"
+                onMaxReached: return-last
+              children[1]:
+                - kind: element
+                  tag: "smithers:sequence"
+                  props:
+                  children[1]:
+                    - kind: element
+                      tag: "smithers:task"
+                      props:
+                        id: card-P5.3-produce
+                        waitAsync: "false"
+                      children[1]{kind,text}:
+                        text,"<text omitted: 1183 chars>"
+            - kind: element
+              tag: "smithers:ralph"
+              props:
+                id: card-P5.4
+                until: "false"
+                maxIterations: "2"
+                onMaxReached: return-last
+              children[1]:
+                - kind: element
+                  tag: "smithers:sequence"
+                  props:
+                  children[1]:
+                    - kind: element
+                      tag: "smithers:task"
+                      props:
+                        id: card-P5.4-produce
+                        waitAsync: "false"
+                      children[1]{kind,text}:
+                        text,"<text omitted: 1167 chars>"
+            - kind: element
+              tag: "smithers:ralph"
+              props:
+                id: card-P5.5
+                until: "false"
+                maxIterations: "2"
+                onMaxReached: return-last
+              children[1]:
+                - kind: element
+                  tag: "smithers:sequence"
+                  props:
+                  children[1]:
+                    - kind: element
+                      tag: "smithers:task"
+                      props:
+                        id: card-P5.5-produce
+                        waitAsync: "false"
+                      children[1]{kind,text}:
+                        text,"<text omitted: 1169 chars>"
+            - kind: element
+              tag: "smithers:sequence"
+              props:
+              children[2]:
+                - kind: element
+                  tag: "smithers:task"
+                  props:
+                    id: escalate-M5-level-0
+                    continueOnFail: "true"
+                    label: diagnose
+                    waitAsync: "false"
+                  children[1]{kind,text}:
+                    text,"<text omitted: 405 chars>"
+                - kind: element
+                  tag: "smithers:branch"
+                  props:
+                  children[1]:
+                    - kind: element
+                      tag: "smithers:task"
+                      props:
+                        id: escalate-M5-human-fallback
+                        needsApproval: "true"
+                        waitAsync: "false"
+                        approvalMode: decision
+                        approvalOnDeny: continue
+                        continueOnFail: "true"
+                        label: "Milestone M5: a card did not recover"
+                      children: []
+            - kind: element
+              tag: "smithers:task"
+              props:
+                id: M5-gate
+                needsApproval: "true"
+                waitAsync: "false"
+                approvalMode: decision
+                approvalOnDeny: continue
+                label: Approve M5
+              children: []
+        - kind: element
+          tag: "smithers:sequence"
+          props:
+          children[6]:
+            - kind: element
+              tag: "smithers:ralph"
+              props:
+                id: card-P6.1
+                until: "false"
+                maxIterations: "2"
+                onMaxReached: return-last
+              children[1]:
+                - kind: element
+                  tag: "smithers:sequence"
+                  props:
+                  children[1]:
+                    - kind: element
+                      tag: "smithers:task"
+                      props:
+                        id: card-P6.1-produce
+                        waitAsync: "false"
+                      children[1]{kind,text}:
+                        text,"<text omitted: 1130 chars>"
+            - kind: element
+              tag: "smithers:ralph"
+              props:
+                id: card-P6.2
+                until: "false"
+                maxIterations: "2"
+                onMaxReached: return-last
+              children[1]:
+                - kind: element
+                  tag: "smithers:sequence"
+                  props:
+                  children[1]:
+                    - kind: element
+                      tag: "smithers:task"
+                      props:
+                        id: card-P6.2-produce
+                        waitAsync: "false"
+                      children[1]{kind,text}:
+                        text,"<text omitted: 1188 chars>"
+            - kind: element
+              tag: "smithers:ralph"
+              props:
+                id: card-P6.3
+                until: "false"
+                maxIterations: "2"
+                onMaxReached: return-last
+              children[1]:
+                - kind: element
+                  tag: "smithers:sequence"
+                  props:
+                  children[1]:
+                    - kind: element
+                      tag: "smithers:task"
+                      props:
+                        id: card-P6.3-produce
+                        waitAsync: "false"
+                      children[1]{kind,text}:
+                        text,"<text omitted: 1192 chars>"
+            - kind: element
+              tag: "smithers:ralph"
+              props:
+                id: card-P6.4
+                until: "false"
+                maxIterations: "2"
+                onMaxReached: return-last
+              children[1]:
+                - kind: element
+                  tag: "smithers:sequence"
+                  props:
+                  children[1]:
+                    - kind: element
+                      tag: "smithers:task"
+                      props:
+                        id: card-P6.4-produce
+                        waitAsync: "false"
+                      children[1]{kind,text}:
+                        text,"<text omitted: 1170 chars>"
+            - kind: element
+              tag: "smithers:sequence"
+              props:
+              children[2]:
+                - kind: element
+                  tag: "smithers:task"
+                  props:
+                    id: escalate-M6-level-0
+                    continueOnFail: "true"
+                    label: diagnose
+                    waitAsync: "false"
+                  children[1]{kind,text}:
+                    text,"<text omitted: 399 chars>"
+                - kind: element
+                  tag: "smithers:branch"
+                  props:
+                  children[1]:
+                    - kind: element
+                      tag: "smithers:task"
+                      props:
+                        id: escalate-M6-human-fallback
+                        needsApproval: "true"
+                        waitAsync: "false"
+                        approvalMode: decision
+                        approvalOnDeny: continue
+                        continueOnFail: "true"
+                        label: "Milestone M6: a card did not recover"
+                      children: []
+            - kind: element
+              tag: "smithers:task"
+              props:
+                id: M6-gate
+                needsApproval: "true"
+                waitAsync: "false"
+                approvalMode: decision
+                approvalOnDeny: continue
+                label: Approve M6
+              children: []
+        - kind: element
+          tag: "smithers:sequence"
+          props:
+          children[6]:
+            - kind: element
+              tag: "smithers:ralph"
+              props:
+                id: card-P7.1
+                until: "false"
+                maxIterations: "2"
+                onMaxReached: return-last
+              children[1]:
+                - kind: element
+                  tag: "smithers:sequence"
+                  props:
+                  children[1]:
+                    - kind: element
+                      tag: "smithers:task"
+                      props:
+                        id: card-P7.1-produce
+                        waitAsync: "false"
+                      children[1]{kind,text}:
+                        text,"<text omitted: 1184 chars>"
+            - kind: element
+              tag: "smithers:ralph"
+              props:
+                id: card-P7.2
+                until: "false"
+                maxIterations: "2"
+                onMaxReached: return-last
+              children[1]:
+                - kind: element
+                  tag: "smithers:sequence"
+                  props:
+                  children[1]:
+                    - kind: element
+                      tag: "smithers:task"
+                      props:
+                        id: card-P7.2-produce
+                        waitAsync: "false"
+                      children[1]{kind,text}:
+                        text,"<text omitted: 1172 chars>"
+            - kind: element
+              tag: "smithers:ralph"
+              props:
+                id: card-P7.3
+                until: "false"
+                maxIterations: "2"
+                onMaxReached: return-last
+              children[1]:
+                - kind: element
+                  tag: "smithers:sequence"
+                  props:
+                  children[1]:
+                    - kind: element
+                      tag: "smithers:task"
+                      props:
+                        id: card-P7.3-produce
+                        waitAsync: "false"
+                      children[1]{kind,text}:
+                        text,"<text omitted: 1158 chars>"
+            - kind: element
+              tag: "smithers:ralph"
+              props:
+                id: card-P7.4
+                until: "false"
+                maxIterations: "2"
+                onMaxReached: return-last
+              children[1]:
+                - kind: element
+                  tag: "smithers:sequence"
+                  props:
+                  children[1]:
+                    - kind: element
+                      tag: "smithers:task"
+                      props:
+                        id: card-P7.4-produce
+                        waitAsync: "false"
+                      children[1]{kind,text}:
+                        text,"<text omitted: 1182 chars>"
+            - kind: element
+              tag: "smithers:sequence"
+              props:
+              children[2]:
+                - kind: element
+                  tag: "smithers:task"
+                  props:
+                    id: escalate-M7-level-0
+                    continueOnFail: "true"
+                    label: diagnose
+                    waitAsync: "false"
+                  children[1]{kind,text}:
+                    text,"<text omitted: 399 chars>"
+                - kind: element
+                  tag: "smithers:branch"
+                  props:
+                  children[1]:
+                    - kind: element
+                      tag: "smithers:task"
+                      props:
+                        id: escalate-M7-human-fallback
+                        needsApproval: "true"
+                        waitAsync: "false"
+                        approvalMode: decision
+                        approvalOnDeny: continue
+                        continueOnFail: "true"
+                        label: "Milestone M7: a card did not recover"
+                      children: []
+            - kind: element
+              tag: "smithers:task"
+              props:
+                id: M7-gate
+                needsApproval: "true"
+                waitAsync: "false"
+                approvalMode: decision
+                approvalOnDeny: continue
+                label: Approve M7
+              children: []
+        - kind: element
+          tag: "smithers:task"
+          props:
+            id: ship-report
+            waitAsync: "false"
+          children[1]{kind,text}:
+            text,"<text omitted: 16 chars>"
+tasks[53]:
+  - nodeId: env-check
+    ordinal: 0
+    iteration: 0
+    outputTable:
+      runId:
+        name: run_id
+        keyAsName: false
+        primary: false
+        notNull: true
+        hasDefault: false
+        isUnique: false
+        uniqueName: env_check_run_id_unique
+        dataType: string
+        columnType: SQLiteText
+        config:
+          name: run_id
+          keyAsName: false
+          notNull: true
+          hasDefault: false
+          primaryKey: false
+          isUnique: false
+          uniqueName: env_check_run_id_unique
+          dataType: string
+          columnType: SQLiteText
+      nodeId:
+        name: node_id
+        keyAsName: false
+        primary: false
+        notNull: true
+        hasDefault: false
+        isUnique: false
+        uniqueName: env_check_node_id_unique
+        dataType: string
+        columnType: SQLiteText
+        config:
+          name: node_id
+          keyAsName: false
+          notNull: true
+          hasDefault: false
+          primaryKey: false
+          isUnique: false
+          uniqueName: env_check_node_id_unique
+          dataType: string
+          columnType: SQLiteText
+      iteration:
+        name: iteration
+        keyAsName: false
+        primary: false
+        notNull: true
+        default: 0
+        hasDefault: true
+        isUnique: false
+        uniqueName: env_check_iteration_unique
+        dataType: number
+        columnType: SQLiteInteger
+        config:
+          name: iteration
+          keyAsName: false
+          notNull: true
+          default: 0
+          hasDefault: true
+          primaryKey: false
+          isUnique: false
+          uniqueName: env_check_iteration_unique
+          dataType: number
+          columnType: SQLiteInteger
+          autoIncrement: false
+        autoIncrement: false
+      go:
+        name: go
+        keyAsName: false
+        primary: false
+        notNull: false
+        hasDefault: false
+        isUnique: false
+        uniqueName: env_check_go_unique
+        dataType: string
+        columnType: SQLiteText
+        config:
+          name: go
+          keyAsName: false
+          notNull: false
+          hasDefault: false
+          primaryKey: false
+          isUnique: false
+          uniqueName: env_check_go_unique
+          dataType: string
+          columnType: SQLiteText
+      node:
+        name: node
+        keyAsName: false
+        primary: false
+        notNull: false
+        hasDefault: false
+        isUnique: false
+        uniqueName: env_check_node_unique
+        dataType: string
+        columnType: SQLiteText
+        config:
+          name: node
+          keyAsName: false
+          notNull: false
+          hasDefault: false
+          primaryKey: false
+          isUnique: false
+          uniqueName: env_check_node_unique
+          dataType: string
+          columnType: SQLiteText
+      ollama:
+        name: ollama
+        keyAsName: false
+        primary: false
+        notNull: false
+        hasDefault: false
+        isUnique: false
+        uniqueName: env_check_ollama_unique
+        dataType: boolean
+        columnType: SQLiteBoolean
+        config:
+          name: ollama
+          keyAsName: false
+          notNull: false
+          hasDefault: false
+          primaryKey: false
+          isUnique: false
+          uniqueName: env_check_ollama_unique
+          dataType: boolean
+          columnType: SQLiteBoolean
+          autoIncrement: false
+          mode: boolean
+        autoIncrement: false
+        mode: boolean
+      ollamaModel:
+        name: ollama_model
+        keyAsName: false
+        primary: false
+        notNull: false
+        hasDefault: false
+        isUnique: false
+        uniqueName: env_check_ollama_model_unique
+        dataType: string
+        columnType: SQLiteText
+        config:
+          name: ollama_model
+          keyAsName: false
+          notNull: false
+          hasDefault: false
+          primaryKey: false
+          isUnique: false
+          uniqueName: env_check_ollama_model_unique
+          dataType: string
+          columnType: SQLiteText
+      agentCliInstalled:
+        name: agent_cli_installed
+        keyAsName: false
+        primary: false
+        notNull: false
+        hasDefault: false
+        isUnique: false
+        uniqueName: env_check_agent_cli_installed_unique
+        dataType: boolean
+        columnType: SQLiteBoolean
+        config:
+          name: agent_cli_installed
+          keyAsName: false
+          notNull: false
+          hasDefault: false
+          primaryKey: false
+          isUnique: false
+          uniqueName: env_check_agent_cli_installed_unique
+          dataType: boolean
+          columnType: SQLiteBoolean
+          autoIncrement: false
+          mode: boolean
+        autoIncrement: false
+        mode: boolean
+      serverDir:
+        name: server_dir
+        keyAsName: false
+        primary: false
+        notNull: false
+        hasDefault: false
+        isUnique: false
+        uniqueName: env_check_server_dir_unique
+        dataType: boolean
+        columnType: SQLiteBoolean
+        config:
+          name: server_dir
+          keyAsName: false
+          notNull: false
+          hasDefault: false
+          primaryKey: false
+          isUnique: false
+          uniqueName: env_check_server_dir_unique
+          dataType: boolean
+          columnType: SQLiteBoolean
+          autoIncrement: false
+          mode: boolean
+        autoIncrement: false
+        mode: boolean
+    outputTableName: envCheck
+    outputRef:
+      def:
+        type: object
+        shape:
+          go:
+            def:
+              type: default
+              innerType:
+                def:
+                  type: string
+                type: string
+                format: null
+                minLength: null
+                maxLength: null
+              defaultValue: ""
+            type: default
+          node:
+            def:
+              type: default
+              innerType:
+                def:
+                  type: string
+                type: string
+                format: null
+                minLength: null
+                maxLength: null
+              defaultValue: ""
+            type: default
+          ollama:
+            def:
+              type: default
+              innerType:
+                def:
+                  type: boolean
+                type: boolean
+              defaultValue: false
+            type: default
+          ollamaModel:
+            def:
+              type: default
+              innerType:
+                def:
+                  type: string
+                type: string
+                format: null
+                minLength: null
+                maxLength: null
+              defaultValue: "qwen3.8:27b-mlx"
+            type: default
+          agentCliInstalled:
+            def:
+              type: default
+              innerType:
+                def:
+                  type: boolean
+                type: boolean
+              defaultValue: false
+            type: default
+          serverDir:
+            def:
+              type: default
+              innerType:
+                def:
+                  type: boolean
+                type: boolean
+              defaultValue: false
+            type: default
+        catchall:
+          def:
+            type: unknown
+          type: unknown
+      type: object
+    kind: compute
+    needsApproval: false
+    waitAsync: false
+    approvalMode: gate
+    skipIf: false
+    retries: null
+    retryPolicy:
+      backoff: exponential
+      initialDelayMs: 1000
+    timeoutMs: null
+    heartbeatTimeoutMs: null
+    continueOnFail: false
+    hijack: false
+    onHijackExit: complete
+  - nodeId: env-gate
+    ordinal: 1
+    iteration: 0
+    dependsOn[1]: env-check
+    outputTable:
+      runId:
+        name: run_id
+        keyAsName: false
+        primary: false
+        notNull: true
+        hasDefault: false
+        isUnique: false
+        uniqueName: approval_run_id_unique
+        dataType: string
+        columnType: SQLiteText
+        config:
+          name: run_id
+          keyAsName: false
+          notNull: true
+          hasDefault: false
+          primaryKey: false
+          isUnique: false
+          uniqueName: approval_run_id_unique
+          dataType: string
+          columnType: SQLiteText
+      nodeId:
+        name: node_id
+        keyAsName: false
+        primary: false
+        notNull: true
+        hasDefault: false
+        isUnique: false
+        uniqueName: approval_node_id_unique
+        dataType: string
+        columnType: SQLiteText
+        config:
+          name: node_id
+          keyAsName: false
+          notNull: true
+          hasDefault: false
+          primaryKey: false
+          isUnique: false
+          uniqueName: approval_node_id_unique
+          dataType: string
+          columnType: SQLiteText
+      iteration:
+        name: iteration
+        keyAsName: false
+        primary: false
+        notNull: true
+        default: 0
+        hasDefault: true
+        isUnique: false
+        uniqueName: approval_iteration_unique
+        dataType: number
+        columnType: SQLiteInteger
+        config:
+          name: iteration
+          keyAsName: false
+          notNull: true
+          default: 0
+          hasDefault: true
+          primaryKey: false
+          isUnique: false
+          uniqueName: approval_iteration_unique
+          dataType: number
+          columnType: SQLiteInteger
+          autoIncrement: false
+        autoIncrement: false
+      approved:
+        name: approved
+        keyAsName: false
+        primary: false
+        notNull: false
+        hasDefault: false
+        isUnique: false
+        uniqueName: approval_approved_unique
+        dataType: boolean
+        columnType: SQLiteBoolean
+        config:
+          name: approved
+          keyAsName: false
+          notNull: false
+          hasDefault: false
+          primaryKey: false
+          isUnique: false
+          uniqueName: approval_approved_unique
+          dataType: boolean
+          columnType: SQLiteBoolean
+          autoIncrement: false
+          mode: boolean
+        autoIncrement: false
+        mode: boolean
+    outputTableName: approval
+    outputRef:
+      def:
+        type: object
+        shape:
+          approved:
+            def:
+              type: boolean
+            type: boolean
+      type: object
+    kind: compute
+    needsApproval: true
+    waitAsync: false
+    approvalMode: decision
+    approvalOnDeny: continue
+    skipIf: false
+    retries: null
+    retryPolicy:
+      backoff: exponential
+      initialDelayMs: 1000
+    timeoutMs: null
+    heartbeatTimeoutMs: null
+    continueOnFail: false
+    hijack: false
+    onHijackExit: complete
+    label: Environment readiness
+    meta:
+      requestTitle: Environment readiness
+      requestSummary: "Agent = local `pi` -> Ollama model qwen3.8:27b-mlx (installed + running at http://127.0.0.1:11434). No coding-agent install is required. (agent wired in .smithers/agents/pi.ts -> pool in .smithers/agents/index.ts). Approve to proceed; deny to continue anyway (advisory checkpoint)."
+  - nodeId: card-P1.1-produce
+    ordinal: 2
+    iteration: 0
+    ralphId: card-P1.1
+    outputTable:
+      runId:
+        name: run_id
+        keyAsName: false
+        primary: false
+        notNull: true
+        hasDefault: false
+        isUnique: false
+        uniqueName: card_run_id_unique
+        dataType: string
+        columnType: SQLiteText
+        config:
+          name: run_id
+          keyAsName: false
+          notNull: true
+          hasDefault: false
+          primaryKey: false
+          isUnique: false
+          uniqueName: card_run_id_unique
+          dataType: string
+          columnType: SQLiteText
+      nodeId:
+        name: node_id
+        keyAsName: false
+        primary: false
+        notNull: true
+        hasDefault: false
+        isUnique: false
+        uniqueName: card_node_id_unique
+        dataType: string
+        columnType: SQLiteText
+        config:
+          name: node_id
+          keyAsName: false
+          notNull: true
+          hasDefault: false
+          primaryKey: false
+          isUnique: false
+          uniqueName: card_node_id_unique
+          dataType: string
+          columnType: SQLiteText
+      iteration:
+        name: iteration
+        keyAsName: false
+        primary: false
+        notNull: true
+        default: 0
+        hasDefault: true
+        isUnique: false
+        uniqueName: card_iteration_unique
+        dataType: number
+        columnType: SQLiteInteger
+        config:
+          name: iteration
+          keyAsName: false
+          notNull: true
+          default: 0
+          hasDefault: true
+          primaryKey: false
+          isUnique: false
+          uniqueName: card_iteration_unique
+          dataType: number
+          columnType: SQLiteInteger
+          autoIncrement: false
+        autoIncrement: false
+      cardId:
+        name: card_id
+        keyAsName: false
+        primary: false
+        notNull: false
+        hasDefault: false
+        isUnique: false
+        uniqueName: card_card_id_unique
+        dataType: string
+        columnType: SQLiteText
+        config:
+          name: card_id
+          keyAsName: false
+          notNull: false
+          hasDefault: false
+          primaryKey: false
+          isUnique: false
+          uniqueName: card_card_id_unique
+          dataType: string
+          columnType: SQLiteText
+      done:
+        name: done
+        keyAsName: false
+        primary: false
+        notNull: false
+        hasDefault: false
+        isUnique: false
+        uniqueName: card_done_unique
+        dataType: boolean
+        columnType: SQLiteBoolean
+        config:
+          name: done
+          keyAsName: false
+          notNull: false
+          hasDefault: false
+          primaryKey: false
+          isUnique: false
+          uniqueName: card_done_unique
+          dataType: boolean
+          columnType: SQLiteBoolean
+          autoIncrement: false
+          mode: boolean
+        autoIncrement: false
+        mode: boolean
+      verifyPassed:
+        name: verify_passed
+        keyAsName: false
+        primary: false
+        notNull: false
+        hasDefault: false
+        isUnique: false
+        uniqueName: card_verify_passed_unique
+        dataType: boolean
+        columnType: SQLiteBoolean
+        config:
+          name: verify_passed
+          keyAsName: false
+          notNull: false
+          hasDefault: false
+          primaryKey: false
+          isUnique: false
+          uniqueName: card_verify_passed_unique
+          dataType: boolean
+          columnType: SQLiteBoolean
+          autoIncrement: false
+          mode: boolean
+        autoIncrement: false
+        mode: boolean
+      summary:
+        name: summary
+        keyAsName: false
+        primary: false
+        notNull: false
+        hasDefault: false
+        isUnique: false
+        uniqueName: card_summary_unique
+        dataType: string
+        columnType: SQLiteText
+        config:
+          name: summary
+          keyAsName: false
+          notNull: false
+          hasDefault: false
+          primaryKey: false
+          isUnique: false
+          uniqueName: card_summary_unique
+          dataType: string
+          columnType: SQLiteText
+      statusUpdate:
+        name: status_update
+        keyAsName: false
+        primary: false
+        notNull: false
+        hasDefault: false
+        isUnique: false
+        uniqueName: card_status_update_unique
+        dataType: string
+        columnType: SQLiteText
+        config:
+          name: status_update
+          keyAsName: false
+          notNull: false
+          hasDefault: false
+          primaryKey: false
+          isUnique: false
+          uniqueName: card_status_update_unique
+          dataType: string
+          columnType: SQLiteText
+    outputTableName: card
+    outputRef:
+      def:
+        type: object
+        shape:
+          cardId:
+            def:
+              type: string
+            type: string
+            format: null
+            minLength: null
+            maxLength: null
+          done:
+            def:
+              type: boolean
+            type: boolean
+          verifyPassed:
+            def:
+              type: boolean
+            type: boolean
+          summary:
+            def:
+              type: string
+            type: string
+            format: null
+            minLength: null
+            maxLength: null
+          statusUpdate:
+            def:
+              type: string
+            type: string
+            format: null
+            minLength: null
+            maxLength: null
+      type: object
+    kind: agent
+    needsApproval: false
+    waitAsync: false
+    approvalMode: gate
+    skipIf: false
+    retries: null
+    retryPolicy:
+      backoff: exponential
+      initialDelayMs: 1000
+    timeoutMs: null
+    heartbeatTimeoutMs: 600000
+    continueOnFail: false
+    hijack: false
+    onHijackExit: complete
+    agent[1]:
+      - version: agent-v1
+        settings:
+          model:
+            specificationVersion: v4
+            supportedUrls:
+              "image/*"[1]:
+                -
+              "application/pdf"[1]:
+                -
+            modelId: openai/gpt-5.4-mini
+            config:
+              provider: openai.responses
+              fileIdPrefixes[1]: file-
+            batch:
+              options:
+                modelId: openai/gpt-5.4-mini
+        hijackEngine: openai-sdk
+        supportsNativeStructuredOutput: true
+    prompt: "Implement work card P1.1 — \"Go module init + env config\" of the user-created storymaps feature.\n\nRead first (single source of truth):\n    - delegation/HANDOUT.md (decisions, worker model, env deps)\n    - delegation/cards/M1-backend.md\n    - delegation/STATUS.md\n\nImplement ONLY card P1.1's SCOPE, then run its VERIFY until it passes, then mark P1.1 \"done\" in delegation/STATUS.md (paste the VERIFY output + a timestamp).\nCommit your work with GitButler (`but`): run `but diff` to get file/hunk IDs, then\n  but commit -b storymap-P1.1 -m \"P1.1: Go module init + env config\" <ids>\nCommit ONLY this card's source files. Do NOT commit delegation/STATUS.md — it is a\nshared live board; leave its changes uncommitted for the human to integrate.\nThis creates a dedicated virtual branch storymap-P1.1 (one per card). COMMIT ONLY —\ndo NOT run `but push` and do NOT open a PR.\nDo NOT edit files outside this card's SCOPE.\nIf VERIFY keeps failing or you hit a blocker, return done=false, verifyPassed=false, with a one-line summary.\n\nModel note: qwen3.8:27b-mlx is a *thinking* model — use a generous maxTokens or\npass options:{think:false}; a tiny cap returns an empty answer."
+  - nodeId: card-P1.2-produce
+    ordinal: 3
+    iteration: 0
+    ralphId: card-P1.2
+    outputTableName: card
+    kind: agent
+    needsApproval: false
+    waitAsync: false
+    approvalMode: gate
+    skipIf: false
+    retries: null
+    retryPolicy:
+      backoff: exponential
+      initialDelayMs: 1000
+    timeoutMs: null
+    heartbeatTimeoutMs: 600000
+    continueOnFail: false
+    hijack: false
+    onHijackExit: complete
+    agent[1]: null
+    prompt: "Implement work card P1.2 — \"SQLite open + versioned, idempotent migrations\" of the user-created storymaps feature.\n\nRead first (single source of truth):\n    - delegation/HANDOUT.md (decisions, worker model, env deps)\n    - delegation/cards/M1-backend.md\n    - delegation/STATUS.md\n\nImplement ONLY card P1.2's SCOPE, then run its VERIFY until it passes, then mark P1.2 \"done\" in delegation/STATUS.md (paste the VERIFY output + a timestamp).\nCommit your work with GitButler (`but`): run `but diff` to get file/hunk IDs, then\n  but commit -b storymap-P1.2 -m \"P1.2: SQLite open + versioned, idempotent migrations\" <ids>\nCommit ONLY this card's source files. Do NOT commit delegation/STATUS.md — it is a\nshared live board; leave its changes uncommitted for the human to integrate.\nThis creates a dedicated virtual branch storymap-P1.2 (one per card). COMMIT ONLY —\ndo NOT run `but push` and do NOT open a PR.\nDo NOT edit files outside this card's SCOPE.\nIf VERIFY keeps failing or you hit a blocker, return done=false, verifyPassed=false, with a one-line summary.\n\nModel note: qwen3.8:27b-mlx is a *thinking* model — use a generous maxTokens or\npass options:{think:false}; a tiny cap returns an empty answer."
+  - nodeId: card-P1.3-produce
+    ordinal: 4
+    iteration: 0
+    ralphId: card-P1.3
+    outputTableName: card
+    kind: agent
+    needsApproval: false
+    waitAsync: false
+    approvalMode: gate
+    skipIf: false
+    retries: null
+    retryPolicy:
+      backoff: exponential
+      initialDelayMs: 1000
+    timeoutMs: null
+    heartbeatTimeoutMs: 600000
+    continueOnFail: false
+    hijack: false
+    onHijackExit: complete
+    agent[1]: null
+    prompt: "Implement work card P1.3 — \"chi router + /api/health + static serve\" of the user-created storymaps feature.\n\nRead first (single source of truth):\n    - delegation/HANDOUT.md (decisions, worker model, env deps)\n    - delegation/cards/M1-backend.md\n    - delegation/STATUS.md\n\nImplement ONLY card P1.3's SCOPE, then run its VERIFY until it passes, then mark P1.3 \"done\" in delegation/STATUS.md (paste the VERIFY output + a timestamp).\nCommit your work with GitButler (`but`): run `but diff` to get file/hunk IDs, then\n  but commit -b storymap-P1.3 -m \"P1.3: chi router + /api/health + static serve\" <ids>\nCommit ONLY this card's source files. Do NOT commit delegation/STATUS.md — it is a\nshared live board; leave its changes uncommitted for the human to integrate.\nThis creates a dedicated virtual branch storymap-P1.3 (one per card). COMMIT ONLY —\ndo NOT run `but push` and do NOT open a PR.\nDo NOT edit files outside this card's SCOPE.\nIf VERIFY keeps failing or you hit a blocker, return done=false, verifyPassed=false, with a one-line summary.\n\nModel note: qwen3.8:27b-mlx is a *thinking* model — use a generous maxTokens or\npass options:{think:false}; a tiny cap returns an empty answer."
+  - nodeId: card-P1.4-produce
+    ordinal: 5
+    iteration: 0
+    ralphId: card-P1.4
+    outputTableName: card
+    kind: agent
+    needsApproval: false
+    waitAsync: false
+    approvalMode: gate
+    skipIf: false
+    retries: null
+    retryPolicy:
+      backoff: exponential
+      initialDelayMs: 1000
+    timeoutMs: null
+    heartbeatTimeoutMs: 600000
+    continueOnFail: false
+    hijack: false
+    onHijackExit: complete
+    agent[1]: null
+    prompt: "Implement work card P1.4 — \"Seed a demo user story\" of the user-created storymaps feature.\n\nRead first (single source of truth):\n    - delegation/HANDOUT.md (decisions, worker model, env deps)\n    - delegation/cards/M1-backend.md\n    - delegation/STATUS.md\n\nImplement ONLY card P1.4's SCOPE, then run its VERIFY until it passes, then mark P1.4 \"done\" in delegation/STATUS.md (paste the VERIFY output + a timestamp).\nCommit your work with GitButler (`but`): run `but diff` to get file/hunk IDs, then\n  but commit -b storymap-P1.4 -m \"P1.4: Seed a demo user story\" <ids>\nCommit ONLY this card's source files. Do NOT commit delegation/STATUS.md — it is a\nshared live board; leave its changes uncommitted for the human to integrate.\nThis creates a dedicated virtual branch storymap-P1.4 (one per card). COMMIT ONLY —\ndo NOT run `but push` and do NOT open a PR.\nDo NOT edit files outside this card's SCOPE.\nIf VERIFY keeps failing or you hit a blocker, return done=false, verifyPassed=false, with a one-line summary.\n\nModel note: qwen3.8:27b-mlx is a *thinking* model — use a generous maxTokens or\npass options:{think:false}; a tiny cap returns an empty answer."
+  - nodeId: escalate-M1-level-0
+    ordinal: 6
+    iteration: 0
+    outputTable:
+      runId:
+        name: run_id
+        keyAsName: false
+        primary: false
+        notNull: true
+        hasDefault: false
+        isUnique: false
+        uniqueName: diag_run_id_unique
+        dataType: string
+        columnType: SQLiteText
+        config:
+          name: run_id
+          keyAsName: false
+          notNull: true
+          hasDefault: false
+          primaryKey: false
+          isUnique: false
+          uniqueName: diag_run_id_unique
+          dataType: string
+          columnType: SQLiteText
+      nodeId:
+        name: node_id
+        keyAsName: false
+        primary: false
+        notNull: true
+        hasDefault: false
+        isUnique: false
+        uniqueName: diag_node_id_unique
+        dataType: string
+        columnType: SQLiteText
+        config:
+          name: node_id
+          keyAsName: false
+          notNull: true
+          hasDefault: false
+          primaryKey: false
+          isUnique: false
+          uniqueName: diag_node_id_unique
+          dataType: string
+          columnType: SQLiteText
+      iteration:
+        name: iteration
+        keyAsName: false
+        primary: false
+        notNull: true
+        default: 0
+        hasDefault: true
+        isUnique: false
+        uniqueName: diag_iteration_unique
+        dataType: number
+        columnType: SQLiteInteger
+        config:
+          name: iteration
+          keyAsName: false
+          notNull: true
+          default: 0
+          hasDefault: true
+          primaryKey: false
+          isUnique: false
+          uniqueName: diag_iteration_unique
+          dataType: number
+          columnType: SQLiteInteger
+          autoIncrement: false
+        autoIncrement: false
+      reason:
+        name: reason
+        keyAsName: false
+        primary: false
+        notNull: false
+        hasDefault: false
+        isUnique: false
+        uniqueName: diag_reason_unique
+        dataType: string
+        columnType: SQLiteText
+        config:
+          name: reason
+          keyAsName: false
+          notNull: false
+          hasDefault: false
+          primaryKey: false
+          isUnique: false
+          uniqueName: diag_reason_unique
+          dataType: string
+          columnType: SQLiteText
+      recommendedMove:
+        name: recommended_move
+        keyAsName: false
+        primary: false
+        notNull: false
+        hasDefault: false
+        isUnique: false
+        uniqueName: diag_recommended_move_unique
+        dataType: string
+        columnType: SQLiteText
+        config:
+          name: recommended_move
+          keyAsName: false
+          notNull: false
+          hasDefault: false
+          primaryKey: false
+          isUnique: false
+          uniqueName: diag_recommended_move_unique
+          dataType: string
+          columnType: SQLiteText
+      resolved:
+        name: resolved
+        keyAsName: false
+        primary: false
+        notNull: false
+        hasDefault: false
+        isUnique: false
+        uniqueName: diag_resolved_unique
+        dataType: boolean
+        columnType: SQLiteBoolean
+        config:
+          name: resolved
+          keyAsName: false
+          notNull: false
+          hasDefault: false
+          primaryKey: false
+          isUnique: false
+          uniqueName: diag_resolved_unique
+          dataType: boolean
+          columnType: SQLiteBoolean
+          autoIncrement: false
+          mode: boolean
+        autoIncrement: false
+        mode: boolean
+    outputTableName: diag
+    outputRef:
+      def:
+        type: object
+        shape:
+          reason:
+            def:
+              type: string
+            type: string
+            format: null
+            minLength: null
+            maxLength: null
+          recommendedMove:
+            def:
+              type: string
+            type: string
+            format: null
+            minLength: null
+            maxLength: null
+          resolved:
+            def:
+              type: boolean
+            type: boolean
+      type: object
+    kind: agent
+    needsApproval: false
+    waitAsync: false
+    approvalMode: gate
+    skipIf: false
+    retries: 1
+    retryPolicy:
+      backoff: exponential
+      initialDelayMs: 1000
+    timeoutMs: null
+    heartbeatTimeoutMs: 600000
+    continueOnFail: true
+    hijack: false
+    onHijackExit: complete
+    agent[1]: null
+    prompt: "Diagnose milestone M1's cards (P1.1, P1.2, P1.3, P1.4). For each card, check whether its AI judge approved it — read the judge output (`smthrs output <run> card-<id>-review`) and delegation/STATUS.md. Return { reason, recommendedMove, resolved }. If every card is approved, set resolved=true. If any card is unapproved, set resolved=false and recommend the next move (which card, and how to fix it)."
+    label: diagnose
+  - nodeId: escalate-M1-human-fallback
+    ordinal: 7
+    iteration: 0
+    outputTable:
+      runId:
+        name: run_id
+        keyAsName: false
+        primary: false
+        notNull: true
+        hasDefault: false
+        isUnique: false
+        uniqueName: escalation_run_id_unique
+        dataType: string
+        columnType: SQLiteText
+        config:
+          name: run_id
+          keyAsName: false
+          notNull: true
+          hasDefault: false
+          primaryKey: false
+          isUnique: false
+          uniqueName: escalation_run_id_unique
+          dataType: string
+          columnType: SQLiteText
+      nodeId:
+        name: node_id
+        keyAsName: false
+        primary: false
+        notNull: true
+        hasDefault: false
+        isUnique: false
+        uniqueName: escalation_node_id_unique
+        dataType: string
+        columnType: SQLiteText
+        config:
+          name: node_id
+          keyAsName: false
+          notNull: true
+          hasDefault: false
+          primaryKey: false
+          isUnique: false
+          uniqueName: escalation_node_id_unique
+          dataType: string
+          columnType: SQLiteText
+      iteration:
+        name: iteration
+        keyAsName: false
+        primary: false
+        notNull: true
+        default: 0
+        hasDefault: true
+        isUnique: false
+        uniqueName: escalation_iteration_unique
+        dataType: number
+        columnType: SQLiteInteger
+        config:
+          name: iteration
+          keyAsName: false
+          notNull: true
+          default: 0
+          hasDefault: true
+          primaryKey: false
+          isUnique: false
+          uniqueName: escalation_iteration_unique
+          dataType: number
+          columnType: SQLiteInteger
+          autoIncrement: false
+        autoIncrement: false
+      level:
+        name: level
+        keyAsName: false
+        primary: false
+        notNull: false
+        hasDefault: false
+        isUnique: false
+        uniqueName: escalation_level_unique
+        dataType: string
+        columnType: SQLiteText
+        config:
+          name: level
+          keyAsName: false
+          notNull: false
+          hasDefault: false
+          primaryKey: false
+          isUnique: false
+          uniqueName: escalation_level_unique
+          dataType: string
+          columnType: SQLiteText
+      escalatedTo:
+        name: escalated_to
+        keyAsName: false
+        primary: false
+        notNull: false
+        hasDefault: false
+        isUnique: false
+        uniqueName: escalation_escalated_to_unique
+        dataType: string
+        columnType: SQLiteText
+        config:
+          name: escalated_to
+          keyAsName: false
+          notNull: false
+          hasDefault: false
+          primaryKey: false
+          isUnique: false
+          uniqueName: escalation_escalated_to_unique
+          dataType: string
+          columnType: SQLiteText
+      note:
+        name: note
+        keyAsName: false
+        primary: false
+        notNull: false
+        hasDefault: false
+        isUnique: false
+        uniqueName: escalation_note_unique
+        dataType: string
+        columnType: SQLiteText
+        config:
+          name: note
+          keyAsName: false
+          notNull: false
+          hasDefault: false
+          primaryKey: false
+          isUnique: false
+          uniqueName: escalation_note_unique
+          dataType: string
+          columnType: SQLiteText
+    outputTableName: escalation
+    outputRef:
+      def:
+        type: object
+        shape:
+          level:
+            def:
+              type: string
+            type: string
+            format: null
+            minLength: null
+            maxLength: null
+          escalatedTo:
+            def:
+              type: string
+            type: string
+            format: null
+            minLength: null
+            maxLength: null
+          note:
+            def:
+              type: string
+            type: string
+            format: null
+            minLength: null
+            maxLength: null
+      type: object
+    kind: compute
+    needsApproval: true
+    waitAsync: false
+    approvalMode: decision
+    approvalOnDeny: continue
+    skipIf: false
+    retries: 0
+    timeoutMs: null
+    heartbeatTimeoutMs: null
+    continueOnFail: true
+    hijack: false
+    onHijackExit: complete
+    label: "Milestone M1: a card did not recover"
+    meta:
+      requestTitle: "Milestone M1: a card did not recover"
+      requestSummary: "An auto-fix loop for M1 did not reach approval after 2 cycle(s). Diagnose, recommend one move, then escalate to a human."
+  - nodeId: M1-gate
+    ordinal: 8
+    iteration: 0
+    outputTableName: approval
+    kind: compute
+    needsApproval: true
+    waitAsync: false
+    approvalMode: decision
+    approvalOnDeny: continue
+    skipIf: false
+    retries: null
+    retryPolicy:
+      backoff: exponential
+      initialDelayMs: 1000
+    timeoutMs: null
+    heartbeatTimeoutMs: null
+    continueOnFail: false
+    hijack: false
+    onHijackExit: complete
+    label: Approve M1
+    meta:
+      requestTitle: Approve M1
+      requestSummary: Approve M1 to continue; deny to continue anyway (advisory). Any card with done=false needs a fix first.
+  - nodeId: card-P2.1-produce
+    ordinal: 9
+    iteration: 0
+    ralphId: card-P2.1
+    outputTableName: card
+    kind: agent
+    needsApproval: false
+    waitAsync: false
+    approvalMode: gate
+    skipIf: false
+    retries: null
+    retryPolicy:
+      backoff: exponential
+      initialDelayMs: 1000
+    timeoutMs: null
+    heartbeatTimeoutMs: 600000
+    continueOnFail: false
+    hijack: false
+    onHijackExit: complete
+    agent[1]: null
+    prompt: "Implement work card P2.1 — \"GitHub OAuth2 login + upsert + 1x state\" of the user-created storymaps feature.\n\nRead first (single source of truth):\n    - delegation/HANDOUT.md (decisions, worker model, env deps)\n    - delegation/cards/M2-auth.md\n    - delegation/STATUS.md\n\nImplement ONLY card P2.1's SCOPE, then run its VERIFY until it passes, then mark P2.1 \"done\" in delegation/STATUS.md (paste the VERIFY output + a timestamp).\nCommit your work with GitButler (`but`): run `but diff` to get file/hunk IDs, then\n  but commit -b storymap-P2.1 -m \"P2.1: GitHub OAuth2 login + upsert + 1x state\" <ids>\nCommit ONLY this card's source files. Do NOT commit delegation/STATUS.md — it is a\nshared live board; leave its changes uncommitted for the human to integrate.\nThis creates a dedicated virtual branch storymap-P2.1 (one per card). COMMIT ONLY —\ndo NOT run `but push` and do NOT open a PR.\nDo NOT edit files outside this card's SCOPE.\nIf VERIFY keeps failing or you hit a blocker, return done=false, verifyPassed=false, with a one-line summary.\n\nModel note: qwen3.8:27b-mlx is a *thinking* model — use a generous maxTokens or\npass options:{think:false}; a tiny cap returns an empty answer."
+  - nodeId: card-P2.2-produce
+    ordinal: 10
+    iteration: 0
+    ralphId: card-P2.2
+    outputTableName: card
+    kind: agent
+    needsApproval: false
+    waitAsync: false
+    approvalMode: gate
+    skipIf: false
+    retries: null
+    retryPolicy:
+      backoff: exponential
+      initialDelayMs: 1000
+    timeoutMs: null
+    heartbeatTimeoutMs: 600000
+    continueOnFail: false
+    hijack: false
+    onHijackExit: complete
+    agent[1]: null
+    prompt: "Implement work card P2.2 — \"Admin-only local login (bcrypt, seeded)\" of the user-created storymaps feature.\n\nRead first (single source of truth):\n    - delegation/HANDOUT.md (decisions, worker model, env deps)\n    - delegation/cards/M2-auth.md\n    - delegation/STATUS.md\n\nImplement ONLY card P2.2's SCOPE, then run its VERIFY until it passes, then mark P2.2 \"done\" in delegation/STATUS.md (paste the VERIFY output + a timestamp).\nCommit your work with GitButler (`but`): run `but diff` to get file/hunk IDs, then\n  but commit -b storymap-P2.2 -m \"P2.2: Admin-only local login (bcrypt, seeded)\" <ids>\nCommit ONLY this card's source files. Do NOT commit delegation/STATUS.md — it is a\nshared live board; leave its changes uncommitted for the human to integrate.\nThis creates a dedicated virtual branch storymap-P2.2 (one per card). COMMIT ONLY —\ndo NOT run `but push` and do NOT open a PR.\nDo NOT edit files outside this card's SCOPE.\nIf VERIFY keeps failing or you hit a blocker, return done=false, verifyPassed=false, with a one-line summary.\n\nModel note: qwen3.8:27b-mlx is a *thinking* model — use a generous maxTokens or\npass options:{think:false}; a tiny cap returns an empty answer."
+  - nodeId: card-P2.3-produce
+    ordinal: 11
+    iteration: 0
+    ralphId: card-P2.3
+    outputTableName: card
+    kind: agent
+    needsApproval: false
+    waitAsync: false
+    approvalMode: gate
+    skipIf: false
+    retries: null
+    retryPolicy:
+      backoff: exponential
+      initialDelayMs: 1000
+    timeoutMs: null
+    heartbeatTimeoutMs: 600000
+    continueOnFail: false
+    hijack: false
+    onHijackExit: complete
+    agent[1]: null
+    prompt: "Implement work card P2.3 — \"JWT + httpOnly refresh + /api middleware\" of the user-created storymaps feature.\n\nRead first (single source of truth):\n    - delegation/HANDOUT.md (decisions, worker model, env deps)\n    - delegation/cards/M2-auth.md\n    - delegation/STATUS.md\n\nImplement ONLY card P2.3's SCOPE, then run its VERIFY until it passes, then mark P2.3 \"done\" in delegation/STATUS.md (paste the VERIFY output + a timestamp).\nCommit your work with GitButler (`but`): run `but diff` to get file/hunk IDs, then\n  but commit -b storymap-P2.3 -m \"P2.3: JWT + httpOnly refresh + /api middleware\" <ids>\nCommit ONLY this card's source files. Do NOT commit delegation/STATUS.md — it is a\nshared live board; leave its changes uncommitted for the human to integrate.\nThis creates a dedicated virtual branch storymap-P2.3 (one per card). COMMIT ONLY —\ndo NOT run `but push` and do NOT open a PR.\nDo NOT edit files outside this card's SCOPE.\nIf VERIFY keeps failing or you hit a blocker, return done=false, verifyPassed=false, with a one-line summary.\n\nModel note: qwen3.8:27b-mlx is a *thinking* model — use a generous maxTokens or\npass options:{think:false}; a tiny cap returns an empty answer."
+  - nodeId: card-P2.4-produce
+    ordinal: 12
+    iteration: 0
+    ralphId: card-P2.4
+    outputTableName: card
+    kind: agent
+    needsApproval: false
+    waitAsync: false
+    approvalMode: gate
+    skipIf: false
+    retries: null
+    retryPolicy:
+      backoff: exponential
+      initialDelayMs: 1000
+    timeoutMs: null
+    heartbeatTimeoutMs: 600000
+    continueOnFail: false
+    hijack: false
+    onHijackExit: complete
+    agent[1]: null
+    prompt: "Implement work card P2.4 — \"whoami\" of the user-created storymaps feature.\n\nRead first (single source of truth):\n    - delegation/HANDOUT.md (decisions, worker model, env deps)\n    - delegation/cards/M2-auth.md\n    - delegation/STATUS.md\n\nImplement ONLY card P2.4's SCOPE, then run its VERIFY until it passes, then mark P2.4 \"done\" in delegation/STATUS.md (paste the VERIFY output + a timestamp).\nCommit your work with GitButler (`but`): run `but diff` to get file/hunk IDs, then\n  but commit -b storymap-P2.4 -m \"P2.4: whoami\" <ids>\nCommit ONLY this card's source files. Do NOT commit delegation/STATUS.md — it is a\nshared live board; leave its changes uncommitted for the human to integrate.\nThis creates a dedicated virtual branch storymap-P2.4 (one per card). COMMIT ONLY —\ndo NOT run `but push` and do NOT open a PR.\nDo NOT edit files outside this card's SCOPE.\nIf VERIFY keeps failing or you hit a blocker, return done=false, verifyPassed=false, with a one-line summary.\n\nModel note: qwen3.8:27b-mlx is a *thinking* model — use a generous maxTokens or\npass options:{think:false}; a tiny cap returns an empty answer."
+  - nodeId: escalate-M2-level-0
+    ordinal: 13
+    iteration: 0
+    outputTableName: diag
+    kind: agent
+    needsApproval: false
+    waitAsync: false
+    approvalMode: gate
+    skipIf: false
+    retries: 1
+    retryPolicy:
+      backoff: exponential
+      initialDelayMs: 1000
+    timeoutMs: null
+    heartbeatTimeoutMs: 600000
+    continueOnFail: true
+    hijack: false
+    onHijackExit: complete
+    agent[1]: null
+    prompt: "Diagnose milestone M2's cards (P2.1, P2.2, P2.3, P2.4). For each card, check whether its AI judge approved it — read the judge output (`smthrs output <run> card-<id>-review`) and delegation/STATUS.md. Return { reason, recommendedMove, resolved }. If every card is approved, set resolved=true. If any card is unapproved, set resolved=false and recommend the next move (which card, and how to fix it)."
+    label: diagnose
+  - nodeId: escalate-M2-human-fallback
+    ordinal: 14
+    iteration: 0
+    outputTableName: escalation
+    kind: compute
+    needsApproval: true
+    waitAsync: false
+    approvalMode: decision
+    approvalOnDeny: continue
+    skipIf: false
+    retries: 0
+    timeoutMs: null
+    heartbeatTimeoutMs: null
+    continueOnFail: true
+    hijack: false
+    onHijackExit: complete
+    label: "Milestone M2: a card did not recover"
+    meta:
+      requestTitle: "Milestone M2: a card did not recover"
+      requestSummary: "An auto-fix loop for M2 did not reach approval after 2 cycle(s). Diagnose, recommend one move, then escalate to a human."
+  - nodeId: M2-gate
+    ordinal: 15
+    iteration: 0
+    outputTableName: approval
+    kind: compute
+    needsApproval: true
+    waitAsync: false
+    approvalMode: decision
+    approvalOnDeny: continue
+    skipIf: false
+    retries: null
+    retryPolicy:
+      backoff: exponential
+      initialDelayMs: 1000
+    timeoutMs: null
+    heartbeatTimeoutMs: null
+    continueOnFail: false
+    hijack: false
+    onHijackExit: complete
+    label: Approve M2
+    meta:
+      requestTitle: Approve M2
+      requestSummary: Approve M2 to continue; deny to continue anyway (advisory). Any card with done=false needs a fix first.
+  - nodeId: card-P3.1-produce
+    ordinal: 16
+    iteration: 0
+    ralphId: card-P3.1
+    outputTableName: card
+    kind: agent
+    needsApproval: false
+    waitAsync: false
+    approvalMode: gate
+    skipIf: false
+    retries: null
+    retryPolicy:
+      backoff: exponential
+      initialDelayMs: 1000
+    timeoutMs: null
+    heartbeatTimeoutMs: 600000
+    continueOnFail: false
+    hijack: false
+    onHijackExit: complete
+    agent[1]: null
+    prompt: "Implement work card P3.1 — \"Stories CRUD + visibility/authz\" of the user-created storymaps feature.\n\nRead first (single source of truth):\n    - delegation/HANDOUT.md (decisions, worker model, env deps)\n    - delegation/cards/M3-crud.md\n    - delegation/STATUS.md\n\nImplement ONLY card P3.1's SCOPE, then run its VERIFY until it passes, then mark P3.1 \"done\" in delegation/STATUS.md (paste the VERIFY output + a timestamp).\nCommit your work with GitButler (`but`): run `but diff` to get file/hunk IDs, then\n  but commit -b storymap-P3.1 -m \"P3.1: Stories CRUD + visibility/authz\" <ids>\nCommit ONLY this card's source files. Do NOT commit delegation/STATUS.md — it is a\nshared live board; leave its changes uncommitted for the human to integrate.\nThis creates a dedicated virtual branch storymap-P3.1 (one per card). COMMIT ONLY —\ndo NOT run `but push` and do NOT open a PR.\nDo NOT edit files outside this card's SCOPE.\nIf VERIFY keeps failing or you hit a blocker, return done=false, verifyPassed=false, with a one-line summary.\n\nModel note: qwen3.8:27b-mlx is a *thinking* model — use a generous maxTokens or\npass options:{think:false}; a tiny cap returns an empty answer."
+  - nodeId: card-P3.2-produce
+    ordinal: 17
+    iteration: 0
+    ralphId: card-P3.2
+    outputTableName: card
+    kind: agent
+    needsApproval: false
+    waitAsync: false
+    approvalMode: gate
+    skipIf: false
+    retries: null
+    retryPolicy:
+      backoff: exponential
+      initialDelayMs: 1000
+    timeoutMs: null
+    heartbeatTimeoutMs: 600000
+    continueOnFail: false
+    hijack: false
+    onHijackExit: complete
+    agent[1]: null
+    prompt: "Implement work card P3.2 — \"Chapters nested CRUD + reorder\" of the user-created storymaps feature.\n\nRead first (single source of truth):\n    - delegation/HANDOUT.md (decisions, worker model, env deps)\n    - delegation/cards/M3-crud.md\n    - delegation/STATUS.md\n\nImplement ONLY card P3.2's SCOPE, then run its VERIFY until it passes, then mark P3.2 \"done\" in delegation/STATUS.md (paste the VERIFY output + a timestamp).\nCommit your work with GitButler (`but`): run `but diff` to get file/hunk IDs, then\n  but commit -b storymap-P3.2 -m \"P3.2: Chapters nested CRUD + reorder\" <ids>\nCommit ONLY this card's source files. Do NOT commit delegation/STATUS.md — it is a\nshared live board; leave its changes uncommitted for the human to integrate.\nThis creates a dedicated virtual branch storymap-P3.2 (one per card). COMMIT ONLY —\ndo NOT run `but push` and do NOT open a PR.\nDo NOT edit files outside this card's SCOPE.\nIf VERIFY keeps failing or you hit a blocker, return done=false, verifyPassed=false, with a one-line summary.\n\nModel note: qwen3.8:27b-mlx is a *thinking* model — use a generous maxTokens or\npass options:{think:false}; a tiny cap returns an empty answer."
+  - nodeId: card-P3.3-produce
+    ordinal: 18
+    iteration: 0
+    ralphId: card-P3.3
+    outputTableName: card
+    kind: agent
+    needsApproval: false
+    waitAsync: false
+    approvalMode: gate
+    skipIf: false
+    retries: null
+    retryPolicy:
+      backoff: exponential
+      initialDelayMs: 1000
+    timeoutMs: null
+    heartbeatTimeoutMs: 600000
+    continueOnFail: false
+    hijack: false
+    onHijackExit: complete
+    agent[1]: null
+    prompt: "Implement work card P3.3 — \"DB to camelCase story JSON adapter\" of the user-created storymaps feature.\n\nRead first (single source of truth):\n    - delegation/HANDOUT.md (decisions, worker model, env deps)\n    - delegation/cards/M3-crud.md\n    - delegation/STATUS.md\n\nImplement ONLY card P3.3's SCOPE, then run its VERIFY until it passes, then mark P3.3 \"done\" in delegation/STATUS.md (paste the VERIFY output + a timestamp).\nCommit your work with GitButler (`but`): run `but diff` to get file/hunk IDs, then\n  but commit -b storymap-P3.3 -m \"P3.3: DB to camelCase story JSON adapter\" <ids>\nCommit ONLY this card's source files. Do NOT commit delegation/STATUS.md — it is a\nshared live board; leave its changes uncommitted for the human to integrate.\nThis creates a dedicated virtual branch storymap-P3.3 (one per card). COMMIT ONLY —\ndo NOT run `but push` and do NOT open a PR.\nDo NOT edit files outside this card's SCOPE.\nIf VERIFY keeps failing or you hit a blocker, return done=false, verifyPassed=false, with a one-line summary.\n\nModel note: qwen3.8:27b-mlx is a *thinking* model — use a generous maxTokens or\npass options:{think:false}; a tiny cap returns an empty answer."
+  - nodeId: card-P3.4-produce
+    ordinal: 19
+    iteration: 0
+    ralphId: card-P3.4
+    outputTableName: card
+    kind: agent
+    needsApproval: false
+    waitAsync: false
+    approvalMode: gate
+    skipIf: false
+    retries: null
+    retryPolicy:
+      backoff: exponential
+      initialDelayMs: 1000
+    timeoutMs: null
+    heartbeatTimeoutMs: 600000
+    continueOnFail: false
+    hijack: false
+    onHijackExit: complete
+    agent[1]: null
+    prompt: "Implement work card P3.4 — \"Export endpoint (legacy JSON)\" of the user-created storymaps feature.\n\nRead first (single source of truth):\n    - delegation/HANDOUT.md (decisions, worker model, env deps)\n    - delegation/cards/M3-crud.md\n    - delegation/STATUS.md\n\nImplement ONLY card P3.4's SCOPE, then run its VERIFY until it passes, then mark P3.4 \"done\" in delegation/STATUS.md (paste the VERIFY output + a timestamp).\nCommit your work with GitButler (`but`): run `but diff` to get file/hunk IDs, then\n  but commit -b storymap-P3.4 -m \"P3.4: Export endpoint (legacy JSON)\" <ids>\nCommit ONLY this card's source files. Do NOT commit delegation/STATUS.md — it is a\nshared live board; leave its changes uncommitted for the human to integrate.\nThis creates a dedicated virtual branch storymap-P3.4 (one per card). COMMIT ONLY —\ndo NOT run `but push` and do NOT open a PR.\nDo NOT edit files outside this card's SCOPE.\nIf VERIFY keeps failing or you hit a blocker, return done=false, verifyPassed=false, with a one-line summary.\n\nModel note: qwen3.8:27b-mlx is a *thinking* model — use a generous maxTokens or\npass options:{think:false}; a tiny cap returns an empty answer."
+  - nodeId: escalate-M3-level-0
+    ordinal: 20
+    iteration: 0
+    outputTableName: diag
+    kind: agent
+    needsApproval: false
+    waitAsync: false
+    approvalMode: gate
+    skipIf: false
+    retries: 1
+    retryPolicy:
+      backoff: exponential
+      initialDelayMs: 1000
+    timeoutMs: null
+    heartbeatTimeoutMs: 600000
+    continueOnFail: true
+    hijack: false
+    onHijackExit: complete
+    agent[1]: null
+    prompt: "Diagnose milestone M3's cards (P3.1, P3.2, P3.3, P3.4). For each card, check whether its AI judge approved it — read the judge output (`smthrs output <run> card-<id>-review`) and delegation/STATUS.md. Return { reason, recommendedMove, resolved }. If every card is approved, set resolved=true. If any card is unapproved, set resolved=false and recommend the next move (which card, and how to fix it)."
+    label: diagnose
+  - nodeId: escalate-M3-human-fallback
+    ordinal: 21
+    iteration: 0
+    outputTableName: escalation
+    kind: compute
+    needsApproval: true
+    waitAsync: false
+    approvalMode: decision
+    approvalOnDeny: continue
+    skipIf: false
+    retries: 0
+    timeoutMs: null
+    heartbeatTimeoutMs: null
+    continueOnFail: true
+    hijack: false
+    onHijackExit: complete
+    label: "Milestone M3: a card did not recover"
+    meta:
+      requestTitle: "Milestone M3: a card did not recover"
+      requestSummary: "An auto-fix loop for M3 did not reach approval after 2 cycle(s). Diagnose, recommend one move, then escalate to a human."
+  - nodeId: M3-gate
+    ordinal: 22
+    iteration: 0
+    outputTableName: approval
+    kind: compute
+    needsApproval: true
+    waitAsync: false
+    approvalMode: decision
+    approvalOnDeny: continue
+    skipIf: false
+    retries: null
+    retryPolicy:
+      backoff: exponential
+      initialDelayMs: 1000
+    timeoutMs: null
+    heartbeatTimeoutMs: null
+    continueOnFail: false
+    hijack: false
+    onHijackExit: complete
+    label: Approve M3
+    meta:
+      requestTitle: Approve M3
+      requestSummary: Approve M3 to continue; deny to continue anyway (advisory). Any card with done=false needs a fix first.
+  - nodeId: card-P4.1-produce
+    ordinal: 23
+    iteration: 0
+    ralphId: card-P4.1
+    outputTableName: card
+    kind: agent
+    needsApproval: false
+    waitAsync: false
+    approvalMode: gate
+    skipIf: false
+    retries: null
+    retryPolicy:
+      backoff: exponential
+      initialDelayMs: 1000
+    timeoutMs: null
+    heartbeatTimeoutMs: 600000
+    continueOnFail: false
+    hijack: false
+    onHijackExit: complete
+    agent[1]: null
+    prompt: "Implement work card P4.1 — \"Upload endpoint (local disk)\" of the user-created storymaps feature.\n\nRead first (single source of truth):\n    - delegation/HANDOUT.md (decisions, worker model, env deps)\n    - delegation/cards/M4-media.md\n    - delegation/STATUS.md\n\nImplement ONLY card P4.1's SCOPE, then run its VERIFY until it passes, then mark P4.1 \"done\" in delegation/STATUS.md (paste the VERIFY output + a timestamp).\nCommit your work with GitButler (`but`): run `but diff` to get file/hunk IDs, then\n  but commit -b storymap-P4.1 -m \"P4.1: Upload endpoint (local disk)\" <ids>\nCommit ONLY this card's source files. Do NOT commit delegation/STATUS.md — it is a\nshared live board; leave its changes uncommitted for the human to integrate.\nThis creates a dedicated virtual branch storymap-P4.1 (one per card). COMMIT ONLY —\ndo NOT run `but push` and do NOT open a PR.\nDo NOT edit files outside this card's SCOPE.\nIf VERIFY keeps failing or you hit a blocker, return done=false, verifyPassed=false, with a one-line summary.\n\nModel note: qwen3.8:27b-mlx is a *thinking* model — use a generous maxTokens or\npass options:{think:false}; a tiny cap returns an empty answer."
+  - nodeId: card-P4.2-produce
+    ordinal: 24
+    iteration: 0
+    ralphId: card-P4.2
+    outputTableName: card
+    kind: agent
+    needsApproval: false
+    waitAsync: false
+    approvalMode: gate
+    skipIf: false
+    retries: null
+    retryPolicy:
+      backoff: exponential
+      initialDelayMs: 1000
+    timeoutMs: null
+    heartbeatTimeoutMs: 600000
+    continueOnFail: false
+    hijack: false
+    onHijackExit: complete
+    agent[1]: null
+    prompt: "Implement work card P4.2 — \"External-URL validation\" of the user-created storymaps feature.\n\nRead first (single source of truth):\n    - delegation/HANDOUT.md (decisions, worker model, env deps)\n    - delegation/cards/M4-media.md\n    - delegation/STATUS.md\n\nImplement ONLY card P4.2's SCOPE, then run its VERIFY until it passes, then mark P4.2 \"done\" in delegation/STATUS.md (paste the VERIFY output + a timestamp).\nCommit your work with GitButler (`but`): run `but diff` to get file/hunk IDs, then\n  but commit -b storymap-P4.2 -m \"P4.2: External-URL validation\" <ids>\nCommit ONLY this card's source files. Do NOT commit delegation/STATUS.md — it is a\nshared live board; leave its changes uncommitted for the human to integrate.\nThis creates a dedicated virtual branch storymap-P4.2 (one per card). COMMIT ONLY —\ndo NOT run `but push` and do NOT open a PR.\nDo NOT edit files outside this card's SCOPE.\nIf VERIFY keeps failing or you hit a blocker, return done=false, verifyPassed=false, with a one-line summary.\n\nModel note: qwen3.8:27b-mlx is a *thinking* model — use a generous maxTokens or\npass options:{think:false}; a tiny cap returns an empty answer."
+  - nodeId: card-P4.3-produce
+    ordinal: 25
+    iteration: 0
+    ralphId: card-P4.3
+    outputTableName: card
+    kind: agent
+    needsApproval: false
+    waitAsync: false
+    approvalMode: gate
+    skipIf: false
+    retries: null
+    retryPolicy:
+      backoff: exponential
+      initialDelayMs: 1000
+    timeoutMs: null
+    heartbeatTimeoutMs: 600000
+    continueOnFail: false
+    hijack: false
+    onHijackExit: complete
+    agent[1]: null
+    prompt: "Implement work card P4.3 — \"Wire media_ref_type into chapters\" of the user-created storymaps feature.\n\nRead first (single source of truth):\n    - delegation/HANDOUT.md (decisions, worker model, env deps)\n    - delegation/cards/M4-media.md\n    - delegation/STATUS.md\n\nImplement ONLY card P4.3's SCOPE, then run its VERIFY until it passes, then mark P4.3 \"done\" in delegation/STATUS.md (paste the VERIFY output + a timestamp).\nCommit your work with GitButler (`but`): run `but diff` to get file/hunk IDs, then\n  but commit -b storymap-P4.3 -m \"P4.3: Wire media_ref_type into chapters\" <ids>\nCommit ONLY this card's source files. Do NOT commit delegation/STATUS.md — it is a\nshared live board; leave its changes uncommitted for the human to integrate.\nThis creates a dedicated virtual branch storymap-P4.3 (one per card). COMMIT ONLY —\ndo NOT run `but push` and do NOT open a PR.\nDo NOT edit files outside this card's SCOPE.\nIf VERIFY keeps failing or you hit a blocker, return done=false, verifyPassed=false, with a one-line summary.\n\nModel note: qwen3.8:27b-mlx is a *thinking* model — use a generous maxTokens or\npass options:{think:false}; a tiny cap returns an empty answer."
+  - nodeId: card-P4.4-produce
+    ordinal: 26
+    iteration: 0
+    ralphId: card-P4.4
+    outputTableName: card
+    kind: agent
+    needsApproval: false
+    waitAsync: false
+    approvalMode: gate
+    skipIf: false
+    retries: null
+    retryPolicy:
+      backoff: exponential
+      initialDelayMs: 1000
+    timeoutMs: null
+    heartbeatTimeoutMs: 600000
+    continueOnFail: false
+    hijack: false
+    onHijackExit: complete
+    agent[1]: null
+    prompt: "Implement work card P4.4 — \"Serve + visibility gate + soft-delete\" of the user-created storymaps feature.\n\nRead first (single source of truth):\n    - delegation/HANDOUT.md (decisions, worker model, env deps)\n    - delegation/cards/M4-media.md\n    - delegation/STATUS.md\n\nImplement ONLY card P4.4's SCOPE, then run its VERIFY until it passes, then mark P4.4 \"done\" in delegation/STATUS.md (paste the VERIFY output + a timestamp).\nCommit your work with GitButler (`but`): run `but diff` to get file/hunk IDs, then\n  but commit -b storymap-P4.4 -m \"P4.4: Serve + visibility gate + soft-delete\" <ids>\nCommit ONLY this card's source files. Do NOT commit delegation/STATUS.md — it is a\nshared live board; leave its changes uncommitted for the human to integrate.\nThis creates a dedicated virtual branch storymap-P4.4 (one per card). COMMIT ONLY —\ndo NOT run `but push` and do NOT open a PR.\nDo NOT edit files outside this card's SCOPE.\nIf VERIFY keeps failing or you hit a blocker, return done=false, verifyPassed=false, with a one-line summary.\n\nModel note: qwen3.8:27b-mlx is a *thinking* model — use a generous maxTokens or\npass options:{think:false}; a tiny cap returns an empty answer."
+  - nodeId: escalate-M4-level-0
+    ordinal: 27
+    iteration: 0
+    outputTableName: diag
+    kind: agent
+    needsApproval: false
+    waitAsync: false
+    approvalMode: gate
+    skipIf: false
+    retries: 1
+    retryPolicy:
+      backoff: exponential
+      initialDelayMs: 1000
+    timeoutMs: null
+    heartbeatTimeoutMs: 600000
+    continueOnFail: true
+    hijack: false
+    onHijackExit: complete
+    agent[1]: null
+    prompt: "Diagnose milestone M4's cards (P4.1, P4.2, P4.3, P4.4). For each card, check whether its AI judge approved it — read the judge output (`smthrs output <run> card-<id>-review`) and delegation/STATUS.md. Return { reason, recommendedMove, resolved }. If every card is approved, set resolved=true. If any card is unapproved, set resolved=false and recommend the next move (which card, and how to fix it)."
+    label: diagnose
+  - nodeId: escalate-M4-human-fallback
+    ordinal: 28
+    iteration: 0
+    outputTableName: escalation
+    kind: compute
+    needsApproval: true
+    waitAsync: false
+    approvalMode: decision
+    approvalOnDeny: continue
+    skipIf: false
+    retries: 0
+    timeoutMs: null
+    heartbeatTimeoutMs: null
+    continueOnFail: true
+    hijack: false
+    onHijackExit: complete
+    label: "Milestone M4: a card did not recover"
+    meta:
+      requestTitle: "Milestone M4: a card did not recover"
+      requestSummary: "An auto-fix loop for M4 did not reach approval after 2 cycle(s). Diagnose, recommend one move, then escalate to a human."
+  - nodeId: M4-gate
+    ordinal: 29
+    iteration: 0
+    outputTableName: approval
+    kind: compute
+    needsApproval: true
+    waitAsync: false
+    approvalMode: decision
+    approvalOnDeny: continue
+    skipIf: false
+    retries: null
+    retryPolicy:
+      backoff: exponential
+      initialDelayMs: 1000
+    timeoutMs: null
+    heartbeatTimeoutMs: null
+    continueOnFail: false
+    hijack: false
+    onHijackExit: complete
+    label: Approve M4
+    meta:
+      requestTitle: Approve M4
+      requestSummary: Approve M4 to continue; deny to continue anyway (advisory). Any card with done=false needs a fix first.
+  - nodeId: card-P5.1-produce
+    ordinal: 30
+    iteration: 0
+    ralphId: card-P5.1
+    outputTableName: card
+    kind: agent
+    needsApproval: false
+    waitAsync: false
+    approvalMode: gate
+    skipIf: false
+    retries: null
+    retryPolicy:
+      backoff: exponential
+      initialDelayMs: 1000
+    timeoutMs: null
+    heartbeatTimeoutMs: 600000
+    continueOnFail: false
+    hijack: false
+    onHijackExit: complete
+    agent[1]: null
+    prompt: "Implement work card P5.1 — \"Markdown renderer component\" of the user-created storymaps feature.\n\nRead first (single source of truth):\n    - delegation/HANDOUT.md (decisions, worker model, env deps)\n    - delegation/cards/M5-frontend.md\n    - delegation/STATUS.md\n\nImplement ONLY card P5.1's SCOPE, then run its VERIFY until it passes, then mark P5.1 \"done\" in delegation/STATUS.md (paste the VERIFY output + a timestamp).\nCommit your work with GitButler (`but`): run `but diff` to get file/hunk IDs, then\n  but commit -b storymap-P5.1 -m \"P5.1: Markdown renderer component\" <ids>\nCommit ONLY this card's source files. Do NOT commit delegation/STATUS.md — it is a\nshared live board; leave its changes uncommitted for the human to integrate.\nThis creates a dedicated virtual branch storymap-P5.1 (one per card). COMMIT ONLY —\ndo NOT run `but push` and do NOT open a PR.\nDo NOT edit files outside this card's SCOPE.\nIf VERIFY keeps failing or you hit a blocker, return done=false, verifyPassed=false, with a one-line summary.\n\nModel note: qwen3.8:27b-mlx is a *thinking* model — use a generous maxTokens or\npass options:{think:false}; a tiny cap returns an empty answer."
+  - nodeId: card-P5.2-produce
+    ordinal: 31
+    iteration: 0
+    ralphId: card-P5.2
+    outputTableName: card
+    kind: agent
+    needsApproval: false
+    waitAsync: false
+    approvalMode: gate
+    skipIf: false
+    retries: null
+    retryPolicy:
+      backoff: exponential
+      initialDelayMs: 1000
+    timeoutMs: null
+    heartbeatTimeoutMs: 600000
+    continueOnFail: false
+    hijack: false
+    onHijackExit: complete
+    agent[1]: null
+    prompt: "Implement work card P5.2 — \"Dual render in ChapterCard\" of the user-created storymaps feature.\n\nRead first (single source of truth):\n    - delegation/HANDOUT.md (decisions, worker model, env deps)\n    - delegation/cards/M5-frontend.md\n    - delegation/STATUS.md\n\nImplement ONLY card P5.2's SCOPE, then run its VERIFY until it passes, then mark P5.2 \"done\" in delegation/STATUS.md (paste the VERIFY output + a timestamp).\nCommit your work with GitButler (`but`): run `but diff` to get file/hunk IDs, then\n  but commit -b storymap-P5.2 -m \"P5.2: Dual render in ChapterCard\" <ids>\nCommit ONLY this card's source files. Do NOT commit delegation/STATUS.md — it is a\nshared live board; leave its changes uncommitted for the human to integrate.\nThis creates a dedicated virtual branch storymap-P5.2 (one per card). COMMIT ONLY —\ndo NOT run `but push` and do NOT open a PR.\nDo NOT edit files outside this card's SCOPE.\nIf VERIFY keeps failing or you hit a blocker, return done=false, verifyPassed=false, with a one-line summary.\n\nModel note: qwen3.8:27b-mlx is a *thinking* model — use a generous maxTokens or\npass options:{think:false}; a tiny cap returns an empty answer."
+  - nodeId: card-P5.3-produce
+    ordinal: 32
+    iteration: 0
+    ralphId: card-P5.3
+    outputTableName: card
+    kind: agent
+    needsApproval: false
+    waitAsync: false
+    approvalMode: gate
+    skipIf: false
+    retries: null
+    retryPolicy:
+      backoff: exponential
+      initialDelayMs: 1000
+    timeoutMs: null
+    heartbeatTimeoutMs: 600000
+    continueOnFail: false
+    hijack: false
+    onHijackExit: complete
+    agent[1]: null
+    prompt: "Implement work card P5.3 — \"Async getStory + data-driven picker\" of the user-created storymaps feature.\n\nRead first (single source of truth):\n    - delegation/HANDOUT.md (decisions, worker model, env deps)\n    - delegation/cards/M5-frontend.md\n    - delegation/STATUS.md\n\nImplement ONLY card P5.3's SCOPE, then run its VERIFY until it passes, then mark P5.3 \"done\" in delegation/STATUS.md (paste the VERIFY output + a timestamp).\nCommit your work with GitButler (`but`): run `but diff` to get file/hunk IDs, then\n  but commit -b storymap-P5.3 -m \"P5.3: Async getStory + data-driven picker\" <ids>\nCommit ONLY this card's source files. Do NOT commit delegation/STATUS.md — it is a\nshared live board; leave its changes uncommitted for the human to integrate.\nThis creates a dedicated virtual branch storymap-P5.3 (one per card). COMMIT ONLY —\ndo NOT run `but push` and do NOT open a PR.\nDo NOT edit files outside this card's SCOPE.\nIf VERIFY keeps failing or you hit a blocker, return done=false, verifyPassed=false, with a one-line summary.\n\nModel note: qwen3.8:27b-mlx is a *thinking* model — use a generous maxTokens or\npass options:{think:false}; a tiny cap returns an empty answer."
+  - nodeId: card-P5.4-produce
+    ordinal: 33
+    iteration: 0
+    ralphId: card-P5.4
+    outputTableName: card
+    kind: agent
+    needsApproval: false
+    waitAsync: false
+    approvalMode: gate
+    skipIf: false
+    retries: null
+    retryPolicy:
+      backoff: exponential
+      initialDelayMs: 1000
+    timeoutMs: null
+    heartbeatTimeoutMs: 600000
+    continueOnFail: false
+    hijack: false
+    onHijackExit: complete
+    agent[1]: null
+    prompt: "Implement work card P5.4 — \"Hash routing + empty states\" of the user-created storymaps feature.\n\nRead first (single source of truth):\n    - delegation/HANDOUT.md (decisions, worker model, env deps)\n    - delegation/cards/M5-frontend.md\n    - delegation/STATUS.md\n\nImplement ONLY card P5.4's SCOPE, then run its VERIFY until it passes, then mark P5.4 \"done\" in delegation/STATUS.md (paste the VERIFY output + a timestamp).\nCommit your work with GitButler (`but`): run `but diff` to get file/hunk IDs, then\n  but commit -b storymap-P5.4 -m \"P5.4: Hash routing + empty states\" <ids>\nCommit ONLY this card's source files. Do NOT commit delegation/STATUS.md — it is a\nshared live board; leave its changes uncommitted for the human to integrate.\nThis creates a dedicated virtual branch storymap-P5.4 (one per card). COMMIT ONLY —\ndo NOT run `but push` and do NOT open a PR.\nDo NOT edit files outside this card's SCOPE.\nIf VERIFY keeps failing or you hit a blocker, return done=false, verifyPassed=false, with a one-line summary.\n\nModel note: qwen3.8:27b-mlx is a *thinking* model — use a generous maxTokens or\npass options:{think:false}; a tiny cap returns an empty answer."
+  - nodeId: card-P5.5-produce
+    ordinal: 34
+    iteration: 0
+    ralphId: card-P5.5
+    outputTableName: card
+    kind: agent
+    needsApproval: false
+    waitAsync: false
+    approvalMode: gate
+    skipIf: false
+    retries: null
+    retryPolicy:
+      backoff: exponential
+      initialDelayMs: 1000
+    timeoutMs: null
+    heartbeatTimeoutMs: 600000
+    continueOnFail: false
+    hijack: false
+    onHijackExit: complete
+    agent[1]: null
+    prompt: "Implement work card P5.5 — \"Vite dev proxy /api + /media\" of the user-created storymaps feature.\n\nRead first (single source of truth):\n    - delegation/HANDOUT.md (decisions, worker model, env deps)\n    - delegation/cards/M5-frontend.md\n    - delegation/STATUS.md\n\nImplement ONLY card P5.5's SCOPE, then run its VERIFY until it passes, then mark P5.5 \"done\" in delegation/STATUS.md (paste the VERIFY output + a timestamp).\nCommit your work with GitButler (`but`): run `but diff` to get file/hunk IDs, then\n  but commit -b storymap-P5.5 -m \"P5.5: Vite dev proxy /api + /media\" <ids>\nCommit ONLY this card's source files. Do NOT commit delegation/STATUS.md — it is a\nshared live board; leave its changes uncommitted for the human to integrate.\nThis creates a dedicated virtual branch storymap-P5.5 (one per card). COMMIT ONLY —\ndo NOT run `but push` and do NOT open a PR.\nDo NOT edit files outside this card's SCOPE.\nIf VERIFY keeps failing or you hit a blocker, return done=false, verifyPassed=false, with a one-line summary.\n\nModel note: qwen3.8:27b-mlx is a *thinking* model — use a generous maxTokens or\npass options:{think:false}; a tiny cap returns an empty answer."
+  - nodeId: escalate-M5-level-0
+    ordinal: 35
+    iteration: 0
+    outputTableName: diag
+    kind: agent
+    needsApproval: false
+    waitAsync: false
+    approvalMode: gate
+    skipIf: false
+    retries: 1
+    retryPolicy:
+      backoff: exponential
+      initialDelayMs: 1000
+    timeoutMs: null
+    heartbeatTimeoutMs: 600000
+    continueOnFail: true
+    hijack: false
+    onHijackExit: complete
+    agent[1]: null
+    prompt: "Diagnose milestone M5's cards (P5.1, P5.2, P5.3, P5.4, P5.5). For each card, check whether its AI judge approved it — read the judge output (`smthrs output <run> card-<id>-review`) and delegation/STATUS.md. Return { reason, recommendedMove, resolved }. If every card is approved, set resolved=true. If any card is unapproved, set resolved=false and recommend the next move (which card, and how to fix it)."
+    label: diagnose
+  - nodeId: escalate-M5-human-fallback
+    ordinal: 36
+    iteration: 0
+    outputTableName: escalation
+    kind: compute
+    needsApproval: true
+    waitAsync: false
+    approvalMode: decision
+    approvalOnDeny: continue
+    skipIf: false
+    retries: 0
+    timeoutMs: null
+    heartbeatTimeoutMs: null
+    continueOnFail: true
+    hijack: false
+    onHijackExit: complete
+    label: "Milestone M5: a card did not recover"
+    meta:
+      requestTitle: "Milestone M5: a card did not recover"
+      requestSummary: "An auto-fix loop for M5 did not reach approval after 2 cycle(s). Diagnose, recommend one move, then escalate to a human."
+  - nodeId: M5-gate
+    ordinal: 37
+    iteration: 0
+    outputTableName: approval
+    kind: compute
+    needsApproval: true
+    waitAsync: false
+    approvalMode: decision
+    approvalOnDeny: continue
+    skipIf: false
+    retries: null
+    retryPolicy:
+      backoff: exponential
+      initialDelayMs: 1000
+    timeoutMs: null
+    heartbeatTimeoutMs: null
+    continueOnFail: false
+    hijack: false
+    onHijackExit: complete
+    label: Approve M5
+    meta:
+      requestTitle: Approve M5
+      requestSummary: Approve M5 to continue; deny to continue anyway (advisory). Any card with done=false needs a fix first.
+  - nodeId: card-P6.1-produce
+    ordinal: 38
+    iteration: 0
+    ralphId: card-P6.1
+    outputTableName: card
+    kind: agent
+    needsApproval: false
+    waitAsync: false
+    approvalMode: gate
+    skipIf: false
+    retries: null
+    retryPolicy:
+      backoff: exponential
+      initialDelayMs: 1000
+    timeoutMs: null
+    heartbeatTimeoutMs: 600000
+    continueOnFail: false
+    hijack: false
+    onHijackExit: complete
+    agent[1]: null
+    prompt: "Implement work card P6.1 — \"StoryForm\" of the user-created storymaps feature.\n\nRead first (single source of truth):\n    - delegation/HANDOUT.md (decisions, worker model, env deps)\n    - delegation/cards/M6-builder.md\n    - delegation/STATUS.md\n\nImplement ONLY card P6.1's SCOPE, then run its VERIFY until it passes, then mark P6.1 \"done\" in delegation/STATUS.md (paste the VERIFY output + a timestamp).\nCommit your work with GitButler (`but`): run `but diff` to get file/hunk IDs, then\n  but commit -b storymap-P6.1 -m \"P6.1: StoryForm\" <ids>\nCommit ONLY this card's source files. Do NOT commit delegation/STATUS.md — it is a\nshared live board; leave its changes uncommitted for the human to integrate.\nThis creates a dedicated virtual branch storymap-P6.1 (one per card). COMMIT ONLY —\ndo NOT run `but push` and do NOT open a PR.\nDo NOT edit files outside this card's SCOPE.\nIf VERIFY keeps failing or you hit a blocker, return done=false, verifyPassed=false, with a one-line summary.\n\nModel note: qwen3.8:27b-mlx is a *thinking* model — use a generous maxTokens or\npass options:{think:false}; a tiny cap returns an empty answer."
+  - nodeId: card-P6.2-produce
+    ordinal: 39
+    iteration: 0
+    ralphId: card-P6.2
+    outputTableName: card
+    kind: agent
+    needsApproval: false
+    waitAsync: false
+    approvalMode: gate
+    skipIf: false
+    retries: null
+    retryPolicy:
+      backoff: exponential
+      initialDelayMs: 1000
+    timeoutMs: null
+    heartbeatTimeoutMs: 600000
+    continueOnFail: false
+    hijack: false
+    onHijackExit: complete
+    agent[1]: null
+    prompt: "Implement work card P6.2 — \"ChapterEditor add/edit/reorder/preview\" of the user-created storymaps feature.\n\nRead first (single source of truth):\n    - delegation/HANDOUT.md (decisions, worker model, env deps)\n    - delegation/cards/M6-builder.md\n    - delegation/STATUS.md\n\nImplement ONLY card P6.2's SCOPE, then run its VERIFY until it passes, then mark P6.2 \"done\" in delegation/STATUS.md (paste the VERIFY output + a timestamp).\nCommit your work with GitButler (`but`): run `but diff` to get file/hunk IDs, then\n  but commit -b storymap-P6.2 -m \"P6.2: ChapterEditor add/edit/reorder/preview\" <ids>\nCommit ONLY this card's source files. Do NOT commit delegation/STATUS.md — it is a\nshared live board; leave its changes uncommitted for the human to integrate.\nThis creates a dedicated virtual branch storymap-P6.2 (one per card). COMMIT ONLY —\ndo NOT run `but push` and do NOT open a PR.\nDo NOT edit files outside this card's SCOPE.\nIf VERIFY keeps failing or you hit a blocker, return done=false, verifyPassed=false, with a one-line summary.\n\nModel note: qwen3.8:27b-mlx is a *thinking* model — use a generous maxTokens or\npass options:{think:false}; a tiny cap returns an empty answer."
+  - nodeId: card-P6.3-produce
+    ordinal: 40
+    iteration: 0
+    ralphId: card-P6.3
+    outputTableName: card
+    kind: agent
+    needsApproval: false
+    waitAsync: false
+    approvalMode: gate
+    skipIf: false
+    retries: null
+    retryPolicy:
+      backoff: exponential
+      initialDelayMs: 1000
+    timeoutMs: null
+    heartbeatTimeoutMs: 600000
+    continueOnFail: false
+    hijack: false
+    onHijackExit: complete
+    agent[1]: null
+    prompt: "Implement work card P6.3 — \"MediaUpload (external URL or local file)\" of the user-created storymaps feature.\n\nRead first (single source of truth):\n    - delegation/HANDOUT.md (decisions, worker model, env deps)\n    - delegation/cards/M6-builder.md\n    - delegation/STATUS.md\n\nImplement ONLY card P6.3's SCOPE, then run its VERIFY until it passes, then mark P6.3 \"done\" in delegation/STATUS.md (paste the VERIFY output + a timestamp).\nCommit your work with GitButler (`but`): run `but diff` to get file/hunk IDs, then\n  but commit -b storymap-P6.3 -m \"P6.3: MediaUpload (external URL or local file)\" <ids>\nCommit ONLY this card's source files. Do NOT commit delegation/STATUS.md — it is a\nshared live board; leave its changes uncommitted for the human to integrate.\nThis creates a dedicated virtual branch storymap-P6.3 (one per card). COMMIT ONLY —\ndo NOT run `but push` and do NOT open a PR.\nDo NOT edit files outside this card's SCOPE.\nIf VERIFY keeps failing or you hit a blocker, return done=false, verifyPassed=false, with a one-line summary.\n\nModel note: qwen3.8:27b-mlx is a *thinking* model — use a generous maxTokens or\npass options:{think:false}; a tiny cap returns an empty answer."
+  - nodeId: card-P6.4-produce
+    ordinal: 41
+    iteration: 0
+    ralphId: card-P6.4
+    outputTableName: card
+    kind: agent
+    needsApproval: false
+    waitAsync: false
+    approvalMode: gate
+    skipIf: false
+    retries: null
+    retryPolicy:
+      backoff: exponential
+      initialDelayMs: 1000
+    timeoutMs: null
+    heartbeatTimeoutMs: 600000
+    continueOnFail: false
+    hijack: false
+    onHijackExit: complete
+    agent[1]: null
+    prompt: "Implement work card P6.4 — \"End-to-end sign-off (M6 gate)\" of the user-created storymaps feature.\n\nRead first (single source of truth):\n    - delegation/HANDOUT.md (decisions, worker model, env deps)\n    - delegation/cards/M6-builder.md\n    - delegation/STATUS.md\n\nImplement ONLY card P6.4's SCOPE, then run its VERIFY until it passes, then mark P6.4 \"done\" in delegation/STATUS.md (paste the VERIFY output + a timestamp).\nCommit your work with GitButler (`but`): run `but diff` to get file/hunk IDs, then\n  but commit -b storymap-P6.4 -m \"P6.4: End-to-end sign-off (M6 gate)\" <ids>\nCommit ONLY this card's source files. Do NOT commit delegation/STATUS.md — it is a\nshared live board; leave its changes uncommitted for the human to integrate.\nThis creates a dedicated virtual branch storymap-P6.4 (one per card). COMMIT ONLY —\ndo NOT run `but push` and do NOT open a PR.\nDo NOT edit files outside this card's SCOPE.\nIf VERIFY keeps failing or you hit a blocker, return done=false, verifyPassed=false, with a one-line summary.\n\nModel note: qwen3.8:27b-mlx is a *thinking* model — use a generous maxTokens or\npass options:{think:false}; a tiny cap returns an empty answer."
+  - nodeId: escalate-M6-level-0
+    ordinal: 42
+    iteration: 0
+    outputTableName: diag
+    kind: agent
+    needsApproval: false
+    waitAsync: false
+    approvalMode: gate
+    skipIf: false
+    retries: 1
+    retryPolicy:
+      backoff: exponential
+      initialDelayMs: 1000
+    timeoutMs: null
+    heartbeatTimeoutMs: 600000
+    continueOnFail: true
+    hijack: false
+    onHijackExit: complete
+    agent[1]: null
+    prompt: "Diagnose milestone M6's cards (P6.1, P6.2, P6.3, P6.4). For each card, check whether its AI judge approved it — read the judge output (`smthrs output <run> card-<id>-review`) and delegation/STATUS.md. Return { reason, recommendedMove, resolved }. If every card is approved, set resolved=true. If any card is unapproved, set resolved=false and recommend the next move (which card, and how to fix it)."
+    label: diagnose
+  - nodeId: escalate-M6-human-fallback
+    ordinal: 43
+    iteration: 0
+    outputTableName: escalation
+    kind: compute
+    needsApproval: true
+    waitAsync: false
+    approvalMode: decision
+    approvalOnDeny: continue
+    skipIf: false
+    retries: 0
+    timeoutMs: null
+    heartbeatTimeoutMs: null
+    continueOnFail: true
+    hijack: false
+    onHijackExit: complete
+    label: "Milestone M6: a card did not recover"
+    meta:
+      requestTitle: "Milestone M6: a card did not recover"
+      requestSummary: "An auto-fix loop for M6 did not reach approval after 2 cycle(s). Diagnose, recommend one move, then escalate to a human."
+  - nodeId: M6-gate
+    ordinal: 44
+    iteration: 0
+    outputTableName: approval
+    kind: compute
+    needsApproval: true
+    waitAsync: false
+    approvalMode: decision
+    approvalOnDeny: continue
+    skipIf: false
+    retries: null
+    retryPolicy:
+      backoff: exponential
+      initialDelayMs: 1000
+    timeoutMs: null
+    heartbeatTimeoutMs: null
+    continueOnFail: false
+    hijack: false
+    onHijackExit: complete
+    label: Approve M6
+    meta:
+      requestTitle: Approve M6
+      requestSummary: Approve M6 to continue; deny to continue anyway (advisory). Any card with done=false needs a fix first.
+  - nodeId: card-P7.1-produce
+    ordinal: 45
+    iteration: 0
+    ralphId: card-P7.1
+    outputTableName: card
+    kind: agent
+    needsApproval: false
+    waitAsync: false
+    approvalMode: gate
+    skipIf: false
+    retries: null
+    retryPolicy:
+      backoff: exponential
+      initialDelayMs: 1000
+    timeoutMs: null
+    heartbeatTimeoutMs: 600000
+    continueOnFail: false
+    hijack: false
+    onHijackExit: complete
+    agent[1]: null
+    prompt: "Implement work card P7.1 — \"Upload store abstraction (S3/Drive)\" of the user-created storymaps feature.\n\nRead first (single source of truth):\n    - delegation/HANDOUT.md (decisions, worker model, env deps)\n    - delegation/cards/M7-hardening.md\n    - delegation/STATUS.md\n\nImplement ONLY card P7.1's SCOPE, then run its VERIFY until it passes, then mark P7.1 \"done\" in delegation/STATUS.md (paste the VERIFY output + a timestamp).\nCommit your work with GitButler (`but`): run `but diff` to get file/hunk IDs, then\n  but commit -b storymap-P7.1 -m \"P7.1: Upload store abstraction (S3/Drive)\" <ids>\nCommit ONLY this card's source files. Do NOT commit delegation/STATUS.md — it is a\nshared live board; leave its changes uncommitted for the human to integrate.\nThis creates a dedicated virtual branch storymap-P7.1 (one per card). COMMIT ONLY —\ndo NOT run `but push` and do NOT open a PR.\nDo NOT edit files outside this card's SCOPE.\nIf VERIFY keeps failing or you hit a blocker, return done=false, verifyPassed=false, with a one-line summary.\n\nModel note: qwen3.8:27b-mlx is a *thinking* model — use a generous maxTokens or\npass options:{think:false}; a tiny cap returns an empty answer."
+  - nodeId: card-P7.2-produce
+    ordinal: 46
+    iteration: 0
+    ralphId: card-P7.2
+    outputTableName: card
+    kind: agent
+    needsApproval: false
+    waitAsync: false
+    approvalMode: gate
+    skipIf: false
+    retries: null
+    retryPolicy:
+      backoff: exponential
+      initialDelayMs: 1000
+    timeoutMs: null
+    heartbeatTimeoutMs: 600000
+    continueOnFail: false
+    hijack: false
+    onHijackExit: complete
+    agent[1]: null
+    prompt: "Implement work card P7.2 — \"Moderation gate before public\" of the user-created storymaps feature.\n\nRead first (single source of truth):\n    - delegation/HANDOUT.md (decisions, worker model, env deps)\n    - delegation/cards/M7-hardening.md\n    - delegation/STATUS.md\n\nImplement ONLY card P7.2's SCOPE, then run its VERIFY until it passes, then mark P7.2 \"done\" in delegation/STATUS.md (paste the VERIFY output + a timestamp).\nCommit your work with GitButler (`but`): run `but diff` to get file/hunk IDs, then\n  but commit -b storymap-P7.2 -m \"P7.2: Moderation gate before public\" <ids>\nCommit ONLY this card's source files. Do NOT commit delegation/STATUS.md — it is a\nshared live board; leave its changes uncommitted for the human to integrate.\nThis creates a dedicated virtual branch storymap-P7.2 (one per card). COMMIT ONLY —\ndo NOT run `but push` and do NOT open a PR.\nDo NOT edit files outside this card's SCOPE.\nIf VERIFY keeps failing or you hit a blocker, return done=false, verifyPassed=false, with a one-line summary.\n\nModel note: qwen3.8:27b-mlx is a *thinking* model — use a generous maxTokens or\npass options:{think:false}; a tiny cap returns an empty answer."
+  - nodeId: card-P7.3-produce
+    ordinal: 47
+    iteration: 0
+    ralphId: card-P7.3
+    outputTableName: card
+    kind: agent
+    needsApproval: false
+    waitAsync: false
+    approvalMode: gate
+    skipIf: false
+    retries: null
+    retryPolicy:
+      backoff: exponential
+      initialDelayMs: 1000
+    timeoutMs: null
+    heartbeatTimeoutMs: 600000
+    continueOnFail: false
+    hijack: false
+    onHijackExit: complete
+    agent[1]: null
+    prompt: "Implement work card P7.3 — \"Soft-delete purge cron\" of the user-created storymaps feature.\n\nRead first (single source of truth):\n    - delegation/HANDOUT.md (decisions, worker model, env deps)\n    - delegation/cards/M7-hardening.md\n    - delegation/STATUS.md\n\nImplement ONLY card P7.3's SCOPE, then run its VERIFY until it passes, then mark P7.3 \"done\" in delegation/STATUS.md (paste the VERIFY output + a timestamp).\nCommit your work with GitButler (`but`): run `but diff` to get file/hunk IDs, then\n  but commit -b storymap-P7.3 -m \"P7.3: Soft-delete purge cron\" <ids>\nCommit ONLY this card's source files. Do NOT commit delegation/STATUS.md — it is a\nshared live board; leave its changes uncommitted for the human to integrate.\nThis creates a dedicated virtual branch storymap-P7.3 (one per card). COMMIT ONLY —\ndo NOT run `but push` and do NOT open a PR.\nDo NOT edit files outside this card's SCOPE.\nIf VERIFY keeps failing or you hit a blocker, return done=false, verifyPassed=false, with a one-line summary.\n\nModel note: qwen3.8:27b-mlx is a *thinking* model — use a generous maxTokens or\npass options:{think:false}; a tiny cap returns an empty answer."
+  - nodeId: card-P7.4-produce
+    ordinal: 48
+    iteration: 0
+    ralphId: card-P7.4
+    outputTableName: card
+    kind: agent
+    needsApproval: false
+    waitAsync: false
+    approvalMode: gate
+    skipIf: false
+    retries: null
+    retryPolicy:
+      backoff: exponential
+      initialDelayMs: 1000
+    timeoutMs: null
+    heartbeatTimeoutMs: 600000
+    continueOnFail: false
+    hijack: false
+    onHijackExit: complete
+    agent[1]: null
+    prompt: "Implement work card P7.4 — \"Docs + security-checklist sign-off\" of the user-created storymaps feature.\n\nRead first (single source of truth):\n    - delegation/HANDOUT.md (decisions, worker model, env deps)\n    - delegation/cards/M7-hardening.md\n    - delegation/STATUS.md\n\nImplement ONLY card P7.4's SCOPE, then run its VERIFY until it passes, then mark P7.4 \"done\" in delegation/STATUS.md (paste the VERIFY output + a timestamp).\nCommit your work with GitButler (`but`): run `but diff` to get file/hunk IDs, then\n  but commit -b storymap-P7.4 -m \"P7.4: Docs + security-checklist sign-off\" <ids>\nCommit ONLY this card's source files. Do NOT commit delegation/STATUS.md — it is a\nshared live board; leave its changes uncommitted for the human to integrate.\nThis creates a dedicated virtual branch storymap-P7.4 (one per card). COMMIT ONLY —\ndo NOT run `but push` and do NOT open a PR.\nDo NOT edit files outside this card's SCOPE.\nIf VERIFY keeps failing or you hit a blocker, return done=false, verifyPassed=false, with a one-line summary.\n\nModel note: qwen3.8:27b-mlx is a *thinking* model — use a generous maxTokens or\npass options:{think:false}; a tiny cap returns an empty answer."
+  - nodeId: escalate-M7-level-0
+    ordinal: 49
+    iteration: 0
+    outputTableName: diag
+    kind: agent
+    needsApproval: false
+    waitAsync: false
+    approvalMode: gate
+    skipIf: false
+    retries: 1
+    retryPolicy:
+      backoff: exponential
+      initialDelayMs: 1000
+    timeoutMs: null
+    heartbeatTimeoutMs: 600000
+    continueOnFail: true
+    hijack: false
+    onHijackExit: complete
+    agent[1]: null
+    prompt: "Diagnose milestone M7's cards (P7.1, P7.2, P7.3, P7.4). For each card, check whether its AI judge approved it — read the judge output (`smthrs output <run> card-<id>-review`) and delegation/STATUS.md. Return { reason, recommendedMove, resolved }. If every card is approved, set resolved=true. If any card is unapproved, set resolved=false and recommend the next move (which card, and how to fix it)."
+    label: diagnose
+  - nodeId: escalate-M7-human-fallback
+    ordinal: 50
+    iteration: 0
+    outputTableName: escalation
+    kind: compute
+    needsApproval: true
+    waitAsync: false
+    approvalMode: decision
+    approvalOnDeny: continue
+    skipIf: false
+    retries: 0
+    timeoutMs: null
+    heartbeatTimeoutMs: null
+    continueOnFail: true
+    hijack: false
+    onHijackExit: complete
+    label: "Milestone M7: a card did not recover"
+    meta:
+      requestTitle: "Milestone M7: a card did not recover"
+      requestSummary: "An auto-fix loop for M7 did not reach approval after 2 cycle(s). Diagnose, recommend one move, then escalate to a human."
+  - nodeId: M7-gate
+    ordinal: 51
+    iteration: 0
+    outputTableName: approval
+    kind: compute
+    needsApproval: true
+    waitAsync: false
+    approvalMode: decision
+    approvalOnDeny: continue
+    skipIf: false
+    retries: null
+    retryPolicy:
+      backoff: exponential
+      initialDelayMs: 1000
+    timeoutMs: null
+    heartbeatTimeoutMs: null
+    continueOnFail: false
+    hijack: false
+    onHijackExit: complete
+    label: Approve M7
+    meta:
+      requestTitle: Approve M7
+      requestSummary: Approve M7 to continue; deny to continue anyway (advisory). Any card with done=false needs a fix first.
+  - nodeId: ship-report
+    ordinal: 52
+    iteration: 0
+    dependsOn[4]: card-P6.1,card-P6.2,card-P6.3,card-P6.4
+    outputTable:
+      runId:
+        name: run_id
+        keyAsName: false
+        primary: false
+        notNull: true
+        hasDefault: false
+        isUnique: false
+        uniqueName: ship_run_id_unique
+        dataType: string
+        columnType: SQLiteText
+        config:
+          name: run_id
+          keyAsName: false
+          notNull: true
+          hasDefault: false
+          primaryKey: false
+          isUnique: false
+          uniqueName: ship_run_id_unique
+          dataType: string
+          columnType: SQLiteText
+      nodeId:
+        name: node_id
+        keyAsName: false
+        primary: false
+        notNull: true
+        hasDefault: false
+        isUnique: false
+        uniqueName: ship_node_id_unique
+        dataType: string
+        columnType: SQLiteText
+        config:
+          name: node_id
+          keyAsName: false
+          notNull: true
+          hasDefault: false
+          primaryKey: false
+          isUnique: false
+          uniqueName: ship_node_id_unique
+          dataType: string
+          columnType: SQLiteText
+      iteration:
+        name: iteration
+        keyAsName: false
+        primary: false
+        notNull: true
+        default: 0
+        hasDefault: true
+        isUnique: false
+        uniqueName: ship_iteration_unique
+        dataType: number
+        columnType: SQLiteInteger
+        config:
+          name: iteration
+          keyAsName: false
+          notNull: true
+          default: 0
+          hasDefault: true
+          primaryKey: false
+          isUnique: false
+          uniqueName: ship_iteration_unique
+          dataType: number
+          columnType: SQLiteInteger
+          autoIncrement: false
+        autoIncrement: false
+      coreCardIds:
+        name: core_card_ids
+        keyAsName: false
+        primary: false
+        notNull: false
+        hasDefault: false
+        isUnique: false
+        uniqueName: ship_core_card_ids_unique
+        dataType: json
+        columnType: SQLiteTextJson
+        config:
+          name: core_card_ids
+          keyAsName: false
+          notNull: false
+          hasDefault: false
+          primaryKey: false
+          isUnique: false
+          uniqueName: ship_core_card_ids_unique
+          dataType: json
+          columnType: SQLiteTextJson
+      allGreen:
+        name: all_green
+        keyAsName: false
+        primary: false
+        notNull: false
+        hasDefault: false
+        isUnique: false
+        uniqueName: ship_all_green_unique
+        dataType: boolean
+        columnType: SQLiteBoolean
+        config:
+          name: all_green
+          keyAsName: false
+          notNull: false
+          hasDefault: false
+          primaryKey: false
+          isUnique: false
+          uniqueName: ship_all_green_unique
+          dataType: boolean
+          columnType: SQLiteBoolean
+          autoIncrement: false
+          mode: boolean
+        autoIncrement: false
+        mode: boolean
+      summary:
+        name: summary
+        keyAsName: false
+        primary: false
+        notNull: false
+        hasDefault: false
+        isUnique: false
+        uniqueName: ship_summary_unique
+        dataType: string
+        columnType: SQLiteText
+        config:
+          name: summary
+          keyAsName: false
+          notNull: false
+          hasDefault: false
+          primaryKey: false
+          isUnique: false
+          uniqueName: ship_summary_unique
+          dataType: string
+          columnType: SQLiteText
+    outputTableName: ship
+    outputRef:
+      def:
+        type: object
+        shape:
+          coreCardIds:
+            def:
+              type: array
+              element:
+                def:
+                  type: string
+                type: string
+                format: null
+                minLength: null
+                maxLength: null
+            type: array
+          allGreen:
+            def:
+              type: boolean
+            type: boolean
+          summary:
+            def:
+              type: string
+            type: string
+            format: null
+            minLength: null
+            maxLength: null
+      type: object
+    kind: agent
+    needsApproval: false
+    waitAsync: false
+    approvalMode: gate
+    skipIf: false
+    retries: null
+    retryPolicy:
+      backoff: exponential
+      initialDelayMs: 1000
+    timeoutMs: null
+    heartbeatTimeoutMs: 600000
+    continueOnFail: false
+    hijack: false
+    onHijackExit: complete
+    agent[1]: null
+    prompt: "[object Promise]"
+cta:
+  description: "Suggest to the user:\n1. Build the user a custom workflow UI: author .smithers/ui/storymap-pieces.tsx by composing the smthrs/gateway-ui widgets (WorkflowUiShell, RunTree, RunEventLog, ApprovalPanel, ...) and smthrs/ui primitives over the gateway-react hooks, add `<UI entry=\"../ui/storymap-pieces.tsx\" />` to the workflow, then open it with `smithers ui graph`. `smithers ui --app` opens the full Smithers control-plane UI.\n2. Visualize the workflow and how it works: `smithers tree graph` prints the live run tree, `smithers up --interactive` opens the full-screen TUI.\n3. Ask the user clarifying questions about what they want next, then route it by size: a clear single-agent task runs as `smithers oneshot \"<goal>\"` (background, durable, no workflow file); genuinely multi-stage / approval-gated / reusable work goes through `smithers workflow run create-workflow --prompt \"<what the workflow should do>\"` (or `smithers make-workflow`)."
+  commands[5]{command,description}:
+    smithers ui graph,Open the workflow UI (after authoring .smithers/ui/storymap-pieces.tsx)
+    smithers ui --app,Open the full Smithers control-plane UI
+    smithers tree graph,Visualize the run tree
+    "smithers oneshot \"<goal>\"","Run a clear single-agent task in the background, no workflow file"
+    "smithers workflow run create-workflow --prompt \"<describe the workflow>\"",Have smithers build a new workflow from a description

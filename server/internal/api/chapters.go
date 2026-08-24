@@ -8,6 +8,7 @@ import (
 	"database/sql"
 	"encoding/json"
 	"errors"
+	"fmt"
 	"math"
 	"net/http"
 	"strings"
@@ -15,6 +16,7 @@ import (
 	"github.com/go-chi/chi/v5"
 
 	"github.com/Kwik-Dev/geoLibre_storymaps/server/internal/auth"
+	"github.com/Kwik-Dev/geoLibre_storymaps/server/internal/media"
 )
 
 // Location is the validated JSONB shape of a chapter's camera position. It
@@ -54,12 +56,22 @@ type Chapter struct {
 // and enforces canAccess on every operation (list, create, get, update,
 // delete, reorder). It reuses the same DB handle as the stories handler.
 type ChaptersHandler struct {
-	db *sql.DB
+	db           *sql.DB
+	allowedHosts []string // optional media external-URL allow-list (P4.3)
 }
 
 // NewChaptersHandler builds a ChaptersHandler backed by db.
 func NewChaptersHandler(db *sql.DB) *ChaptersHandler {
 	return &ChaptersHandler{db: db}
+}
+
+// SetAllowedMediaHosts configures the external-URL media allow-list used when
+// validating media_ref_type=external chapters (P4.2/P4.3). An empty list means
+// DEFAULT-ALLOW (any well-formed https host). It returns the handler for
+// chaining so callers can wire it inline.
+func (h *ChaptersHandler) SetAllowedMediaHosts(hosts []string) *ChaptersHandler {
+	h.allowedHosts = hosts
+	return h
 }
 
 // Routes registers the nested chapters routes on the given router. It is meant
@@ -141,12 +153,15 @@ func (h *ChaptersHandler) List(w http.ResponseWriter, r *http.Request) {
 
 // Create serves POST /api/stories/:id/chapters. position is auto-assigned as
 // COALESCE(MAX(position),0)+1. title is required; description_md optional;
-// alignment ∈ {left,center,right} (default center); location is validated JSONB.
+// alignment ∈ {left,center,right} (default center); location is validated JSONB;
+// media fields (media_type/media_ref_type/media_external_url/media_asset_id)
+// are validated as a group against the P4.3 media matrix.
 func (h *ChaptersHandler) Create(w http.ResponseWriter, r *http.Request) {
 	story, ok := h.loadStory(w, r)
 	if !ok {
 		return
 	}
+	user := auth.UserFrom(r.Context())
 
 	var body struct {
 		Title           string          `json:"title"`
@@ -159,6 +174,10 @@ func (h *ChaptersHandler) Create(w http.ResponseWriter, r *http.Request) {
 		OnChapterEnter  json.RawMessage `json:"on_chapter_enter"`
 		OnChapterExit   json.RawMessage `json:"on_chapter_exit"`
 		Source          string          `json:"source"`
+		MediaType       string          `json:"media_type"`
+		MediaRefType    string          `json:"media_ref_type"`
+		MediaExternalURL string         `json:"media_external_url"`
+		MediaAssetID    json.RawMessage `json:"media_asset_id"`
 	}
 	if err := json.NewDecoder(r.Body).Decode(&body); err != nil {
 		writeJSON(w, http.StatusBadRequest, map[string]string{"error": "invalid request body"})
@@ -166,6 +185,24 @@ func (h *ChaptersHandler) Create(w http.ResponseWriter, r *http.Request) {
 	}
 	if strings.TrimSpace(body.Title) == "" {
 		writeJSON(w, http.StatusBadRequest, map[string]string{"error": "title is required"})
+		return
+	}
+
+	// Parse media_asset_id (number, null, or absent → nil).
+	var assetID *int64
+	if len(body.MediaAssetID) > 0 && string(body.MediaAssetID) != "null" {
+		var v int64
+		if err := json.Unmarshal(body.MediaAssetID, &v); err != nil {
+			writeJSON(w, http.StatusBadRequest, map[string]string{"error": "media_asset_id must be an integer"})
+			return
+		}
+		assetID = &v
+	}
+
+	mt, rt, extURL, finalAsset, merr := h.validateMedia(user, body.MediaType, body.MediaRefType,
+		strings.TrimSpace(body.MediaExternalURL), assetID)
+	if merr != nil {
+		writeJSON(w, merr.Status, map[string]string{"error": merr.Message})
 		return
 	}
 
@@ -215,15 +252,17 @@ func (h *ChaptersHandler) Create(w http.ResponseWriter, r *http.Request) {
 	err := h.db.QueryRow(`
 		INSERT INTO chapters (story_id, position, title, description_md, alignment, hidden, location,
 		                      map_animation, rotate_animation, on_chapter_enter, on_chapter_exit, source,
+		                      media_type, media_ref_type, media_external_url, media_asset_id,
 		                      created_at, updated_at)
 		VALUES (?, COALESCE((SELECT MAX(position) FROM chapters WHERE story_id = ? AND deleted_at IS NULL), 0) + 1,
-		        ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, datetime('now'), datetime('now'))
+		        ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, datetime('now'), datetime('now'))
 		RETURNING id`,
 		story.ID, story.ID,
 		strings.TrimSpace(body.Title), strings.TrimSpace(body.DescriptionMD), alignment,
 		boolToInt(hidden), nullableBytes(locJSON), mapAnim, boolToInt(rotate),
 		nullableBytes(body.OnChapterEnter), nullableBytes(body.OnChapterExit),
-		strings.TrimSpace(body.Source)).Scan(&id)
+		strings.TrimSpace(body.Source),
+		mt, string(rt), extURL, nullableID(finalAsset)).Scan(&id)
 	if err != nil {
 		writeJSON(w, http.StatusInternalServerError, map[string]string{"error": "failed to create chapter"})
 		return
@@ -251,11 +290,14 @@ func (h *ChaptersHandler) Get(w http.ResponseWriter, r *http.Request) {
 
 // Update serves PUT /api/stories/:id/chapters/:cid. It is a partial update:
 // empty/omitted fields keep their current values. location, if provided, is
-// validated.
+// validated. The four media fields are a grouped set: if any of them is present
+// in the request the full media combo is re-derived (provided values layered
+// over the current row) and validated against the P4.3 media matrix.
 func (h *ChaptersHandler) Update(w http.ResponseWriter, r *http.Request) {
 	if _, ok := h.loadStory(w, r); !ok {
 		return
 	}
+	user := auth.UserFrom(r.Context())
 	existing, ok := h.loadChapter(w, r)
 	if !ok {
 		return
@@ -272,6 +314,10 @@ func (h *ChaptersHandler) Update(w http.ResponseWriter, r *http.Request) {
 		OnChapterEnter  json.RawMessage `json:"on_chapter_enter"`
 		OnChapterExit   json.RawMessage `json:"on_chapter_exit"`
 		Source          *string         `json:"source"`
+		MediaType       *string         `json:"media_type"`
+		MediaRefType    *string         `json:"media_ref_type"`
+		MediaExternalURL *string        `json:"media_external_url"`
+		MediaAssetID    json.RawMessage `json:"media_asset_id"`
 	}
 	if err := json.NewDecoder(r.Body).Decode(&body); err != nil {
 		writeJSON(w, http.StatusBadRequest, map[string]string{"error": "invalid request body"})
@@ -288,6 +334,58 @@ func (h *ChaptersHandler) Update(w http.ResponseWriter, r *http.Request) {
 	var locJSON []byte
 	if existing.Location != nil {
 		locJSON, _ = json.Marshal(existing.Location)
+	}
+
+	// Media is a grouped field. If any of the four media fields is present,
+	// re-derive the full combo from the provided values + the current row, then
+	// validate it (P4.3 matrix). If none is present, leave media untouched.
+	var assetID *int64
+	if existing.MediaAssetID != nil {
+		v := *existing.MediaAssetID
+		assetID = &v
+	}
+	assetIDPresent := false
+	if len(body.MediaAssetID) > 0 {
+		assetIDPresent = true
+		assetID = nil
+		if string(body.MediaAssetID) != "null" {
+			var v int64
+			if err := json.Unmarshal(body.MediaAssetID, &v); err != nil {
+				writeJSON(w, http.StatusBadRequest, map[string]string{"error": "media_asset_id must be an integer"})
+				return
+			}
+			assetID = &v
+		}
+	}
+
+	mediaFieldsPresent := body.MediaType != nil || body.MediaRefType != nil ||
+		body.MediaExternalURL != nil || assetIDPresent
+	mediaType := existing.MediaType
+	mediaRefType := existing.MediaRefType
+	mediaExternalURL := existing.MediaExternalURL
+	mediaAssetID := existing.MediaAssetID
+	if mediaFieldsPresent {
+		mt := mediaType
+		rtStr := mediaRefType
+		extURL := mediaExternalURL
+		if body.MediaType != nil {
+			mt = *body.MediaType
+		}
+		if body.MediaRefType != nil {
+			rtStr = *body.MediaRefType
+		}
+		if body.MediaExternalURL != nil {
+			extURL = strings.TrimSpace(*body.MediaExternalURL)
+		}
+		mt, rt, extURL, finalAsset, merr := h.validateMedia(user, mt, rtStr, extURL, assetID)
+		if merr != nil {
+			writeJSON(w, merr.Status, map[string]string{"error": merr.Message})
+			return
+		}
+		mediaType = mt
+		mediaRefType = string(rt)
+		mediaExternalURL = extURL
+		mediaAssetID = finalAsset
 	}
 
 	if body.Title != nil {
@@ -357,10 +455,12 @@ func (h *ChaptersHandler) Update(w http.ResponseWriter, r *http.Request) {
 	if _, err := h.db.Exec(`
 		UPDATE chapters SET title = ?, description_md = ?, alignment = ?, hidden = ?, location = ?,
 		       map_animation = ?, rotate_animation = ?, on_chapter_enter = ?, on_chapter_exit = ?,
-		       source = ?, updated_at = datetime('now')
+		       source = ?, media_type = ?, media_ref_type = ?, media_external_url = ?, media_asset_id = ?,
+		       updated_at = datetime('now')
 		WHERE id = ? AND deleted_at IS NULL`,
 		title, desc, alignment, boolToInt(hidden), nullableBytes(locJSON), mapAnim,
-		boolToInt(rotate), nullableBytes(enter), nullableBytes(exit), source, existing.ID); err != nil {
+		boolToInt(rotate), nullableBytes(enter), nullableBytes(exit), source,
+		mediaType, mediaRefType, mediaExternalURL, nullableID(mediaAssetID), existing.ID); err != nil {
 		writeJSON(w, http.StatusInternalServerError, map[string]string{"error": "failed to update chapter"})
 		return
 	}
@@ -586,4 +686,148 @@ func nullableBytes(b []byte) interface{} {
 		return nil
 	}
 	return string(b)
+}
+
+// nullableID returns a nil interface for a nil *int64 so a media_asset_id is
+// stored as SQL NULL rather than 0.
+func nullableID(id *int64) interface{} {
+	if id == nil {
+		return nil
+	}
+	return *id
+}
+
+// mediaErr builds a *media.StatusError, the error type P4.1 defined for
+// HTTP-carriable handler errors.
+func mediaErr(status int, format string, args ...interface{}) *media.StatusError {
+	return &media.StatusError{Status: status, Message: fmt.Sprintf(format, args...)}
+}
+
+// validateMedia enforces the P4.3 media matrix (HANDOUT §6):
+//
+//	media_type ∈ {image,video,audio,none} (default none)
+//	media_ref_type ∈ {external,local,none} (default none)
+//	none ⇒ both media_external_url and media_asset_id empty
+//	external ⇒ concrete media_type + media_external_url set and passes
+//	          ValidateExternalURL with h.allowedHosts (empty = default-allow)
+//	local ⇒ concrete media_type + media_asset_id set, the asset exists and is
+//	        accessible to the requesting user (see assetAccessible)
+//
+// It returns the canonical, persisted (media_type, media_ref_type,
+// media_external_url, media_asset_id) or a *media.StatusError. An inconsistent
+// combo → 400; a foreign *private* asset → 403.
+func (h *ChaptersHandler) validateMedia(user *auth.User, mediaType, refType string, externalURL string, assetID *int64) (string, media.RefType, string, *int64, *media.StatusError) {
+	mt := strings.ToLower(strings.TrimSpace(mediaType))
+	if mt == "" {
+		mt = "none"
+	}
+	if mt != "image" && mt != "video" && mt != "audio" && mt != "none" {
+		return "", "", "", nil, mediaErr(http.StatusBadRequest,
+			"media_type must be 'image', 'video', 'audio', or 'none'")
+	}
+
+	rt := media.RefType(strings.ToLower(strings.TrimSpace(refType)))
+	if rt == "" {
+		rt = media.RefTypeNone
+	}
+	if !rt.Valid() {
+		return "", "", "", nil, mediaErr(http.StatusBadRequest,
+			"media_ref_type must be 'external', 'local', or 'none'")
+	}
+
+	// Structural matrix check (P4.2 HANDOFF).
+	if err := media.CheckMediaRef(mt, rt, externalURL, h.allowedHosts); err != nil {
+		return "", "", "", nil, mediaErr(http.StatusBadRequest, "%s", err.Error())
+	}
+
+	switch rt {
+	case media.RefTypeExternal:
+		if assetID != nil {
+			return "", "", "", nil, mediaErr(http.StatusBadRequest,
+				"media_asset_id is only allowed with media_ref_type=local")
+		}
+	case media.RefTypeLocal:
+		if assetID == nil || *assetID <= 0 {
+			return "", "", "", nil, mediaErr(http.StatusBadRequest,
+				"media_ref_type=local requires a media_asset_id")
+		}
+		ok, forbidden, err := h.assetAccessible(*assetID, user)
+		if err != nil {
+			if se, ok := err.(*media.StatusError); ok {
+				return "", "", "", nil, se
+			}
+			return "", "", "", nil, mediaErr(http.StatusInternalServerError, "failed to check media asset")
+		}
+		if !ok {
+			if forbidden {
+				return "", "", "", nil, mediaErr(http.StatusForbidden,
+					"media asset belongs to another author's private story")
+			}
+			return "", "", "", nil, mediaErr(http.StatusBadRequest, "media asset not found")
+		}
+	case media.RefTypeNone:
+		if assetID != nil {
+			return "", "", "", nil, mediaErr(http.StatusBadRequest,
+				"media_asset_id is only allowed with media_ref_type=local")
+		}
+	}
+
+	return mt, rt, externalURL, assetID, nil
+}
+
+// assetAccessible reports whether the given media_asset exists (not
+// soft-deleted) and is reachable by the requesting user. Because the locked
+// media_assets schema has no owner column (HANDOUT §4), ownership/visibility
+// is derived from the stories that reference the asset:
+//
+//	- not referenced by any live chapter ⇒ treated as accessible (a
+//	  just-uploaded, unassociated asset is usable until it is tied to a
+//	  story's visibility);
+//	- referenced by ≥1 story the user canAccess ⇒ accessible (the author's own
+//	  story or a public story);
+//	- referenced only by stories the user cannot access ⇒ inaccessible
+//	  (returns forbidden=true) — a foreign private asset.
+//
+// It returns (accessible, forbidden, error).
+func (h *ChaptersHandler) assetAccessible(assetID int64, user *auth.User) (bool, bool, error) {
+	var kind string
+	err := h.db.QueryRow(`SELECT kind FROM media_assets WHERE id = ? AND deleted_at IS NULL`, assetID).Scan(&kind)
+	if err == sql.ErrNoRows {
+		return false, false, nil
+	}
+	if err != nil {
+		return false, false, mediaErr(http.StatusInternalServerError, "failed to check media asset")
+	}
+
+	rows, err := h.db.Query(`
+		SELECT s.id, s.slug, s.author_id, s.title, s.subtitle, s.byline, s.visibility, s.status, s.created_at, s.updated_at
+		FROM stories s
+		JOIN chapters c ON c.story_id = s.id
+		WHERE c.media_asset_id = ? AND c.deleted_at IS NULL AND s.deleted_at IS NULL`, assetID)
+	if err != nil {
+		return false, false, mediaErr(http.StatusInternalServerError, "failed to check media asset")
+	}
+	defer rows.Close()
+
+	referenced := 0
+	accessible := 0
+	for rows.Next() {
+		var s Story
+		if err := rows.Scan(&s.ID, &s.Slug, &s.AuthorID, &s.Title, &s.Subtitle, &s.Byline,
+			&s.Visibility, &s.Status, &s.CreatedAt, &s.UpdatedAt); err != nil {
+			return false, false, mediaErr(http.StatusInternalServerError, "failed to check media asset")
+		}
+		referenced++
+		if canAccess(s, user) {
+			accessible++
+		}
+	}
+	if err := rows.Err(); err != nil {
+		return false, false, mediaErr(http.StatusInternalServerError, "failed to check media asset")
+	}
+
+	if referenced == 0 || accessible > 0 {
+		return true, false, nil
+	}
+	return false, true, nil
 }

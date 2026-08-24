@@ -82,7 +82,7 @@ func New(cfg *config.Config, db *sql.DB, admin *auth.AdminHandler, whoami *auth.
 		}
 		// Stories CRUD (P3.1). The handler enforces visibility/authz per-op;
 		// the middleware already allowlists the public GET /api/stories list.
-		api.NewStoriesHandler(db, auther).Routes(r)
+		api.NewStoriesHandler(db, auther, cfg.ModerationRequired).Routes(r)
 		// Nested chapters CRUD + reorder (P3.2). Every op loads the parent
 		// story and runs canAccess, so authz is enforced on every route. The
 		// configured media external-URL allow-list (P4.3) gates media_ref_type

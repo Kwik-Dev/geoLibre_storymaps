@@ -17,9 +17,10 @@ type Config struct {
 	AdminPassword     string   // optional: seeded admin password
 	MediaDir          string   // directory for uploaded media (default $DATA_DIR/media)
 	StoreKind         string   // upload store kind: "local" (default) or "s3"
-	AllowedMediaHosts []string // optional comma-separated allow-list (empty = permissive)
-	MaxUploadBytes    int64    // maximum upload size in bytes (default 25 MB)
-	AppPort           int      // HTTP listen port (default 8080)
+	AllowedMediaHosts  []string // optional comma-separated allow-list (empty = permissive)
+	MaxUploadBytes     int64    // maximum upload size in bytes (default 25 MB)
+	AppPort            int      // HTTP listen port (default 8080)
+	ModerationRequired bool     // when true, stories set to public go to status=pending (P7.2)
 }
 
 const (
@@ -43,6 +44,7 @@ func Load() (*Config, error) {
 		StoreKind:     getEnv("STORE_KIND", "local"),
 		MaxUploadBytes: getEnvInt64("MEDIA_MAX_BYTES", defaultMaxUploadBytes),
 		AppPort:       getEnvInt("APP_PORT", defaultAppPort),
+		ModerationRequired: os.Getenv("MODERATION_REQUIRED") == "1",
 	}
 
 	if hosts := os.Getenv("ALLOWED_MEDIA_HOSTS"); hosts != "" {

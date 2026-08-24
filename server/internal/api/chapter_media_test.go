@@ -23,7 +23,7 @@ func newTestRouterChaptersMedia(t *testing.T, database *sql.DB, allowedHosts []s
 	auther := auth.NewAuthenticator(testSecret, false)
 	r.Route("/api", func(api chi.Router) {
 		api.Use(auther.RequireAuth)
-		NewStoriesHandler(database, auther).Routes(api)
+		NewStoriesHandler(database, auther, false).Routes(api)
 		NewChaptersHandler(database).SetAllowedMediaHosts(allowedHosts).Routes(api)
 	})
 	return r

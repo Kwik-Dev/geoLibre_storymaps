@@ -41,7 +41,7 @@ func TestStoryView(t *testing.T) {
 		``, ``, ``, "none", "none", "", nil)
 
 	// Load the story + chapters the way the API would.
-	sh := NewStoriesHandler(database, nil)
+	sh := NewStoriesHandler(database, nil, false)
 	story, err := sh.loadByID(storyID)
 	if err != nil {
 		t.Fatalf("load story: %v", err)

@@ -12,6 +12,7 @@ func TestLoadDefaults(t *testing.T) {
 		"ADMIN_EMAIL", "ADMIN_PASSWORD",
 		"MEDIA_DIR", "ALLOWED_MEDIA_HOSTS",
 		"MEDIA_MAX_BYTES", "APP_PORT",
+		"MODERATION_REQUIRED",
 	} {
 		os.Unsetenv(key)
 	}
@@ -56,6 +57,10 @@ func TestLoadDefaults(t *testing.T) {
 		t.Errorf("expected APP_PORT default %d, got %d", 8080, cfg.AppPort)
 	}
 
+	if cfg.ModerationRequired != false {
+		t.Errorf("expected MODERATION_REQUIRED default false, got %v", cfg.ModerationRequired)
+	}
+
 	if cfg.AllowedMediaHosts != nil {
 		t.Errorf("expected ALLOWED_MEDIA_HOSTS default nil, got %v", cfg.AllowedMediaHosts)
 	}
@@ -83,6 +88,7 @@ func TestLoadCustomEnv(t *testing.T) {
 	os.Setenv("ALLOWED_MEDIA_HOSTS", "example.com, media.example.org")
 	os.Setenv("MEDIA_MAX_BYTES", "52428800")
 	os.Setenv("APP_PORT", "9090")
+	os.Setenv("MODERATION_REQUIRED", "1")
 
 	defer func() {
 		for _, key := range []string{
@@ -90,6 +96,7 @@ func TestLoadCustomEnv(t *testing.T) {
 			"ADMIN_EMAIL", "ADMIN_PASSWORD",
 			"MEDIA_DIR", "ALLOWED_MEDIA_HOSTS",
 			"MEDIA_MAX_BYTES", "APP_PORT",
+			"MODERATION_REQUIRED",
 		} {
 			os.Unsetenv(key)
 		}
@@ -126,5 +133,9 @@ func TestLoadCustomEnv(t *testing.T) {
 	}
 	if cfg.AppPort != 9090 {
 		t.Errorf("expected APP_PORT 9090, got %d", cfg.AppPort)
+	}
+
+	if cfg.ModerationRequired != true {
+		t.Errorf("expected MODERATION_REQUIRED true, got %v", cfg.ModerationRequired)
 	}
 }

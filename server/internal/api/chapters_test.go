@@ -23,7 +23,7 @@ func newTestRouterWithChapters(t *testing.T, database *sql.DB) *chi.Mux {
 	auther := auth.NewAuthenticator(testSecret, false)
 	r.Route("/api", func(api chi.Router) {
 		api.Use(auther.RequireAuth)
-		NewStoriesHandler(database, auther).Routes(api)
+		NewStoriesHandler(database, auther, false).Routes(api)
 		NewChaptersHandler(database).Routes(api)
 	})
 	return r

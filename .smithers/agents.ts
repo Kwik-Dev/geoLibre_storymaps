@@ -45,7 +45,8 @@ export const providers = {
   openrouter: createOpenRouterAgent(),
 //   opencode: new SmithersOpenCodeAgent({ model: "anthropic/claude-fable-5" }),
 //   antigravity: new SmithersAntigravityAgent(),
-  pi: new SmithersPiAgent({ provider: "ollama-cloud", model: "deepseek-v4-flash:preview", mode: "text", config: { maxTokens: 256000 }, skipGitRepoCheck: true, noExtensions: true }),
+  pi_ollama_cloud: new SmithersPiAgent({ provider: "ollama-cloud", model: "deepseek-v4-flash:cloud", mode: "text", config: { maxTokens: 256000 }, skipGitRepoCheck: true, noExtensions: true }),
+  pi_ollama: new SmithersPiAgent({ provider: "ollama", model: "qwen3.8:27b-mlx", mode: "text", config: { maxTokens: 12800 }, skipGitRepoCheck: true, noExtensions: true }),
 //   omp: new SmithersOmpAgent({ model: "gpt-5.6-luna" }),
 //   kimi: new SmithersKimiAgent({ model: "kimi-k2.7-code" }),
 //   amp: new SmithersAmpAgent(),
@@ -68,7 +69,7 @@ export const agents = {
   // cheapFast: Smithers would normally suggest Antigravity here, but Antigravity is not available: missing `agy` on PATH; no registered Antigravity account and not authenticated (~/.gemini/antigravity-cli/settings.json or ~/.gemini/antigravity-cli).
   // cheapFast: Smithers would normally suggest OpenClaw here, but OpenClaw is not available: missing `openclaw` on PATH; missing credentials (~/.openclaw/openclaw.json or ~/.openclaw).
   cheapFast: [
-    providers.pi,
+    providers.pi_ollama_cloud,
     // providers.codexLuna,
     // providers.claudeSonnet,
     // providers.kimi,
@@ -85,7 +86,7 @@ export const agents = {
   // research: Smithers would normally suggest OpenClaw here, but OpenClaw is not available: missing `openclaw` on PATH; missing credentials (~/.openclaw/openclaw.json or ~/.openclaw).
   // research: Smithers would normally suggest Cursor here, but Cursor is not available: missing `cursor-agent` on PATH; missing credentials (~/.cursor/auth.json or $CURSOR_API_KEY).
   research: [
-    providers.pi,
+    providers.pi_ollama_cloud,
     // providers.codexLuna,
     // providers.kimi,
     // providers.antigravity,
@@ -103,7 +104,7 @@ export const agents = {
   // implement: Smithers would normally suggest OpenCode here, but OpenCode is not available: missing `opencode` on PATH; missing credentials (~/.local/share/opencode/auth.json or ~/.config/opencode or ~/.local/share/opencode or $OPENCODE_API_KEY or $ANTHROPIC_API_KEY or $OPENAI_API_KEY or $GEMINI_API_KEY or $GOOGLE_API_KEY).
   // implement: Smithers would normally suggest OpenClaw here, but OpenClaw is not available: missing `openclaw` on PATH; missing credentials (~/.openclaw/openclaw.json or ~/.openclaw).
   implement: [
-    providers.pi,
+    providers.pi_ollama_cloud,
     // providers.claudeOpus,
     // providers.codexTerra,
     // providers.claudeSonnet,
@@ -123,7 +124,7 @@ export const agents = {
   // midTier: Smithers would normally suggest OpenClaw here, but OpenClaw is not available: missing `openclaw` on PATH; missing credentials (~/.openclaw/openclaw.json or ~/.openclaw).
   // midTier: Smithers would normally suggest Cursor here, but Cursor is not available: missing `cursor-agent` on PATH; missing credentials (~/.cursor/auth.json or $CURSOR_API_KEY).
   midTier: [
-    providers.pi,
+    providers.pi_ollama_cloud,
     // providers.codexTerra,
     // providers.claudeSonnet,
     // providers.kimi,
@@ -142,7 +143,7 @@ export const agents = {
   // smartTool: Smithers would normally suggest OpenClaw here, but OpenClaw is not available: missing `openclaw` on PATH; missing credentials (~/.openclaw/openclaw.json or ~/.openclaw).
   // smartTool: Smithers would normally suggest Cursor here, but Cursor is not available: missing `cursor-agent` on PATH; missing credentials (~/.cursor/auth.json or $CURSOR_API_KEY).
   smartTool: [
-    providers.pi,
+    providers.pi_ollama_cloud,
     // providers.codexTerra,
     // providers.claudeSonnet,
     // providers.kimi,
@@ -161,7 +162,7 @@ export const agents = {
   // validate: Smithers would normally suggest OpenClaw here, but OpenClaw is not available: missing `openclaw` on PATH; missing credentials (~/.openclaw/openclaw.json or ~/.openclaw).
   // validate: Smithers would normally suggest Cursor here, but Cursor is not available: missing `cursor-agent` on PATH; missing credentials (~/.cursor/auth.json or $CURSOR_API_KEY).
   validate: [
-    providers.pi,
+    providers.pi_ollama_cloud,
     // providers.codexTerra,
     // providers.claudeSonnet,
     // providers.kimi,
@@ -177,7 +178,7 @@ export const agents = {
   // smart: Smithers would normally suggest OpenCode here, but OpenCode is not available: missing `opencode` on PATH; missing credentials (~/.local/share/opencode/auth.json or ~/.config/opencode or ~/.local/share/opencode or $OPENCODE_API_KEY or $ANTHROPIC_API_KEY or $OPENAI_API_KEY or $GEMINI_API_KEY or $GOOGLE_API_KEY).
   // smart: Smithers would normally suggest OpenClaw here, but OpenClaw is not available: missing `openclaw` on PATH; missing credentials (~/.openclaw/openclaw.json or ~/.openclaw).
   smart: [
-    providers.pi,
+    providers.pi_ollama_cloud,
     // providers.claudeOpus,
     // providers.claude,
     // providers.codexSol,
@@ -197,7 +198,7 @@ export const agents = {
   // review: Smithers would normally suggest OpenCode here, but OpenCode is not available: missing `opencode` on PATH; missing credentials (~/.local/share/opencode/auth.json or ~/.config/opencode or ~/.local/share/opencode or $OPENCODE_API_KEY or $ANTHROPIC_API_KEY or $OPENAI_API_KEY or $GEMINI_API_KEY or $GOOGLE_API_KEY).
   // review: Smithers would normally suggest OpenClaw here, but OpenClaw is not available: missing `openclaw` on PATH; missing credentials (~/.openclaw/openclaw.json or ~/.openclaw).
   review: [
-    providers.pi,
+    providers.pi_ollama_cloud,
     // providers.codexSol,
     // providers.claude,
     // providers.claudeOpus,
@@ -217,7 +218,7 @@ export const agents = {
   // planning: Smithers would normally suggest OpenClaw here, but OpenClaw is not available: missing `openclaw` on PATH; missing credentials (~/.openclaw/openclaw.json or ~/.openclaw).
   // planning: Smithers would normally suggest Cursor here, but Cursor is not available: missing `cursor-agent` on PATH; missing credentials (~/.cursor/auth.json or $CURSOR_API_KEY).
   planning: [
-    providers.pi,
+    providers.pi_ollama_cloud,
     // providers.claude,
     // providers.claudeOpus,
     // providers.codexSol,
@@ -235,7 +236,7 @@ export const agents = {
   // orchestrator: Smithers would normally suggest OpenClaw here, but OpenClaw is not available: missing `openclaw` on PATH; missing credentials (~/.openclaw/openclaw.json or ~/.openclaw).
   // orchestrator: Smithers would normally suggest Cursor here, but Cursor is not available: missing `cursor-agent` on PATH; missing credentials (~/.cursor/auth.json or $CURSOR_API_KEY).
   orchestrator: [
-    providers.pi,
+    providers.pi_ollama_cloud,
     // providers.claudeOpus,
     // providers.claude,
     // providers.kimi,

@@ -37,7 +37,7 @@ func newUploadRouter(t *testing.T, database *sql.DB, mediaDir string, maxBytes i
 	auther := auth.NewAuthenticator(uploadTestSecret, false)
 	r.Route("/api", func(api chi.Router) {
 		api.Use(auther.RequireAuth)
-		api.Post("/media/upload", NewUploadHandler(database, mediaDir, maxBytes).ServeHTTP)
+		api.Post("/media/upload", NewUploadHandler(database, mediaDir, maxBytes, nil).ServeHTTP)
 	})
 	return r
 }

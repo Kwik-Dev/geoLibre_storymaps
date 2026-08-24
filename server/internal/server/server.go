@@ -77,6 +77,9 @@ func New(cfg *config.Config, db *sql.DB, admin *auth.AdminHandler, whoami *auth.
 		// Nested chapters CRUD + reorder (P3.2). Every op loads the parent
 		// story and runs canAccess, so authz is enforced on every route.
 		api.NewChaptersHandler(db).Routes(r)
+		// Legacy story-JSON export (P3.4). The route is allowlisted by the
+		// middleware; the handler enforces the public/owner/admin check.
+		api.NewExportHandler(db, auther).Routes(r)
 	})
 
 	// Static file serve for everything else (non-API, non-media)

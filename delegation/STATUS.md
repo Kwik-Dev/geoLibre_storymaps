@@ -18,14 +18,14 @@ Legend: `todo` · `running` · `done` · `blocked` · `needs-human` · `opt`(opt
 | P2.2 | done   | pi (deepseek-v4-flash) | `ADMIN_EMAIL=... go test ./internal/auth -run TestAdminLogin -v` | 2026-08-24T16:10Z |
 | P2.3 | done   | pi (deepseek-v4-flash) | `go test ./internal/auth -run TestMiddleware -v` | 2026-08-24T17:05Z |
 | P2.4 | done   | pi (deepseek-v4-flash) | `go test ./internal/auth -run TestWhoami -v`        | 2026-08-24T18:50Z |
-| P3.1 | todo   | —            | `go test ./internal/api -run TestStoriesCRUD -v`    |            |
-| P3.2 | todo   | —            | `go test ./internal/api -run TestChapters -v`       |            |
-| P3.3 | todo   | —            | `go test ./internal/api -run TestStoryView -v`      |            |
-| P3.4 | todo   | —            | `go test ./internal/api -run TestExport -v`         |            |
-| P4.1 | todo   | —            | `go test ./internal/media -run TestUpload -v`       |            |
-| P4.2 | todo   | —            | `go test ./internal/media -run TestExternalURL -v`  |            |
-| P4.3 | todo   | —            | `go test ./internal/api -run TestChapterMedia -v`   |            |
-| P4.4 | todo   | —            | `go test ./internal/media -run TestServeGate -v`    |            |
+| P3.1 | done   | pi (deepseek-v4-flash) | `go test ./internal/api -run TestStoriesCRUD -v` | 2026-08-24T06:51Z |
+| P3.2 | done   | pi (deepseek-v4-flash) | `go test ./internal/api -run TestChapters -v` | 2026-08-24T19:40Z |
+| P3.3 | done   | pi (deepseek-v4-flash) | `go test ./internal/api -run TestStoryView -v` | 2026-08-24T20:15Z |
+| P3.4 | done   | pi (deepseek-v4-flash) | `go test ./internal/api -run TestExport -v` | 2026-08-24T21:05Z |
+| P4.1 | done   | pi (deepseek-v4-flash) | `go test ./internal/media -run TestUpload -v`       | 2026-08-24T22:10Z |
+| P4.2 | done   | pi (deepseek-v4-flash) | `go test ./internal/media -run TestExternalURL -v` | 2026-08-24T23:10Z |
+| P4.3 | done   | pi (deepseek-v4-flash) | `go test ./internal/api -run TestChapterMedia -v`   | 2026-08-24T23:45Z |
+| P4.4 | done   | pi (deepseek-v4-flash) | `go test ./internal/media -run TestServeGate -v`    | 2026-08-25T01:10Z |
 | P5.1 | todo   | —            | `npm run build` + hostile-md renders inert          | can start now (no API) |
 | P5.2 | todo   | —            | `npm run build` + HTML/MD dual-render regression    | can start after P5.1 |
 | P5.3 | todo   | —            | `npm run build` + picker w/ server + no-server      | needs P3.1 |
@@ -57,7 +57,13 @@ Legend: `todo` · `running` · `done` · `blocked` · `needs-human` · `opt`(opt
 
 ## Notes / interface changes
 (Record any `HANDOFF` interface change here so later cards pick it up.)
-- <none yet>
+- **P3.1 (2026-08-24T06:51Z):** `api.NewStoriesHandler` now takes a second arg
+  `*auth.Authenticator` (may be nil) so the public list route can do *optional*
+  auth — an owner sees their own private stories in the same public listing.
+  Added `auth.Authenticator.UserFromRequest(r)` (optional auth, never 401) to
+  `internal/auth/middleware.go`; existing `RequireAuth` behavior unchanged.
+  `canAccess(story, user) bool` is the P3.1 HANDOFF (public→true; else
+  owner/admin).
 
 ## Environment snapshot (re-verify per machine)
 - Go `go1.26` · node 24 · `but` (GitButler) · Ollama up at
@@ -89,6 +95,289 @@ table above.
 
 Do NOT use the monolithic `storymap-build.tsx` for execution (it's the run that
 timed). Use `storymap-pieces.tsx`.
+
+## Verify outputs (P4.3)
+
+RE-VERIFIED 2026-08-24T24:00Z by pi (deepseek-v4-flash) after reviewer
+feedback: P4.3 was re-stacked onto P4.2 (chain is now P4.1 -> P4.2 -> P4.3) so
+that P4.3's tree genuinely includes P4.2's `server/internal/media/external.go`
+(`media.RefType`, `media.CheckMediaRef`, etc.). Build/vet clean and the test now
+runs green on its own branch:
+
+```
+$ cd server
+$ CGO_ENABLED=0 go clean -testcache
+$ CGO_ENABLED=0 go test ./internal/api -run TestChapterMedia -v -count=1
+=== RUN   TestChapterMedia
+--- PASS: TestChapterMedia (0.01s)
+PASS
+ok  github.com/Kwik-Dev/geoLibre_storymaps/server/internal/api 0.377s
+
+$ CGO_ENABLED=0 go build ./...   # (no output — clean)
+$ CGO_ENABLED=0 go vet ./...     # (no output — clean)
+$ CGO_ENABLED=0 go test ./internal/api -count=1  # ok ... 0.290s (all api tests)
+$ ADMIN_EMAIL=admin@example.com ADMIN_PASSWORD='change-me' \
+    CGO_ENABLED=0 go test ./... -count=1  # all packages ok (api, auth, config, db, media, server)
+```
+
+(First-run output, 2026-08-24T23:45Z, recorded below.)
+
+```
+$ cd server
+$ CGO_ENABLED=0 go test ./internal/api -run TestChapterMedia -v
+=== RUN   TestChapterMedia
+--- PASS: TestChapterMedia (0.02s)
+PASS
+ok  github.com/Kwik-Dev/geoLibre_storymaps/server/internal/api 0.544s
+
+$ CGO_ENABLED=0 go build ./...   # (no output — clean)
+$ CGO_ENABLED=0 go vet ./...     # (no output — clean)
+$ CGO_ENABLED=0 go test ./internal/api -v  # all 5 api tests pass
+$ ADMIN_EMAIL=admin@example.com ADMIN_PASSWORD='change-me' \
+    CGO_ENABLED=0 go test ./...  # all packages ok (api, auth, config, db, media, server)
+```
+
+P4.3 done 2026-08-24T24:00Z by pi (deepseek-v4-flash) [re-verified after
+reviewer feedback — re-stacked onto P4.2 so external.go is in-tree; build/vet
+green on the branch]. Extended chapter
+create/update (`server/internal/api/chapters.go`) to accept + validate
+`media_type` {image,video,audio,none}, `media_ref_type` {external,local,none},
+`media_external_url`, `media_asset_id` and persist exactly the chosen fields.
+Enforces the §6 matrix via P4.2's `media.CheckMediaRef` + a new
+`validateMedia` helper: none⇒both empty; external⇒concrete type + valid https
+URL against `SetAllowedMediaHosts(cfg.AllowedMediaHosts)` (empty=default-allow);
+local⇒concrete type + existing asset that is accessible (via `assetAccessible`:
+media_assets has no owner column, so accessibility derives from referencing
+stories — the author's own story or a public story is accessible, a foreign
+private asset → 403, an unassociated/just-uploaded asset is usable). Any
+inconsistent combo → 400 with a specific message. Media is a grouped field on
+UPDATE: if any media field is present the full combo is re-derived + validated.
+`media_asset_id` is parsed as json.RawMessage so explicit null clears it.
+Files: `server/internal/api/chapters.go`, `server/internal/api/chapter_media_test.go`
+(TestChapterMedia), `server/internal/server/server.go` (route wiring of allow-list).
+
+## Verify outputs (P4.4)
+
+```
+$ cd server
+$ CGO_ENABLED=0 go test ./internal/media -run TestServeGate -v -count=1
+=== RUN   TestServeGate
+=== RUN   TestServeGate/public-story-asset-served-to-anonymous
+=== RUN   TestServeGate/private-owner-asset-denied-anonymous
+=== RUN   TestServeGate/private-other-asset-denied-other-user
+=== RUN   TestServeGate/private-asset-streams-for-owner
+=== RUN   TestServeGate/private-asset-streams-for-admin
+=== RUN   TestServeGate/soft-deleted-asset-not-served
+=== RUN   TestServeGate/nonexistent-asset-404
+=== RUN   TestServeGate/delete-private-asset-owner-only
+=== RUN   TestServeGate/delete-public-asset-foreign-denied-admin-allowed
+--- PASS: TestServeGate (0.01s)
+    --- PASS: TestServeGate/public-story-asset-served-to-anonymous (0.00s)
+    --- PASS: TestServeGate/private-owner-asset-denied-anonymous (0.00s)
+    --- PASS: TestServeGate/private-other-asset-denied-other-user (0.00s)
+    --- PASS: TestServeGate/private-asset-streams-for-owner (0.00s)
+    --- PASS: TestServeGate/private-asset-streams-for-admin (0.00s)
+    --- PASS: TestServeGate/soft-deleted-asset-not-served (0.00s)
+    --- PASS: TestServeGate/nonexistent-asset-404 (0.00s)
+    --- PASS: TestServeGate/delete-private-asset-owner-only (0.00s)
+    --- PASS: TestServeGate/delete-public-asset-foreign-denied-admin-allowed (0.00s)
+PASS
+ok  github.com/Kwik-Dev/geoLibre_storymaps/server/internal/media 0.552s
+
+$ CGO_ENABLED=0 go build ./...   # (no output — clean)
+$ CGO_ENABLED=0 go vet ./...     # (no output — clean)
+$ ADMIN_EMAIL=admin@example.com ADMIN_PASSWORD='change-me' \
+    CGO_ENABLED=0 go test ./... -count=1  # all packages ok (api, auth, config, db, media, server)
+```
+
+P4.4 done 2026-08-25T01:10Z by pi (deepseek-v4-flash). New
+`server/internal/media/serve.go` (P4.4) — `GET /media/:aid` streams the stored
+file from disk (never buffered whole) with Content-Type/Length set; `DELETE
+/api/media/:aid` soft-deletes (sets `deleted_at`) behind RequireAuth. Since the
+locked media_assets schema has NO owner column, access is story-derived: a
+`mediaStory` projection + local `mediaCanAccess` (mirrors api.canAccess, P3.1
+HANDOFF — public⇒true, else owner/admin) maps asset → referencing live
+chapter(s) → story visibility. Serve: public story's asset → anyone; private
+story's asset → owner/admin only (else 403); unassociated/just-uploaded asset →
+served. Soft-deleted assets → 404 (never served; P7.3 purges later). Delete:
+admin or author-of-a-referencing-story only (else 403); unreferenced asset
+admin-only. Traversal-defensive resolve of stored_path strictly under mediaDir.
+Routes wired in `server/internal/server/server.go`: `s.mux.Get("/media/{aid}")`
+outside /api (public, optional auth via auther.UserFromRequest) + `DELETE
+/media/{aid}` in the /api group (behind RequireAuth). Files:
+`server/internal/media/serve.go`, `server/internal/media/serve_test.go`
+(TestServeGate), `server/internal/server/server.go` (route wiring). HANDOFF:
+`GET /media/:aid` route + the visibility gate.
+
+## Verify outputs (P4.2)
+
+```
+$ cd server
+$ CGO_ENABLED=0 go test ./internal/media -run TestExternalURL -v
+=== RUN   TestExternalURL
+=== RUN   TestExternalURL/reject/scheme-relative_hostless
+=== RUN   TestExternalURL/reject/scheme_with_spaces
+=== RUN   TestExternalURL/reject/http_URL
+=== RUN   TestExternalURL/reject/ftp_URL
+=== RUN   TestExternalURL/reject/data_URL
+=== RUN   TestExternalURL/reject/overlong_URL
+=== RUN   TestExternalURL/reject/javascript_scheme
+=== RUN   TestExternalURL/reject/file_URL
+=== RUN   TestExternalURL/reject/empty_string
+=== RUN   TestExternalURL/reject/malformed_(no_scheme)
+=== RUN   TestExternalURL/accept-empty-allowlist/max-length_boundary
+=== RUN   TestExternalURL/accept-empty-allowlist/bare_https_host
+=== RUN   TestExternalURL/accept-empty-allowlist/query+fragment
+=== RUN   TestExternalURL/accept-empty-allowlist/port
+=== RUN   TestExternalURL/accept-empty-allowlist/subdomain
+=== RUN   TestExternalURL/reject-allowlist/partial_host
+=== RUN   TestExternalURL/reject-allowlist/wrong_path_prefix
+=== RUN   TestExternalURL/reject-allowlist/disallowed_host
+=== RUN   TestExternalURL/accept-allowlist/host+path_prefix
+=== RUN   TestExternalURL/accept-allowlist/host+path_exact
+=== RUN   TestExternalURL/accept-allowlist/path-prefix_boundary
+=== RUN   TestExternalURL/accept-allowlist/exact_host
+--- PASS: TestExternalURL (0.00s)
+    --- PASS: TestExternalURL/reject/ftp_URL (0.00s)
+    --- PASS: TestExternalURL/reject/empty_string (0.00s)
+    --- PASS: TestExternalURL/reject/malformed_(no_scheme) (0.00s)
+    --- PASS: TestExternalURL/reject/scheme_with_spaces (0.00s)
+    --- PASS: TestExternalURL/reject/overlong_URL (0.00s)
+    --- PASS: TestExternalURL/reject/http_URL (0.00s)
+    --- PASS: TestExternalURL/reject/javascript_scheme (0.00s)
+    --- PASS: TestExternalURL/reject/data_URL (0.00s)
+    --- PASS: TestExternalURL/reject/file_URL (0.00s)
+    --- PASS: TestExternalURL/reject/scheme-relative_hostless (0.00s)
+    --- PASS: TestExternalURL/accept-empty-allowlist/bare_https_host (0.00s)
+    --- PASS: TestExternalURL/accept-empty-allowlist/query+fragment (0.00s)
+    --- PASS: TestExternalURL/accept-empty-allowlist/port (0.00s)
+    --- PASS: TestExternalURL/accept-empty-allowlist/subdomain (0.00s)
+    --- PASS: TestExternalURL/accept-empty-allowlist/max-length_boundary (0.00s)
+    --- PASS: TestExternalURL/reject-allowlist/partial_host (0.00s)
+    --- PASS: TestExternalURL/reject-allowlist/wrong_path_prefix (0.00s)
+    --- PASS: TestExternalURL/reject-allowlist/disallowed_host (0.00s)
+    --- PASS: TestExternalURL/accept-allowlist/host+path_prefix (0.00s)
+    --- PASS: TestExternalURL/accept-allowlist/host+path_exact (0.00s)
+    --- PASS: TestExternalURL/accept-allowlist/path-prefix_boundary (0.00s)
+    --- PASS: TestExternalURL/accept-allowlist/exact_host (0.00s)
+PASS
+ok  github.com/Kwik-Dev/geoLibre_storymaps/server/internal/media 0.521s
+
+$ CGO_ENABLED=0 go build ./...   # (no output — clean)
+$ CGO_ENABLED=0 go vet ./...     # (no output — clean)
+$ CGO_ENABLED=0 go test ./internal/media -run 'TestExternalURL|TestRefTypeValid|TestCheckMediaRef' -v  # all pass
+```
+
+P4.2 done 2026-08-24T23:10Z by pi (deepseek-v4-flash). New
+`server/internal/media/external.go` (P4.2) — `ValidateExternalURL(s, allowedHosts)`
+rejects http/ftp/javascript:/data:/file:/empty/overlong (>2048, capped before
+parsing); accepts any well-formed https URL when the allow-list is empty
+(DEFAULT-ALLOW, documented); with a non-empty allow-list enforces host or
+host+path-prefix matching. `media.RefType` enum {external, local, none} with
+`Valid()`, plus the P4.3 HANDOFF combine-check helper `CheckMediaRef(mediaType,
+refType, externalURL, allowedHosts)` enforcing the §6 media matrix (none ⇒ both
+empty; external ⇒ concrete type + valid https URL; local ⇒ concrete type + no
+external url; unknown ref ⇒ error). Pure, no SSRF/fetch — URL is trusted input,
+validated for shape only. Files: `server/internal/media/external.go`,
+`server/internal/media/external_test.go` (TestExternalURL, TestRefTypeValid,
+TestCheckMediaRef).
+
+## Verify outputs (P4.1)
+
+```
+$ cd server
+$ CGO_ENABLED=0 go test ./internal/media -run TestUpload -v
+=== RUN   TestUpload
+=== RUN   TestUpload/html-disguised-as-png-rejected
+=== RUN   TestUpload/oversize-rejected-with-nothing-written
+=== RUN   TestUpload/valid-image-stores-random-name
+=== RUN   TestUpload/traversal-neutralized
+=== RUN   TestUpload/anonymous-upload-401
+--- PASS: TestUpload (0.02s)
+    --- PASS: TestUpload/html-disguised-as-png-rejected (0.00s)
+    --- PASS: TestUpload/oversize-rejected-with-nothing-written (0.00s)
+    --- PASS: TestUpload/valid-image-stores-random-name (0.01s)
+    --- PASS: TestUpload/traversal-neutralized (0.00s)
+    --- PASS: TestUpload/anonymous-upload-401 (0.00s)
+PASS
+ok  github.com/Kwik-Dev/geoLibre_storymaps/server/internal/media 0.552s
+
+$ CGO_ENABLED=0 go build ./...   # (no output — clean)
+$ CGO_ENABLED=0 go vet ./...     # (no output — clean)
+$ ADMIN_EMAIL=admin@example.com ADMIN_PASSWORD='change-me' \
+    CGO_ENABLED=0 go test ./...  # all packages ok (api, auth, config, db, media, server)
+```
+
+P4.1 done 2026-08-24T22:10Z by pi (deepseek-v4-flash). New
+`server/internal/media/upload.go` (P4.1) — `POST /api/media/upload`
+(auth required, mounted behind RequireAuth in server.go). MIME by **magic
+bytes** (not header/extension); allows only image/video/audio; HTML smuggled as
+`.png` → 400. Size capped **before writing** via `http.MaxBytesReader` (+1MB
+multipart overhead) with a 413 on over-size; file is **streamed** to disk
+chunk-by-chunk (never buffered whole), and anything that fails writes no
+physical file. Stored under `MEDIA_DIR/<YYYY-MM>/<crypto/rand hex>.<ext>`;
+`stored_path` is always a server-generated **relative** path (traversal
+`../../../etc/passwd` is neutralized to basename `passwd`, never used for the
+physical path); `filename` = original basename. Inserts the `media_assets` row
+(kind/stored_path/filename/bytes/mime). Returns `{"id","url":"/media/<id>",
+"bytes","mime"}`. HANDOFF `media.Upload(ctx, w, r) (*Asset, error)`;
+`asset.URL`. Files: `server/internal/media/upload.go`,
+`server/internal/media/upload_test.go` (TestUpload),
+`server/internal/server/server.go` (route wiring).
+
+## Verify outputs (P3.4)
+
+```
+$ cd server
+$ CGO_ENABLED=0 go test ./internal/api -run TestExport -v
+=== RUN   TestExport
+--- PASS: TestExport (0.01s)
+PASS
+ok  github.com/Kwik-Dev/geoLibre_storymaps/server/internal/api 0.461s
+
+$ CGO_ENABLED=0 go build ./...   # (no output — clean)
+$ CGO_ENABLED=0 go vet ./...     # (no output — clean)
+$ ADMIN_EMAIL=admin@example.com ADMIN_PASSWORD='change-me' \
+    CGO_ENABLED=0 go test ./...  # all packages ok (api, auth, config, db, server)
+```
+
+P3.4 done 2026-08-24T21:05Z by pi (deepseek-v4-flash). New
+`server/internal/api/storyview.go` ExportHandler — `GET /api/stories/:id/export`
+returns the StoryView legacy JSON with `Content-Type: application/json` and
+`Content-Disposition: attachment; filename="<slug>.storymap.json"`. Access is
+public when the story is public; otherwise owner/admin (reusing canAccess). The
+route is allowlisted by the middleware, so the handler performs optional auth
+(`UserFromRequest`) to enforce the private-story check itself. Lookup accepts
+both numeric id and slug. Files: `server/internal/api/storyview.go`
+(ExportHandler), `server/internal/api/export_test.go` (TestExport),
+`server/internal/server/server.go` (route wiring).
+
+## Verify outputs (P3.3)
+```
+$ cd server
+$ CGO_ENABLED=0 go test ./internal/api -run TestStoryView -v
+=== RUN   TestStoryView
+--- PASS: TestStoryView (0.01s)
+PASS
+ok  github.com/Kwik-Dev/geoLibre_storymaps/server/internal/api 0.605s
+
+$ CGO_ENABLED=0 go build ./...   # (no output — clean)
+$ CGO_ENABLED=0 go vet ./...     # (no output — clean)
+$ CGO_ENABLED=0 go test ./internal/api -v  # all 3 tests pass (Chapters, StoriesCRUD, StoryView)
+```
+
+P3.3 done 2026-08-24T20:15Z by pi (deepseek-v4-flash). New
+`server/internal/api/storyview.go` — `StoryView(story, chapters) any` maps a
+stories row + its chapters to the exact legacy camelCase story JSON shape the
+renderer consumes (top-level title/subtitle/byline/footer/theme/style/
+insetWidth/insetHeight/insetPosition/globalView/startSlide/endSlide; chapters[]
+with id/title/description(=description_md)/alignment/hidden/location/mapAnimation/
+rotateAnimation/onChapterEnter/onChapterExit/source/image|video|audio/autoPlayAudio).
+DB snake_case/int → camelCase; empty media fields omitted (omitempty); location
+serializes as JSON numbers. Golden fixture `server/internal/api/_test/story_view.golden.json`
+asserted by `TestStoryView` (deep-equal + numeric-location check). Files:
+`server/internal/api/storyview.go`, `server/internal/api/storyview_test.go`,
+`server/internal/api/_test/story_view.golden.json`.
 
 ## Verify outputs (P1.1)
 
@@ -352,3 +641,55 @@ never contains password_hash. Files: `internal/auth/whoami.go` (WhoamiHandler),
 `internal/auth/whoami_test.go`, `internal/server/server.go` (New wires whoami +
 RequireAuth), `cmd/server/main.go` (passes whoami handler), new
 `internal/server/whoami_route_test.go` (production-wiring regression test).
+
+## Verify outputs (P3.2)
+
+```
+$ cd server
+$ CGO_ENABLED=0 go test ./internal/api -run TestChapters -v
+=== RUN   TestChapters
+--- PASS: TestChapters (0.01s)
+PASS
+ok  github.com/Kwik-Dev/geoLibre_storymaps/server/internal/api 0.802s
+
+$ CGO_ENABLED=0 go build ./...   # (no output — clean)
+$ CGO_ENABLED=0 go vet ./...     # (no output — clean)
+$ ADMIN_EMAIL=admin@example.com ADMIN_PASSWORD='change-me' \
+    CGO_ENABLED=0 go test ./...  # all packages ok (api, auth, config, db, server)
+```
+
+P3.2 done 2026-08-24T19:40Z by pi (deepseek-v4-flash). Nested chapters CRUD +
+reorder under /api/stories/:id/chapters: every op loads the parent story and
+runs canAccess (P3.1 HANDOFF) → non-owner on a private story gets 403 for list/
+create/get/update/delete/reorder. Create auto-assigns position
+COALESCE(MAX(position),0)+1 (3 chapters → 1,2,3); reorder is a single
+transaction that rejects ids not belonging to the story (400); location is
+validated JSONB (finite lng∈[-180,180], lat∈[-90,90], numeric zoom, optional
+pitch∈[0,85]/bearing∈[0,360]) → invalid → 400; delete is soft. Files:
+`server/internal/api/chapters.go`, `server/internal/api/chapters_test.go`,
+`server/internal/server/server.go` (route wiring).
+
+## Verify outputs (P3.1)
+
+```
+$ cd server
+$ CGO_ENABLED=0 go test ./internal/api -run TestStoriesCRUD -v
+=== RUN   TestStoriesCRUD
+--- PASS: TestStoriesCRUD (0.01s)
+PASS
+ok  github.com/Kwik-Dev/geoLibre_storymaps/server/internal/api 0.690s
+
+$ CGO_ENABLED=0 go build ./...   # (no output — clean)
+$ CGO_ENABLED=0 go vet ./...     # (no output — clean)
+$ ADMIN_EMAIL=admin@example.com ADMIN_PASSWORD='change-me' \
+    CGO_ENABLED=0 go test ./...  # all packages ok (api, auth, config, db, server)
+```
+
+P3.1 done 2026-08-24T06:51Z by pi (deepseek-v4-flash). Stories CRUD +
+visibility/authz: anon list shows only public+approved; owner sees own draft;
+non-owner/non-admin GET/PUT/DELETE of a private story → 403; admin sees all;
+soft-delete hides from lists but keeps the row; slug unique (case-insensitive
+index). Files: `server/internal/api/stories.go`, `server/internal/api/stories_test.go`,
+`server/internal/server/server.go` (route wiring), `server/internal/auth/middleware.go`
+(added `UserFromRequest` optional-auth helper), `server/internal/db/schema.sql`
+(case-insensitive unique slug index).

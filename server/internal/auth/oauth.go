@@ -30,6 +30,7 @@ type GitHubConfig struct {
 	APIBase        string // default https://api.github.com
 	FrontendOrigin string // where to redirect the browser after login
 	JWTSecret      string
+	Secure         bool   // mark the refresh cookie Secure (production/https only)
 }
 
 // GitHubConfigFromEnv builds a GitHubConfig from the environment:
@@ -127,6 +128,7 @@ func IssueSession(w http.ResponseWriter, cfg GitHubConfig, user User) (string, e
 		Path:     "/",
 		HttpOnly: true,
 		SameSite: http.SameSiteStrictMode,
+		Secure:   cfg.Secure,
 	})
 
 	return signed, nil

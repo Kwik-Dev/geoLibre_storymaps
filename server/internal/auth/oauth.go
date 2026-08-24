@@ -33,8 +33,9 @@ type GitHubConfig struct {
 }
 
 // GitHubConfigFromEnv builds a GitHubConfig from the environment:
-//   GITHUB_CLIENT_ID, GITHUB_CLIENT_SECRET, GITHUB_OAUTH_BASE,
-//   GITHUB_API_BASE, FRONTEND_ORIGIN, JWT_SECRET.
+//
+//	GITHUB_CLIENT_ID, GITHUB_CLIENT_SECRET, GITHUB_OAUTH_BASE,
+//	GITHUB_API_BASE, FRONTEND_ORIGIN, JWT_SECRET.
 func GitHubConfigFromEnv() GitHubConfig {
 	return GitHubConfig{
 		ClientID:       os.Getenv("GITHUB_CLIENT_ID"),
@@ -51,6 +52,7 @@ type User struct {
 	ID          int64
 	GithubLogin string
 	GithubID    string
+	AdminEmail  string
 	Role        string
 }
 
@@ -144,4 +146,3 @@ func writeJSON(w http.ResponseWriter, status int, v interface{}) {
 	w.WriteHeader(status)
 	_ = json.NewEncoder(w).Encode(v)
 }
-

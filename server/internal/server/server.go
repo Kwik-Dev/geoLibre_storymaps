@@ -12,6 +12,7 @@ import (
 	"github.com/go-chi/chi/v5"
 	"github.com/go-chi/chi/v5/middleware"
 
+	"github.com/Kwik-Dev/geoLibre_storymaps/server/internal/auth"
 	"github.com/Kwik-Dev/geoLibre_storymaps/server/internal/config"
 )
 
@@ -24,10 +25,16 @@ type Server struct {
 
 // New builds a Server with a chi Mux, wires routes, and returns an http.Handler.
 // Routes:
-//   GET /api/health — JSON health check (200 if DB reachable, 503 otherwise)
-//   /*             — static files from ../dist (SPA fallback to index.html)
-//                  — /api and /media paths are never served statically
-func New(cfg *config.Config, db *sql.DB) *Server {
+//
+//	GET  /api/health                  — JSON health check (200 if DB reachable, 503 otherwise)
+//	POST /api/auth/admin/login        — admin-only local login (bcrypt, env-seeded)
+//	POST /api/auth/admin/refresh      — rotate the admin session
+//	/*                               — static files from ../dist (SPA fallback to index.html)
+//	                                 — /api and /media paths are never served statically
+//
+// The admin handler is optional: if nil, the admin routes are not mounted (a
+// pure GitHub-auth server). No public registration route is ever mounted.
+func New(cfg *config.Config, db *sql.DB, admin *auth.AdminHandler) *Server {
 	s := &Server{
 		cfg: cfg,
 		db:  db,
@@ -43,6 +50,12 @@ func New(cfg *config.Config, db *sql.DB) *Server {
 	s.mux.Route("/api", func(r chi.Router) {
 		r.Use(s.corsMiddleware)
 		r.Get("/health", s.handleHealth)
+		if admin != nil {
+			r.Route("/auth", func(ar chi.Router) {
+				ar.Post("/admin/login", admin.Login)
+				ar.Post("/admin/refresh", admin.Refresh)
+			})
+		}
 	})
 
 	// Static file serve for everything else (non-API, non-media)
@@ -58,8 +71,9 @@ func (s *Server) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 
 // handleHealth responds with a JSON health check.
 // It pings the database and returns:
-//   200 {"status":"ok","db":"ok"}          if DB is reachable
-//   503 {"status":"error","db":"<reason>"} if DB ping fails
+//
+//	200 {"status":"ok","db":"ok"}          if DB is reachable
+//	503 {"status":"error","db":"<reason>"} if DB ping fails
 func (s *Server) handleHealth(w http.ResponseWriter, r *http.Request) {
 	dbStatus := "ok"
 	httpStatus := http.StatusOK

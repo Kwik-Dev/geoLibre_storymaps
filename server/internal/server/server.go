@@ -29,12 +29,16 @@ type Server struct {
 //	GET  /api/health                  — JSON health check (200 if DB reachable, 503 otherwise)
 //	POST /api/auth/admin/login        — admin-only local login (bcrypt, env-seeded)
 //	POST /api/auth/admin/refresh      — rotate the admin session
+//	GET  /api/auth/whoami             — current user profile (requires Bearer JWT)
 //	/*                               — static files from ../dist (SPA fallback to index.html)
 //	                                 — /api and /media paths are never served statically
 //
-// The admin handler is optional: if nil, the admin routes are not mounted (a
-// pure GitHub-auth server). No public registration route is ever mounted.
-func New(cfg *config.Config, db *sql.DB, admin *auth.AdminHandler) *Server {
+// The admin and whoami handlers are optional: if nil, those routes are not
+// mounted (a pure GitHub-auth server can pass a nil whoami). All /api routes
+// run behind auth.RequireAuth, which enforces the public-route allowlist and
+// requires a valid Bearer JWT (or refresh cookie) for everything else.
+// No public registration route is ever mounted.
+func New(cfg *config.Config, db *sql.DB, admin *auth.AdminHandler, whoami *auth.WhoamiHandler) *Server {
 	s := &Server{
 		cfg: cfg,
 		db:  db,
@@ -46,15 +50,21 @@ func New(cfg *config.Config, db *sql.DB, admin *auth.AdminHandler) *Server {
 	s.mux.Use(middleware.Recoverer)
 	s.mux.Use(middleware.RequestID)
 
-	// API routes with CORS
+	// API routes with CORS; every /api route runs behind RequireAuth (which
+	// itself allowlists the public auth/health/stories-listing/export paths).
+	auther := auth.NewAuthenticator(cfg.JWTSecret, false)
 	s.mux.Route("/api", func(r chi.Router) {
 		r.Use(s.corsMiddleware)
+		r.Use(auther.RequireAuth)
 		r.Get("/health", s.handleHealth)
 		if admin != nil {
 			r.Route("/auth", func(ar chi.Router) {
 				ar.Post("/admin/login", admin.Login)
 				ar.Post("/admin/refresh", admin.Refresh)
 			})
+		}
+		if whoami != nil {
+			r.Get("/auth/whoami", whoami.ServeHTTP)
 		}
 	})
 

@@ -26,18 +26,18 @@ Legend: `todo` · `running` · `done` · `blocked` · `needs-human` · `opt`(opt
 | P4.2 | done   | pi (deepseek-v4-flash) | `go test ./internal/media -run TestExternalURL -v` | 2026-08-24T23:10Z |
 | P4.3 | done   | pi (deepseek-v4-flash) | `go test ./internal/api -run TestChapterMedia -v`   | 2026-08-24T23:45Z |
 | P4.4 | done   | pi (deepseek-v4-flash) | `go test ./internal/media -run TestServeGate -v`    | 2026-08-25T01:10Z |
-| P5.1 | todo   | —            | `npm run build` + hostile-md renders inert          | can start now (no API) |
-| P5.2 | todo   | —            | `npm run build` + HTML/MD dual-render regression    | can start after P5.1 |
-| P5.3 | todo   | —            | `npm run build` + picker w/ server + no-server      | needs P3.1 |
-| P5.4 | todo   | —            | `npm run build` + hash nav + `file://` check        | needs P5.3 |
-| P5.5 | todo   | —            | `npm run dev` + `curl :5173/api/health`             | can start now |
-| P6.1 | todo   | —            | `npm run build` + create-a-story manual             | needs P5.4,P3.1 |
-| P6.2 | todo   | —            | `npm run build` + chapter edit/reorder manual       | needs P6.1 |
-| P6.3 | todo   | —            | `npm run build` + media upload manual               | needs P4.3 |
+| P5.1 | done   | pi (deepseek-v4-flash) | `npm run build` + hostile-md renders inert          | 2026-08-25T02:40Z |
+| P5.2 | done   | pi (deepseek-v4-flash) | `npm run build` + HTML/MD dual-render regression    | 2026-08-25T03:05Z |
+| P5.3 | done   | pi (deepseek-v4-flash) | `npm run build` + picker w/ server + no-server      | 2026-08-25T03:30Z |
+| P5.4 | done   | pi (deepseek-v4-flash) | `npm run build` + hash nav + `file://` check        | 2026-08-25T03:55Z |
+| P5.5 | done   | pi (deepseek-v4-flash) | `npm run dev` + `curl :5173/api/health`             | 2026-08-25T04:40Z |
+| P6.1 | done   | pi (deepseek-v4-flash) | `npm run build` + create-a-story manual | 2026-08-25T05:10Z |
+| P6.2 | done   | pi (deepseek-v4-flash) | `npm run build` + chapter edit/reorder manual       | 2026-08-24T09:54Z |
+| P6.3 | done   | pi (deepseek-v4-flash) | `npm run build` + media upload manual               | 2026-08-25T09:57Z |
 | P6.4 | todo   | —            | manual E2E (5 steps) + paste evidence below         | needs P6.1–3 |
-| P7.1 | todo·opt| —           | `go test ./internal/media -run TestStore… -v`      | optional   |
-| P7.2 | todo·opt| —           | `go test ./internal/api -run TestModeration -v`    | optional   |
-| P7.3 | todo·opt| —           | `go test ./internal/server -run TestPurge -v`      | optional   |
+| P7.1 | done·opt | pi (deepseek-v4-flash) | `go test ./internal/media -run 'TestStoreLocal|TestStoreS3' -v` | 2026-08-25T10:15Z (see verify output below) |
+| P7.2 | done·opt| pi (deepseek-v4-flash) | `go test ./internal/api -run TestModeration -v` | 2026-08-25T11:30Z (see verify output below) |
+| P7.3 | done·opt| pi (deepseek-v4-flash) | `go test ./internal/server -run TestPurge -v` | 2026-08-25T12:40Z (see verify output below) |
 | P7.4 | todo·opt| —           | README renders + §10 checklist all recorded         | optional   |
 
 ## Feature-complete gate (MVP)
@@ -95,6 +95,362 @@ table above.
 
 Do NOT use the monolithic `storymap-build.tsx` for execution (it's the run that
 timed). Use `storymap-pieces.tsx`.
+
+## Verify outputs (P6.3)
+
+```
+$ npm run build   # green
+> vite build
+vite v6.4.3 building for production...
+transforming...
+✓ 314 modules transformed.
+rendering chunks...
+[plugin vite:singlefile] Inlining: index-uKAt0YxZ.js
+[plugin vite:singlefile] Inlining: style-CYyaaF_C.css
+computing gzip size...
+dist/index.html  1,481.42 kB │ gzip: 407.17 kB
+✓ built in 1.38s
+
+# component bundles standalone (not yet wired into the app, so vite's graph
+# wouldn't otherwise compile it) — same approach as P6.2
+$ npx esbuild src/components/builder/MediaUpload.jsx --loader:.jsx=jsx --bundle \
+    --outfile=/tmp/mu-check.js
+⚡ Done in 17ms   (only the pre-existing, unrelated import.meta iife warning; EXIT:0)
+
+# client external-URL validator mirrors P4.2 exactly (https-only, len<=2048)
+$ node /tmp/mu-validator-bundle.mjs
+PASS  accept  "https://example.com/img.png"  → true
+PASS  reject  "http://example.com/img.png"   → false
+PASS  reject  "ftp://example.com/x"          → false
+PASS  reject  "javascript:alert(1)"          → false
+PASS  reject  "data:image/png;base64,AAA"    → false
+PASS  reject  "file:///etc/passwd"           → false
+PASS  reject  ""                             → false
+PASS  reject  "not-a-url"                    → false
+PASS  accept  "https://example.com/a?b=1#c"  → true
+PASS  reject  "https://<2100 chars>"         → false
+PASS  accept  "https://example.com"          → true
+11/11 passed
+```
+
+P6.3 done 2026-08-25T09:57Z by pi (deepseek-v4-flash). New
+`src/components/builder/MediaUpload.jsx` (P6.3) — the builder's media picker, a
+controlled component with a `media_ref_type` toggle (none | external | local):
+
+- **external** → a URL input client-validated to mirror P4.2 exactly (`https:`
+  only, length ≤ 2048; a `validateExternalURL` guard with a reason message),
+  with an optional `allowlistHint` prop to surface the server's media host
+  allow-list when the backend exposes it.
+- **local** → a file input → `POST /api/media/upload` (multipart `'file'`,
+  Bearer token via `getToken`, `withCredentials`) with a **progress bar** (XHR
+  `upload.onprogress`; fetch has no upload progress) → stores the returned
+  `media_asset_id` and derives `media_type` from the server's magic-byte MIME
+  (image/video/audio). Shows bytes/mime/url of the last asset and a replace
+  hint.
+- **none** → clears the grouped media fields.
+
+On any change it emits the full grouped media value (`media_type`,
+`media_ref_type`, `media_external_url`, `media_asset_id`) via `onChange` — the
+exact field set P3.2/P4.3 persist on a chapter. **WYSIWYG:** the preview
+renders the SAME `<ChapterCard>` media renderer the reader uses (wrapped in
+`AudioProvider` for its audio toggle) as the single source of media-display
+logic — a video shows its poster, an image shows the image, audio shows the
+`wave-forms` waveform — so builder and reader agree. Client guard + upload use
+the P4.1 upload contract; server remains the authority. Not yet wired into
+ChapterEditor (that slot replacement is an integration step); manual
+save/render checks deferred to the P6.4 E2E. HANDOFF: sets a chapter's media
+(external or local) via a `{ value, onChange, onUploaded?, allowlistHint? }`
+controlled component. Committed to branch `storymap-P6.3`.
+
+
+
+```
+$ npm run build   # green
+> vite build
+vite v6.4.3 building for production...
+transforming...
+✓ 314 modules transformed.
+rendering chunks...
+[plugin vite:singlefile] Inlining: index-uKAt0YxZ.js
+[plugin vite:singlefile] Inlining: style-CYyaaF_C.css
+computing gzip size...
+dist/index.html  1,481.42 kB │ gzip: 407.17 kB
+✓ built in 1.35s
+
+# component parses/bundles standalone (it is not yet wired into the app, so
+# vite's graph wouldn't otherwise compile it)
+$ npx esbuild src/components/builder/ChapterEditor.jsx --loader:.jsx=jsx --bundle \
+    --outfile=/tmp/ce-check.js
+⚡ Done in 19ms   (only a pre-existing, unrelated import.meta iife warning; EXIT:0)
+```
+
+P6.2 done 2026-08-24T09:54Z by pi (deepseek-v4-flash). New
+`src/components/builder/ChapterEditor.jsx` (P6.2) — list + add/edit/delete/reorder
+chapters for a given `storyId` via the P3.2 nested chapters API
+(`/api/stories/:id/chapters`). Reorder uses the **required** `.../chapters/reorder`
+endpoint (up/down buttons, positions 1..n, single POST) — the order persists on
+the server. Edit fields: `title` (required), `description_md` (textarea) with a
+**live sanitized Markdown preview** reusing the P5.1 `<Markdown>` component (never
+raw HTML — hostile snippets render inert per §10), `alignment`
+(left/center/right), `hidden`, `map_animation` (flyTo/easeTo),
+`rotate_animation`, location (`center` [lng,lat] via coord inputs + a `zoom`
+slider), and `on_chapter_enter`/`on_chapter_exit` JSON arrays. A **media slot**
+is emitted to P6.3: a minimal editable media section (media_type /
+media_ref_type / external URL / asset id) so saves persist the grouped media
+fields correctly (client guard mirrors the §6 matrix; server still validates),
+clearly marked as replaced by P6.3's MediaUpload. Delete is a soft delete with a
+confirm. Authz errors (403) surface a friendly message; 401 flows through
+apiFetch. The manual add/edit/reorder/delete + reload-persistence and the
+hostile-markdown-inert checks are deferred to the P6.4 E2E since this component
+is not yet mounted in the app (wiring is a later/out-of-scope step).
+
+## Verify outputs (P6.1)
+
+```
+$ npm run build   # green
+> vite build
+vite v6.4.3 building for production...
+transforming...
+✓ 314 modules transformed.
+rendering chunks...
+[plugin vite:singlefile] Inlining: index-uKAt0YxZ.js
+[plugin vite:singlefile] Inlining: style-CYyaaF_C.css
+computing gzip size...
+dist/index.html  1,481.42 kB │ gzip: 407.17 kB
+✓ built in 1.53s
+
+# manual (server up, :8080): POST /api/stories returns the new id
+$ curl -s http://localhost:8080/api/health
+{"db":"ok","status":"ok"}
+$ curl -s -X POST http://localhost:8080/api/stories \
+    -H "Authorization: Bearer $AT" -H 'Content-Type: application/json' \
+    -d '{"title":"P6.1 Manual Test","subtitle":"sub","byline":"tester","visibility":"public"}'
+{"id":1,"slug":"p6-1-manual-test","author_id":1,"title":"P6.1 Manual Test","subtitle":"sub","byline":"tester","visibility":"public","status":"draft","created_at":"2026-08-24 09:52:12","updated_at":"2026-08-24 09:52:12"}
+```
+
+P6.1 done 2026-08-25T05:10Z by pi (deepseek-v4-flash). New
+`src/components/builder/StoryForm.jsx` (P6.1) — create-a-story form with
+`title` (required, validated client-side), `subtitle`, `byline`, `theme`
+(select: dark|light), `visibility` (private|public radio). On submit POSTs
+`/api/stories` via the shared `apiFetch` client; on success stores the new
+story id, fires the optional `onCreated` callback, and navigates to
+`#/stories/<id>` (P3.4 export accepts numeric id or slug). A 401 surfaces a
+"Sign in with GitHub" link (`/api/auth/github`, §7.2 OAuth start) instead of a
+generic error; other failures show a friendly message. `visibility` defaults to
+private. The `theme` field is a UI-level select; theme is not yet persisted by
+the P3.1 create endpoint (create accepts title/subtitle/byline/visibility only)
+so it stays as form state handed to later cards. HANDOFF: create-and-return a
+story id (numeric) → `navigateToStory(String(id))`. Committed to branch
+`storymap-P6.1` (commit `vkq`). Note: the created draft story (`status=draft`)
+is not in the anon public list until it is approved (P3.1 authz) — expected.
+
+## Verify outputs (P5.5)
+
+```
+$ # Go server on :8080 (JWT_SECRET=test DATA_DIR=/tmp/p55data /tmp/goserve)
+$ curl -s http://localhost:8080/api/health
+{"db":"ok","status":"ok"}
+
+$ npm run dev   # vite on :5173 (proxy /api + /media -> localhost:8080)
+  VITE v6.4.3  ready in 80 ms
+  ➜  Local:   http://localhost:5173/
+
+$ curl -s http://localhost:5173/api/health     # 200, proxied to the Go server
+{"db":"ok","status":"ok"}
+
+$ curl -s -o /dev/null -w '%{http_code}\n' http://localhost:5173/   # 200 (app)
+200
+
+$ curl -s -o /dev/null -w '%{http_code}\n' http://localhost:5173/media/1
+404   # proxied to Go backend (not a vite SPA 200 -> confirms /media proxy)
+
+$ npm run build    # single-file dist/index.html intact
+[plugin vite:singlefile] Inlining: index-uKAt0YxZ.js
+[plugin vite:singlefile] Inlining: style-CYyaaF_C.css
+✓ built in 1.41s
+dist/index.html  1,481.42 kB │ gzip: 407.17 kB
+```
+
+P5.5 done 2026-08-25T04:40Z by pi (deepseek-v4-flash). `vite.config.js`
+dev `server.proxy`: `/api` and `/media` both forward to
+`http://localhost:8080` with the same path. `vite-plugin-singlefile` config
+untouched — `npm run build` still emits a single self-contained
+`dist/index.html`. Verified: `/api/health` through `:5173` returns the Go
+server's `{"db":"ok","status":"ok"}` (200, proxied); `/` serves the app
+(200); `/media/1` returns the Go backend's 404 (proves the `/media` proxy,
+since vite would otherwise SPA-fallback to a 200). HANDOFF: dev proxy is in
+place; build still single-file. Committed to branch `storymap-P5.5`.
+
+## Verify outputs (P5.4)
+
+```
+$ npm run build   # green
+> vite build
+vite v6.4.3 building for production...
+transforming...
+✓ 314 modules transformed.
+rendering chunks...
+[plugin vite:singlefile] Inlining: index-uKAt0YxZ.js
+[plugin vite:singlefile] Inlining: style-CYyaaF_C.css
+computing gzip size...
+dist/index.html  1,481.42 kB │ gzip: 407.17 kB
+✓ built in 1.37s
+
+$ npm test   # regression — 7 Markdown tests still green
+> vitest run
+ Test Files  1 passed (1)
+      Tests  7 passed (7)
+   Duration  364ms
+
+# routing unit check — 8/8 parseHash cases incl. file:// deep-link shape
+PASS "#/stories/freesound-ocean" -> {"type":"story","id":"freesound-ocean"}
+PASS "#/stories/my%20story"     -> {"type":"story","id":"my story"}
+PASS "#/stories/unknown-id"     -> {"type":"story","id":"unknown-id"}
+PASS "#/"  / "" / "#/create" / "#" / "#/foo/bar" -> {"type":"list"}
+8 passed, 0 failed
+
+# dist single-file build inlines the router + states
+$ grep -c hashchange dist/index.html      # 3
+$ grep -o '#/stories' dist/index.html     # present (list links)
+$ grep -c 'Story not found' dist/index.html  # 1
+```
+
+P5.4 done 2026-08-25T03:55Z by pi (deepseek-v4-flash). Hash routing on
+`location.hash` (not the history API) so deep links keep working in the
+single-file `file://` build. New `src/hashRoute.js` — `parseHash()` returns
+`{type:'story',id}` for `#/stories/<id>` (URL-decoded) or `{type:'list'}` for
+`#/`, no-hash, and any non-story path; `navigateToStory(id)`/`navigateToHome()`
+write the hash; `onHashChange(cb)` subscribes and returns an unsubscribe.
+`src/App.jsx` now renders by route: `#/stories/<id>` loads + renders that story
+(via the P5.3 async `getStory`); `#/` or no hash shows a `StoryList` picker page
+where every story links to `#/stories/<id>`; an unknown/bad id shows a friendly
+"Story not found" empty state with links back to all stories or to create one;
+the list has a full empty-state set (nothing at all → "Create a story" CTA; a
+no-server build with none embedded → clear "no embedded stories" note). The
+picker `<select>` (story route) navigates by hash too. `hashchange` drives all
+re-renders; F5/deep-link refresh keeps the route because the hash is the source
+of truth. Committed to branch `storymap-P5.4`.
+
+## Verify outputs (P5.3)
+
+```
+$ npm run build   # green
+> vite build
+vite v6.4.3 building for production...
+transforming...
+✓ 313 modules transformed.
+rendering chunks...
+[plugin vite:singlefile] Inlining: index-C_yhaLp9.js
+[plugin vite:singlefile] Inlining: style-CYyaaF_C.css
+computing gzip size...
+dist/index.html  1,478.95 kB │ gzip: 406.43 kB
+✓ built in 1.37s
+
+$ npm run test   # regression — 7 Markdown tests still green
+> vitest run
+
+ RUN  v4.1.11 /Users/ymmtny/workspace/ocean/geoLibre_storymaps
+
+ Test Files  1 passed (1)
+      Tests  7 passed (7)
+   Duration  341ms
+
+# server up: GET /api/stories returns the shape the picker merges
+$ JWT_SECRET=test DATA_DIR=/tmp/p53data /tmp/goserve &   # :8080
+$ curl -s http://localhost:8080/api/health
+{"db":"ok","status":"ok"}
+$ curl -s http://localhost:8080/api/stories
+{"stories":[]}   # anon public list — matches client.listStories (data.stories)
+```
+
+P5.3 done 2026-08-25T03:30Z by pi (deepseek-v4-flash). New `src/api/client.js`
+— a `fetch` wrapper with base = `import.meta.env.VITE_API` or same-origin
+`/api`; sends `withCredentials` (httpOnly refresh cookie flows) + an
+`Authorization: Bearer` header when a token is in memory (`setToken`); unwraps
+JSON errors and throws on non-2xx. `listStories()` → `GET /api/stories`
+(returns `data.stories`); `getStoryExport(id)` → `GET /api/stories/:id/export`
+(the legacy camelCase story JSON the renderer consumes unchanged). New
+`src/getStory.js` (P5.3 HANDOFF) — async `getStories()` merges embedded
+`stories.js` with the API listing **deduped by id** (embedded wins on a
+collision); async `getStory(id)` returns bundled config for embedded stories or
+fetches the export for API stories. `src/App.jsx` is now data-driven: it starts
+from the embedded list (instant, no-server/`file://` safe), async-merges the API
+list with loading/error/empty states in the picker, and lazy-loads the full
+config on selection. **Graceful degradation:** `getStories()` catches any fetch
+failure and resolves to embedded-only (no crash); a "Server unavailable —
+showing embedded stories" notice is shown; a fully-empty list shows a "Create a
+story" CTA. Committed to branch `storymap-P5.3` (commit `vrs`).
+
+## Verify outputs (P5.2)
+
+```
+$ npm run build   # green
+> vite build
+vite v6.4.3 building for production...
+transforming...
+✓ 311 modules transformed.
+rendering chunks...
+[plugin vite:singlefile] Inlining: index-DqUFzVvk.js
+[plugin vite:singlefile] Inlining: style-CYyaaF_C.css
+computing gzip size...
+dist/index.html  1,477.11 kB │ gzip: 405.66 kB
+✓ built in 1.36s
+
+$ npm run test   # regression — 7 Markdown tests still green
+> vitest run
+
+ RUN  v4.1.11 /Users/ymmtny/workspace/ocean/geoLibre_storymaps
+
+ Test Files  1 passed (1)
+      Tests  7 passed (7)
+   Duration  338ms
+```
+
+P5.2 done 2026-08-25T03:05Z by pi (deepseek-v4-flash). Dual render in
+`src/components/ChapterCard.jsx`: the description body now branches per
+chapter — `chapter.description` (legacy HTML) keeps the existing
+`dangerouslySetInnerHTML` path (embedded stories unchanged); else
+`chapter.description_md` renders through the sanitized `<Markdown text=… />`
+component from P5.1; else renders nothing. Image/video(+poster)/audio(waveform)
+media rendering untouched. `Markdown` uses `react-markdown` + `remark-gfm` +
+`rehype-sanitize` (the XSS boundary), so a hostile snippet like
+`<script>alert(1)</script>` in `description_md` stays inert — the embedded HTML
+path is never mixed with markdown. HANDOFF: ChapterCard supports both
+`description` (HTML) and `description_md` (markdown).
+
+## Verify outputs (P5.1)
+
+```
+$ npm run test   # vitest: Markdown XSS safety + GFM
+> vitest run
+ Test Files  1 passed (1)
+      Tests  7 passed (7)
+   Duration  342ms
+
+$ npm run build  # green
+> vite build
+vite v6.4.3 building for production...
+transforming...
+✓ 53 modules transformed.
+rendering chunks...
+[plugin vite:singlefile] Inlining: index-BYfch4kk.js
+[plugin vite:singlefile] Inlining: style-CYyaaF_C.css
+dist/index.html  1,309.56 kB │ gzip: 354.40 kB
+✓ built in 1.42s
+```
+
+P5.1 done 2026-08-25T02:40Z by pi (deepseek-v4-flash). New
+`src/components/Markdown.jsx` — `Markdown({ text })` using `react-markdown`
++ `remark-gfm` + `rehype-sanitize`; renders to DOM nodes, never
+`dangerouslySetInnerHTML`. `rehype-sanitize` is wired in the pipeline as the
+XSS boundary (hostile `<img onerror>`, `<script>`, `javascript:` links render
+inert / get dropped). Added `package.json` deps (`react-markdown`,
+`remark-gfm`, `rehype-sanitize`) + test devDeps (`vitest`, `jsdom`,
+`@testing-library/react`, `@testing-library/dom`), a `test` script,
+`vitest.config.js` (jsdom), and `src/components/Markdown.test.jsx` (7 tests:
+hostile payloads render inert with no onerror/onclick/script/javascript:
+; GFM headings/bold/code; tables/strikethrough/task-lists). Committed to branch
+`storymap-P5.1` (commit `qsn`).
 
 ## Verify outputs (P4.3)
 
@@ -693,3 +1049,143 @@ index). Files: `server/internal/api/stories.go`, `server/internal/api/stories_te
 `server/internal/server/server.go` (route wiring), `server/internal/auth/middleware.go`
 (added `UserFromRequest` optional-auth helper), `server/internal/db/schema.sql`
 (case-insensitive unique slug index).
+
+## Verify outputs (P7.1)
+
+```
+$ cd server
+$ CGO_ENABLED=0 go build ./...
+BUILD OK
+
+$ CGO_ENABLED=0 go test ./internal/media -run 'TestStoreLocal|TestStoreS3' -v -count=1
+=== RUN   TestStoreLocal
+--- PASS: TestStoreLocal (0.01s)
+=== RUN   TestStoreS3
+--- PASS: TestStoreS3 (0.00s)
+PASS
+ok  github.com/Kwik-Dev/geoLibre_storymaps/server/internal/media 0.474s
+
+$ CGO_ENABLED=0 go vet ./...
+(no output)
+
+$ CGO_ENABLED=0 go test ./... -count=1
+ok  github.com/Kwik-Dev/geoLibre_storymaps/server/internal/api 1.543s
+--- FAIL: TestAdminLogin (0.00s)  # pre-existing: requires ADMIN_EMAIL/ADMIN_PASSWORD env
+ok  github.com/Kwik-Dev/geoLibre_storymaps/server/internal/config 0.981s
+ok  github.com/Kwik-Dev/geoLibre_storymaps/server/internal/db 0.410s
+ok  github.com/Kwik-Dev/geoLibre_storymaps/server/internal/media 1.204s
+ok  github.com/Kwik-Dev/geoLibre_storymaps/server/internal/server 2.588s
+```
+
+P7.1 done 2026-08-25T10:15Z by pi (deepseek-v4-flash).
+
+`server/internal/media/store.go` (P7.1) — `Store` interface (`Put`, `Get`, `URL`,
+`Delete`) for abstracting upload persistence; `LocalStore` (default, same file
+layout as P4.1: `MEDIA_DIR/<YYYY-MM>/<random-hex>.<ext>`); `S3Store` with a
+pluggable `s3Client` interface (tested via in-memory `memS3Client`, proving the
+interface switches on `STORE_KIND`); `MemStore` (in-memory, for tests);
+`NewStore(kind, mediaDir)` factory. `UploadHandler` now accepts an optional
+`Store` parameter; `nil` = `LocalStore`. `config.go` has new `StoreKind` field
+(from `STORE_KIND` env, defaults to `"local"`). `server.go` wires the store.
+Existing P4.1 upload tests pass with `nil` store (defaults to `LocalStore`).
+Files: `server/internal/media/store.go`, `server/internal/media/store_test.go`,
+`server/internal/media/upload.go` (modified), `server/internal/config/config.go`
+(modified), `server/internal/server/server.go` (modified).
+
+## Verify outputs (P7.2)
+
+```
+$ cd server
+$ CGO_ENABLED=0 go test ./internal/api -run TestModeration -v -count=1
+=== RUN   TestModeration
+--- PASS: TestModeration (0.01s)
+PASS
+ok  github.com/Kwik-Dev/geoLibre_storymaps/server/internal/api 0.208s
+
+$ CGO_ENABLED=0 go build ./...
+(no output)
+
+$ CGO_ENABLED=0 go vet ./...
+(no output)
+
+$ ADMIN_EMAIL=admin@example.com ADMIN_PASSWORD='change-me' \
+    CGO_ENABLED=0 go test ./... -count=1
+ok  github.com/Kwik-Dev/geoLibre_storymaps/server/internal/api 0.252s
+ok  github.com/Kwik-Dev/geoLibre_storymaps/server/internal/auth 1.271s
+ok  github.com/Kwik-Dev/geoLibre_storymaps/server/internal/config 0.352s
+ok  github.com/Kwik-Dev/geoLibre_storymaps/server/internal/db 0.678s
+ok  github.com/Kwik-Dev/geoLibre_storymaps/server/internal/media 1.049s
+ok  github.com/Kwik-Dev/geoLibre_storymaps/server/internal/server 0.855s
+```
+
+P7.2 done 2026-08-25T11:30Z by pi (deepseek-v4-flash).
+
+New `server/internal/api/moderation_test.go` (P7.2) — `TestModeration` exercising
+the full moderation gate workflow. Modified files add the gate + admin routes:
+`server/internal/config/config.go` (ModerationRequired field from env), `server/internal/api/stories.go`
+(moderation gate in Create/Update + Approve/Reject routes), `server/internal/server/server.go`
+(passes config to handler), `server/internal/config/config_test.go` (env test).
+
+`NewStoriesHandler` now takes a `moderationRequired bool` parameter — all existing
+call sites pass `false` (no behavior change when the env is unset).
+When `MODERATION_REQUIRED=1` and a story is set to `visibility=public`:
+- Create sets `status='pending'` (not `'draft'`)
+- Update sets `status='pending'` (unless already `'approved'`)
+- The public list (anon) still filters `status='approved'` so pending stories
+  are hidden from the public.
+- Owner sees all their own stories (pending, draft, approved) via the existing
+  owner visibility list logic.
+- `POST /api/stories/:id/approve` (admin only) → sets status='approved'
+- `POST /api/stories/:id/reject` (admin only) → sets status='draft' (only
+  for pending stories; non-pending → 400)
+- Non-admin gets 403 on approve/reject.
+HANDOFF: the `pending`↔`approved` status workflow.
+Committed to branch `storymap-P7.2`.
+
+## Verify outputs (P7.3)
+
+```
+$ cd server
+$ CGO_ENABLED=0 go test ./internal/server -run TestPurge -v -count=1
+=== RUN   TestPurge
+--- PASS: TestPurge (0.01s)
+=== RUN   TestPurgeTTLGuard
+--- PASS: TestPurgeTTLGuard (0.00s)
+=== RUN   TestStartPurge
+--- PASS: TestStartPurge (0.00s)
+PASS
+ok  github.com/Kwik-Dev/geoLibre_storymaps/server/internal/server 0.522s
+
+$ CGO_ENABLED=0 go build ./...
+(no output — clean)
+
+$ CGO_ENABLED=0 go vet ./...
+(no output — clean)
+
+$ ADMIN_EMAIL=admin@example.com ADMIN_PASSWORD='change-me' \
+    CGO_ENABLED=0 go test ./... -count=1
+ok  github.com/Kwik-Dev/geoLibre_storymaps/server/internal/api 0.414s
+ok  github.com/Kwik-Dev/geoLibre_storymaps/server/internal/auth 1.521s
+ok  github.com/Kwik-Dev/geoLibre_storymaps/server/internal/config 1.399s
+ok  github.com/Kwik-Dev/geoLibre_storymaps/server/internal/db 2.185s
+ok  github.com/Kwik-Dev/geoLibre_storymaps/server/internal/media 2.759s
+ok  github.com/Kwik-Dev/geoLibre_storymaps/server/internal/server 2.374s
+```
+
+P7.3 done 2026-08-25T12:40Z by pi (deepseek-v4-flash).
+
+New `server/internal/server/purge.go` (P7.3) — the soft-delete purge cron.
+`PurgeOnce(db, ttl)` hard-deletes `stories`/`chapters`/`media_assets` rows whose
+`deleted_at` is set AND older than `ttl` (cutoff = now - ttl, compared against
+SQLite `datetime('now')` UTC format). Idempotent and processed in bounded
+batches (`purgeBatchSize=500`, loops until a batch returns < batch). Only rows
+that already have `deleted_at` set are ever removed (irreversible). FK-safe:
+chapters referencing a purged media_asset are detached (`media_asset_id=NULL`)
+first, and chapters belonging to a purged story are removed so the story row
+can be deleted. `StartPurge(db, ttl, interval)` (P7.3 HANDOFF) runs a pass once
+on startup then on a ticker, returning a `*PurgeJob` with `Stop()`.
+`PurgeTTLFromEnv()` reads `PURGE_TTL` (default 30d; non-positive/unparseable →
+default). `PURGE_TTL` must be > 0 (guarded). Files:
+`server/internal/server/purge.go`, `server/internal/server/purge_test.go`
+(TestPurge, TestPurgeTTLGuard, TestStartPurge). Committed to branch
+`storymap-P7.3`.

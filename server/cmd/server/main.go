@@ -47,7 +47,9 @@ func main() {
 		log.Fatalf("Failed to seed admin user: %v", err)
 	}
 
-	srv := server.New(cfg, database, adminHandler)
+	whoamiHandler := auth.NewWhoamiHandler(database)
+
+	srv := server.New(cfg, database, adminHandler, whoamiHandler)
 
 	addr := ":" + strconv.Itoa(cfg.AppPort)
 	log.Printf("Server listening on %s", addr)

@@ -160,8 +160,9 @@ function cardPrompt(c: Card): string {
      "Do NOT edit files outside this card's SCOPE.",
      "If VERIFY keeps failing or you hit a blocker, return done=false, verifyPassed=false, with a one-line summary.",
      "",
-     "Model note: qwen3.8:27b-mlx is a *thinking* model — use a generous maxTokens or",
-     "pass options:{think:false}; a tiny cap returns an empty answer.",
+     "Model note: you are running on the cloud model deepseek-v4-flash (ollama-cloud).",
+     "Return your result as valid JSON matching the declared output schema — do not emit",
+     "free-form prose or partial token fragments.",
     ].join("\n");
 }
 
@@ -210,8 +211,9 @@ export default smithers((ctx) => {
            request={{
           title: "Environment readiness",
           summary:
-           "Agent = local `pi` -> Ollama model qwen3.8:27b-mlx (installed + running at http://127.0.0.1:11434). " +
-            "No coding-agent install is required. " +
+           "Agent = local `pi` -> CLOUD Ollama model deepseek-v4-flash (ollama-cloud, OLLAMA_API_KEY set). " +
+            "The local qwen3.8:27b-mlx model was dropped for the implement role because it returned " +
+            "garbage instead of structured JSON. " +
             "(agent wired in .smithers/agents/pi.ts -> pool in .smithers/agents/index.ts). " +
             "Approve to proceed; deny to continue anyway (advisory checkpoint).",
           }}

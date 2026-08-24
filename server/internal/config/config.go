@@ -16,6 +16,7 @@ type Config struct {
 	AdminEmail        string   // optional: seeded admin email
 	AdminPassword     string   // optional: seeded admin password
 	MediaDir          string   // directory for uploaded media (default $DATA_DIR/media)
+	StoreKind         string   // upload store kind: "local" (default) or "s3"
 	AllowedMediaHosts []string // optional comma-separated allow-list (empty = permissive)
 	MaxUploadBytes    int64    // maximum upload size in bytes (default 25 MB)
 	AppPort           int      // HTTP listen port (default 8080)
@@ -39,6 +40,7 @@ func Load() (*Config, error) {
 		AdminEmail:    os.Getenv("ADMIN_EMAIL"),
 		AdminPassword: os.Getenv("ADMIN_PASSWORD"),
 		MediaDir:      getEnv("MEDIA_DIR", dataDir+"/media"),
+		StoreKind:     getEnv("STORE_KIND", "local"),
 		MaxUploadBytes: getEnvInt64("MEDIA_MAX_BYTES", defaultMaxUploadBytes),
 		AppPort:       getEnvInt("APP_PORT", defaultAppPort),
 	}

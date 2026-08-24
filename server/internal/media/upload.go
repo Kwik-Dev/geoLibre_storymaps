@@ -15,20 +15,17 @@
 package media
 
 import (
+	"bytes"
 	"context"
-	"crypto/rand"
 	"database/sql"
-	"encoding/hex"
 	"encoding/json"
 	"errors"
 	"fmt"
 	"io"
 	"mime/multipart"
 	"net/http"
-	"os"
 	"path/filepath"
 	"strings"
-	"time"
 )
 
 const (
@@ -73,20 +70,27 @@ var errTooLarge = statusError(http.StatusRequestEntityTooLarge, "upload too larg
 
 // UploadHandler serves POST /api/media/upload. It is designed to be mounted
 // behind auth.RequireAuth (which 401s anonymous callers) on the /api group.
+// It uses the configured Store to persist bytes; the default is LocalStore
+// (P7.1) which writes to the local filesystem.
 type UploadHandler struct {
 	db       *sql.DB
+	store    Store
 	mediaDir string
 	maxBytes int64
 }
 
 // NewUploadHandler builds an UploadHandler that stores files under mediaDir
 // (created on demand) and rejects uploads larger than maxBytes. If maxBytes is
-// <= 0 the default (25 MB) is used.
-func NewUploadHandler(db *sql.DB, mediaDir string, maxBytes int64) *UploadHandler {
+// <= 0 the default (25 MB) is used.  The store parameter is the persistence
+// backend; pass nil to use the default LocalStore.
+func NewUploadHandler(db *sql.DB, mediaDir string, maxBytes int64, store Store) *UploadHandler {
 	if maxBytes <= 0 {
 		maxBytes = defaultMaxBytes
 	}
-	return &UploadHandler{db: db, mediaDir: mediaDir, maxBytes: maxBytes}
+	if store == nil {
+		store = &LocalStore{mediaDir: mediaDir}
+	}
+	return &UploadHandler{db: db, mediaDir: mediaDir, maxBytes: maxBytes, store: store}
 }
 
 // ServeHTTP handles POST /api/media/upload. It writes 201 with the Asset JSON
@@ -154,8 +158,10 @@ func (h *UploadHandler) Upload(ctx context.Context, w http.ResponseWriter, r *ht
 	return h.storeFile(ctx, filePart, filename)
 }
 
-// storeFile detects the file's real type, streams it into MEDIA_DIR/<YYYY-MM>/
-// under a random hex name, and inserts the media_assets row.
+// storeFile detects the file's real type, streams it through the configured
+// Store, and inserts the media_assets row.  The store produces a ref that is
+// stored in stored_path; for LocalStore this ref is identical to the relative
+// path produced by P4.1 (MEDIA_DIR/<YYYY-MM>/<random-hex>.<ext>).
 func (h *UploadHandler) storeFile(ctx context.Context, part *multipart.Part, filename string) (*Asset, error) {
 	// 1. Sniff magic bytes from the leading chunk.
 	header := make([]byte, magicReadSize)
@@ -171,88 +177,31 @@ func (h *UploadHandler) storeFile(ctx context.Context, part *multipart.Part, fil
 		return nil, statusError(http.StatusBadRequest, "empty file")
 	}
 
-	kind, mime, ext := detectMagic(header)
+	kind, mime, _ := detectMagic(header)
 	if kind == "" {
 		return nil, statusError(http.StatusBadRequest,
 			"unsupported file type: only image, video, audio are allowed")
 	}
 
-	// 2. Server-generated random basename + relative stored path. Reject any
-	//    traversal defensively (the path is never client-supplied).
-	hexName, err := randomHex(16)
+	// 2. Stream through the store.  Prepend the header bytes so the store
+	//    receives the complete file (header + rest).
+	reader := io.MultiReader(bytes.NewReader(header), part)
+	ref, total, err := h.store.Put(ctx, kind, filename, reader)
 	if err != nil {
-		return nil, statusError(http.StatusInternalServerError, "failed to generate filename")
+		return nil, statusError(http.StatusInternalServerError, "failed to store file: %s", err.Error())
 	}
-	ym := time.Now().UTC().Format("2006-01")
-	rel := ym + "/" + hexName + "." + ext
-	if strings.Contains(rel, "..") || strings.HasPrefix(rel, "/") {
-		return nil, statusError(http.StatusBadRequest, "invalid storage path")
-	}
-
-	abs := filepath.Join(h.mediaDir, filepath.FromSlash(rel))
-	if err := os.MkdirAll(filepath.Dir(abs), 0o755); err != nil {
-		return nil, statusError(http.StatusInternalServerError, "failed to create media directory")
-	}
-
-	out, err := os.OpenFile(abs, os.O_CREATE|os.O_WRONLY|os.O_TRUNC, 0o644)
-	if err != nil {
-		return nil, statusError(http.StatusInternalServerError, "failed to open storage file")
-	}
-	closed := false
-	defer func() {
-		if !closed {
-			_ = out.Close()
-			_ = os.Remove(abs)
-		}
-	}()
-
-	// 3. Stream to disk, tracking bytes; bail with 413 before exceeding the cap.
-	if _, err := out.Write(header); err != nil {
-		return nil, statusError(http.StatusInternalServerError, "failed to write file")
-	}
-	total := int64(len(header))
 	if total > h.maxBytes {
+		// Store accepted the data but it exceeds our cap; remove it and 413.
+		_ = h.store.Delete(ctx, ref)
 		return nil, errTooLarge
 	}
 
-	buf := make([]byte, 64*1024)
-	for {
-		rn, rerr := part.Read(buf)
-		if rn > 0 {
-			if _, werr := out.Write(buf[:rn]); werr != nil {
-				return nil, statusError(http.StatusInternalServerError, "failed to write file")
-			}
-			total += int64(rn)
-			if total > h.maxBytes {
-				return nil, errTooLarge
-			}
-		}
-		if rerr == io.EOF {
-			break
-		}
-		if rerr != nil {
-			if isTooLarge(rerr) {
-				return nil, errTooLarge
-			}
-			return nil, statusError(http.StatusBadRequest, "failed to read upload")
-		}
-	}
-
-	if err := out.Sync(); err != nil {
-		return nil, statusError(http.StatusInternalServerError, "failed to flush file")
-	}
-	if err := out.Close(); err != nil {
-		return nil, statusError(http.StatusInternalServerError, "failed to close file")
-	}
-	closed = true
-
-	// 4. Record the row. On any DB failure, remove the physical file so a
-	//    rejected upload writes nothing durable.
-	cleanup := func() { _ = os.Remove(abs) }
+	// 3. Record the row.  On any DB failure, remove the stored object.
+	cleanup := func() { _ = h.store.Delete(ctx, ref) }
 	res, err := h.db.ExecContext(ctx, `
 		INSERT INTO media_assets (kind, stored_path, filename, bytes, mime, created_at)
 		VALUES (?, ?, ?, ?, ?, datetime('now'))`,
-		kind, rel, filename, total, mime)
+		kind, ref, filename, total, mime)
 	if err != nil {
 		cleanup()
 		return nil, statusError(http.StatusInternalServerError, "failed to record media asset")
@@ -270,7 +219,7 @@ func (h *UploadHandler) storeFile(ctx context.Context, part *multipart.Part, fil
 		MIME:       mime,
 		Kind:       kind,
 		Filename:   filename,
-		StoredPath: rel,
+		StoredPath: ref,
 	}, nil
 }
 
@@ -329,15 +278,6 @@ func detectMagic(b []byte) (kind, mime, ext string) {
 		}
 	}
 	return "", "", ""
-}
-
-// randomHex returns n random bytes encoded as lowercase hex.
-func randomHex(n int) (string, error) {
-	b := make([]byte, n)
-	if _, err := rand.Read(b); err != nil {
-		return "", err
-	}
-	return hex.EncodeToString(b), nil
 }
 
 // isTooLarge reports whether err came from http.MaxBytesReader.

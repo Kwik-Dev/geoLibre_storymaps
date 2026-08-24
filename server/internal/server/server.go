@@ -62,6 +62,11 @@ func New(cfg *config.Config, db *sql.DB, admin *auth.AdminHandler, whoami *auth.
 	// Serve + soft-delete handler (P4.4). auther is used for optional auth on
 	// the public GET /media/:aid route.
 	mediaHandler := media.NewMediaHandler(db, cfg.MediaDir, auther)
+
+	// Determine upload store (P7.1). Default is LocalStore; STORE_KIND=s3
+	// selects an S3-backed store (configured via env S3_BUCKET etc.).
+	store, _ := media.NewStore(media.StoreKind(cfg.StoreKind), cfg.MediaDir)
+
 	s.mux.Route("/api", func(r chi.Router) {
 		r.Use(s.corsMiddleware)
 		r.Use(auther.RequireAuth)
@@ -86,10 +91,10 @@ func New(cfg *config.Config, db *sql.DB, admin *auth.AdminHandler, whoami *auth.
 		// Legacy story-JSON export (P3.4). The route is allowlisted by the
 		// middleware; the handler enforces the public/owner/admin check.
 		api.NewExportHandler(db, auther).Routes(r)
-		// Media upload (P4.1). Requires a session (RequireAuth); the handler
-		// validates by magic bytes, caps the size, and stores a random-named
-		// file under MEDIA_DIR.
-		r.Post("/media/upload", media.NewUploadHandler(db, cfg.MediaDir, cfg.MaxUploadBytes).ServeHTTP)
+		// Media upload (P4.1 / P7.1). Requires a session (RequireAuth); the handler
+		// validates by magic bytes, caps the size, and persists via the configured
+		// Store (LocalStore by default; S3Store when STORE_KIND=s3).
+		r.Post("/media/upload", media.NewUploadHandler(db, cfg.MediaDir, cfg.MaxUploadBytes, store).ServeHTTP)
 		// Media soft-delete (P4.4). Owner/admin only; the route is behind
 		// RequireAuth so an authenticated user is always present.
 		r.Delete("/media/{aid}", mediaHandler.Delete)

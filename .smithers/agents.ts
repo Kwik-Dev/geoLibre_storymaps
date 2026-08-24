@@ -45,7 +45,7 @@ export const providers = {
   openrouter: createOpenRouterAgent(),
 //   opencode: new SmithersOpenCodeAgent({ model: "anthropic/claude-fable-5" }),
 //   antigravity: new SmithersAntigravityAgent(),
-  pi: new SmithersPiAgent({ provider: "ollama-cloud", model: "deepseek-v4-flash:preview", mode: "text", config: { maxTokens: 256000 }, skipGitRepoCheck: true }),
+  pi: new SmithersPiAgent({ provider: "ollama-cloud", model: "deepseek-v4-flash:preview", mode: "text", config: { maxTokens: 256000 }, skipGitRepoCheck: true, noExtensions: true }),
 //   omp: new SmithersOmpAgent({ model: "gpt-5.6-luna" }),
 //   kimi: new SmithersKimiAgent({ model: "kimi-k2.7-code" }),
 //   amp: new SmithersAmpAgent(),

@@ -38,16 +38,19 @@ type Story struct {
 // context (attached by auth.RequireAuth) and enforces visibility via
 // canAccess. The public GET listing is allowlisted by the middleware (anon
 // users can list public+approved stories); everything else requires a session.
+// When moderationRequired is true, stories set to visibility=public are
+// moved to status='pending' instead of being immediately approved (P7.2).
 type StoriesHandler struct {
-	db     *sql.DB
-	auther *auth.Authenticator
+	db                  *sql.DB
+	auther              *auth.Authenticator
+	moderationRequired  bool
 }
 
 // NewStoriesHandler builds a StoriesHandler backed by db. auther is used for
 // optional authentication on the public list route (so an owner can see their
 // own private stories); it may be nil, in which case the list is anonymous-only.
-func NewStoriesHandler(db *sql.DB, auther *auth.Authenticator) *StoriesHandler {
-	return &StoriesHandler{db: db, auther: auther}
+func NewStoriesHandler(db *sql.DB, auther *auth.Authenticator, moderationRequired bool) *StoriesHandler {
+	return &StoriesHandler{db: db, auther: auther, moderationRequired: moderationRequired}
 }
 
 // Routes registers the stories routes on the given router. It is meant to be
@@ -59,6 +62,8 @@ func (h *StoriesHandler) Routes(r chi.Router) {
 	r.Get("/stories/{id}", h.Get)
 	r.Put("/stories/{id}", h.Update)
 	r.Delete("/stories/{id}", h.Delete)
+	r.Post("/stories/{id}/approve", h.Approve)
+	r.Post("/stories/{id}/reject", h.Reject)
 }
 
 // canAccess reports whether user (nil = anonymous) may view/modify the given
@@ -169,6 +174,13 @@ func (h *StoriesHandler) Create(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	// Determine initial status: draft by default, but pending when
+	// moderation is required and the story is set to public (P7.2).
+	initialStatus := "draft"
+	if h.moderationRequired && vis == "public" {
+		initialStatus = "pending"
+	}
+
 	slug, err := h.uniqueSlug(slugify(body.Title))
 	if err != nil {
 		writeJSON(w, http.StatusInternalServerError, map[string]string{"error": "failed to generate unique slug"})
@@ -178,10 +190,10 @@ func (h *StoriesHandler) Create(w http.ResponseWriter, r *http.Request) {
 	var id int64
 	err = h.db.QueryRow(`
 		INSERT INTO stories (slug, author_id, title, subtitle, byline, visibility, status, created_at, updated_at)
-		VALUES (?, ?, ?, ?, ?, ?, 'draft', datetime('now'), datetime('now'))
+		VALUES (?, ?, ?, ?, ?, ?, ?, datetime('now'), datetime('now'))
 		RETURNING id`,
 		slug, user.ID, strings.TrimSpace(body.Title), strings.TrimSpace(body.Subtitle),
-		strings.TrimSpace(body.Byline), vis).Scan(&id)
+		strings.TrimSpace(body.Byline), vis, initialStatus).Scan(&id)
 	if err != nil {
 		writeJSON(w, http.StatusInternalServerError, map[string]string{"error": "failed to create story"})
 		return
@@ -260,10 +272,17 @@ func (h *StoriesHandler) Update(w http.ResponseWriter, r *http.Request) {
 		vis = v
 	}
 
+	// Determine new status: if moderation is required and visibility is
+	// (or becomes) public, move to pending unless already approved (P7.2).
+	newStatus := s.Status
+	if h.moderationRequired && vis == "public" && s.Status != "approved" {
+		newStatus = "pending"
+	}
+
 	if _, err := h.db.Exec(`
-		UPDATE stories SET title = ?, subtitle = ?, byline = ?, visibility = ?, updated_at = datetime('now')
+		UPDATE stories SET title = ?, subtitle = ?, byline = ?, visibility = ?, status = ?, updated_at = datetime('now')
 		WHERE id = ? AND deleted_at IS NULL`,
-		title, subtitle, byline, vis, s.ID); err != nil {
+		title, subtitle, byline, vis, newStatus, s.ID); err != nil {
 		writeJSON(w, http.StatusInternalServerError, map[string]string{"error": "failed to update story"})
 		return
 	}
@@ -295,6 +314,64 @@ func (h *StoriesHandler) Delete(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	w.WriteHeader(http.StatusNoContent)
+}
+
+// Approve serves POST /api/stories/:id/approve. Only an admin may approve a
+// story; it sets status='approved' so the story appears in the public listing.
+// If the story is already approved this is a no-op.
+func (h *StoriesHandler) Approve(w http.ResponseWriter, r *http.Request) {
+	user := auth.UserFrom(r.Context())
+	if user == nil || user.Role != "admin" {
+		writeJSON(w, http.StatusForbidden, map[string]string{"error": "admin access required"})
+		return
+	}
+	s, ok := h.load(w, r)
+	if !ok {
+		return
+	}
+	if _, err := h.db.Exec(`
+		UPDATE stories SET status = 'approved', updated_at = datetime('now') WHERE id = ? AND deleted_at IS NULL`,
+		s.ID); err != nil {
+		writeJSON(w, http.StatusInternalServerError, map[string]string{"error": "failed to approve story"})
+		return
+	}
+	updated, err := h.loadByID(s.ID)
+	if err != nil {
+		writeJSON(w, http.StatusInternalServerError, map[string]string{"error": "failed to read approved story"})
+		return
+	}
+	writeJSON(w, http.StatusOK, updated)
+}
+
+// Reject serves POST /api/stories/:id/reject. Only an admin may reject a
+// pending story; it sets status back to 'draft' (hidden from the public list
+// unless the owner changes visibility/status).
+func (h *StoriesHandler) Reject(w http.ResponseWriter, r *http.Request) {
+	user := auth.UserFrom(r.Context())
+	if user == nil || user.Role != "admin" {
+		writeJSON(w, http.StatusForbidden, map[string]string{"error": "admin access required"})
+		return
+	}
+	s, ok := h.load(w, r)
+	if !ok {
+		return
+	}
+	if s.Status != "pending" {
+		writeJSON(w, http.StatusBadRequest, map[string]string{"error": "only pending stories can be rejected"})
+		return
+	}
+	if _, err := h.db.Exec(`
+		UPDATE stories SET status = 'draft', updated_at = datetime('now') WHERE id = ? AND deleted_at IS NULL`,
+		s.ID); err != nil {
+		writeJSON(w, http.StatusInternalServerError, map[string]string{"error": "failed to reject story"})
+		return
+	}
+	updated, err := h.loadByID(s.ID)
+	if err != nil {
+		writeJSON(w, http.StatusInternalServerError, map[string]string{"error": "failed to read rejected story"})
+		return
+	}
+	writeJSON(w, http.StatusOK, updated)
 }
 
 // load parses the :id path param, loads the story, and writes a 404 if it is

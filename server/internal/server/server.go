@@ -59,6 +59,9 @@ func New(cfg *config.Config, db *sql.DB, admin *auth.AdminHandler, whoami *auth.
 	// API routes with CORS; every /api route runs behind RequireAuth (which
 	// itself allowlists the public auth/health/stories-listing/export paths).
 		auther := auth.NewAuthenticator(cfg.JWTSecret, false)
+	// Serve + soft-delete handler (P4.4). auther is used for optional auth on
+	// the public GET /media/:aid route.
+	mediaHandler := media.NewMediaHandler(db, cfg.MediaDir, auther)
 	s.mux.Route("/api", func(r chi.Router) {
 		r.Use(s.corsMiddleware)
 		r.Use(auther.RequireAuth)
@@ -87,7 +90,16 @@ func New(cfg *config.Config, db *sql.DB, admin *auth.AdminHandler, whoami *auth.
 		// validates by magic bytes, caps the size, and stores a random-named
 		// file under MEDIA_DIR.
 		r.Post("/media/upload", media.NewUploadHandler(db, cfg.MediaDir, cfg.MaxUploadBytes).ServeHTTP)
+		// Media soft-delete (P4.4). Owner/admin only; the route is behind
+		// RequireAuth so an authenticated user is always present.
+		r.Delete("/media/{aid}", mediaHandler.Delete)
 	})
+
+	// Serve uploaded media (P4.4). This route lives OUTSIDE /api (it is not
+	// behind RequireAuth) because public stories' assets must be served to
+	// anonymous browsers. The handler performs optional auth itself so the
+	// owner/admin of a private story can still reach its bytes.
+	s.mux.Get("/media/{aid}", mediaHandler.Serve)
 
 	// Static file serve for everything else (non-API, non-media)
 	s.mux.NotFound(s.handleStatic)

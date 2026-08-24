@@ -14,10 +14,10 @@ Legend: `todo` · `running` · `done` · `blocked` · `needs-human` · `opt`(opt
 | P1.2 | done   | pi (deepseek-v4-flash) | `go test ./internal/db -run TestMigrate -v`         | 2026-08-24T13:20Z (re-verified) |
 | P1.3 | done   | pi (deepseek-v4-flash) | build + `curl /api/health` = 200                    | 2026-08-24T14:24Z (re-verified) |
 | P1.4 | done·opt| pi (deepseek-v4-flash) | `go test ./internal/server -run TestSeed -v`       | 2026-08-24T05:25Z (re-verified) |
-| P2.1 | todo   | —            | `go test ./internal/auth -run TestGitHubOAuth -v`  |            |
-| P2.2 | todo   | —            | `go test ./internal/auth -run TestAdminLogin -v`   |            |
-| P2.3 | todo   | —            | `go test ./internal/auth -run TestMiddleware -v`    |            |
-| P2.4 | todo   | —            | `go test ./internal/auth -run TestWhoami -v`        |            |
+| P2.1 | done   | pi (deepseek-v4-flash) | `go test ./internal/auth -run TestGitHubOAuth -v` | 2026-08-24T15:05Z |
+| P2.2 | done   | pi (deepseek-v4-flash) | `ADMIN_EMAIL=... go test ./internal/auth -run TestAdminLogin -v` | 2026-08-24T16:10Z |
+| P2.3 | done   | pi (deepseek-v4-flash) | `go test ./internal/auth -run TestMiddleware -v` | 2026-08-24T17:05Z |
+| P2.4 | done   | pi (deepseek-v4-flash) | `go test ./internal/auth -run TestWhoami -v`        | 2026-08-24T18:50Z |
 | P3.1 | todo   | —            | `go test ./internal/api -run TestStoriesCRUD -v`    |            |
 | P3.2 | todo   | —            | `go test ./internal/api -run TestChapters -v`       |            |
 | P3.3 | todo   | —            | `go test ./internal/api -run TestStoryView -v`      |            |
@@ -164,6 +164,91 @@ $ CGO_ENABLED=0 go vet ./...
 
 All steps pass. Files already committed to branch `storymap-P1.2` (commit `otm`).
 
+## Verify outputs (P2.1)
+
+```
+$ cd server
+$ GITHUB_OAUTH_BASE=http://127.0.0.1:18080 GITHUB_API_BASE=http://127.0.0.1:18081 \
+    CGO_ENABLED=0 go test ./internal/auth -run TestGitHubOAuth -v
+=== RUN   TestGitHubOAuth
+--- PASS: TestGitHubOAuth (0.01s)
+PASS
+ok  	github.com/Kwik-Dev/geoLibre_storymaps/server/internal/auth	0.465s
+
+$ CGO_ENABLED=0 go build ./...   # (no output — clean)
+$ CGO_ENABLED=0 go vet ./...     # (no output — clean)
+```
+
+P2.1 done 2026-08-24T15:05Z by pi (deepseek-v4-flash). Authorize → callback
+upserts exactly one user by `github_id`, issues a session (JWT + httpOnly
+cookie); replayed state → 400; forged state → 400.
+
+## Verify outputs (P2.2)
+
+```
+$ cd server
+$ ADMIN_EMAIL=admin@example.com ADMIN_PASSWORD='change-me' \
+    CGO_ENABLED=0 go test ./internal/auth -run TestAdminLogin -v
+=== RUN   TestAdminLogin
+--- PASS: TestAdminLogin (0.72s)
+PASS
+ok  	github.com/Kwik-Dev/geoLibre_storymaps/server/internal/auth	1.206s
+
+$ CGO_ENABLED=0 go build ./...   # (no output — clean)
+$ CGO_ENABLED=0 go vet ./...     # (no output — clean)
+$ ADMIN_EMAIL=admin@example.com ADMIN_PASSWORD='change-me' \
+    CGO_ENABLED=0 go test ./...  # all packages ok (auth, config, db, server)
+```
+
+P2.2 done 2026-08-24T16:10Z by pi (deepseek-v4-flash). Seeded admin logs in →
+token + httpOnly cookie; wrong password/unknown email → 401; unconfigured
+admin (no env) → 503 without crashing; EnsureAdmin idempotent (exactly one
+admin row); refresh rotates session; /api/auth/register and /api/users → 404.
+
+## Verify outputs (P2.3)
+
+```
+$ cd server
+$ CGO_ENABLED=0 go test ./internal/auth -run TestMiddleware -v
+=== RUN   TestMiddleware
+=== RUN   TestMiddleware/protected_route_without_token_→_401
+=== RUN   TestMiddleware/private_write_without_token_→_401
+=== RUN   TestMiddleware/valid_bearer_token_→_200
+=== RUN   TestMiddleware/valid_refresh_cookie_→_200
+=== RUN   TestMiddleware/expired_token_→_401
+=== RUN   TestMiddleware/invalid/forged_token_→_401
+=== RUN   TestMiddleware/public_allowlist_paths_return_without_token
+=== RUN   TestMiddleware/user_attached_to_context
+--- PASS: TestMiddleware (0.00s)
+    --- PASS: TestMiddleware/protected_route_without_token_→_401 (0.00s)
+    --- PASS: TestMiddleware/private_write_without_token_→_401 (0.00s)
+    --- PASS: TestMiddleware/valid_bearer_token_→_200 (0.00s)
+    --- PASS: TestMiddleware/valid_refresh_cookie_→_200 (0.00s)
+    --- PASS: TestMiddleware/expired_token_→_401 (0.00s)
+    --- PASS: TestMiddleware/invalid/forged_token_→_401 (0.00s)
+    --- PASS: TestMiddleware/public_allowlist_paths_return_without_token (0.00s)
+    --- PASS: TestMiddleware/user_attached_to_context (0.00s)
+PASS
+ok  github.com/Kwik-Dev/geoLibre_storymaps/server/internal/auth 0.461s
+
+$ CGO_ENABLED=0 go build ./...   # (no output — clean)
+$ CGO_ENABLED=0 go vet ./...     # (no output — clean)
+$ ADMIN_EMAIL=admin@example.com ADMIN_PASSWORD='change-me' \
+    CGO_ENABLED=0 go test ./...  # all packages ok (auth, config, db, server)
+```
+
+P2.3 done 2026-08-24T17:05Z by pi (deepseek-v4-flash). New
+`server/internal/auth/jwt.go` (HS256 sign/verify, 15m exp, claims
+{sub,role,iat,exp}) + `middleware.go` (`Authenticator.RequireAuth`, bearer-then
+refresh-cookie fallback, 401 on failure, user attached via `UserFrom(ctx)`;
+method-aware allowlist: GET /api/health, /api/auth/github(/callback),
+POST /api/auth/admin/login+refresh, GET /api/stories public list, GET
+/api/stories/:id/export). Refresh cookie is httpOnly + SameSite=Strict with a
+`Secure` flag available via `GitHubConfig.Secure` (prod). NOTE: the protected
+`POST /api/stories` (create) requires a token; the public GET /api/stories
+*listing* is allowlisted, and the export-path "when public" authz is enforced
+by the handler (P3.4), not the middleware.
+
 ## Verify outputs (P1.3)
 
 ```
@@ -227,3 +312,43 @@ $ pkill -f goserve
 ```
 
 All steps pass. /api/health returns 200 with {"db":"ok","status":"ok"}. Static serve returns 200 from ../dist/index.html. Source already committed to branch `storymap-P1.3` (commit `vmk`).
+
+## Verify outputs (P2.4)
+
+Re-verified 2026-08-24T18:50Z by pi (deepseek-v4-flash) after reviewer feedback
+(handler was dead code, never mounted). Now the whoami endpoint is wired into the
+real router: `server.New` accepts a `*auth.WhoamiHandler`, `cmd/server/main.go`
+constructs it and passes it through, and every `/api` route (including
+`GET /api/auth/whoami`) runs behind `RequireAuth`. Added a server-level route test
+(`internal/server/whoami_route_test.go`) that proves the endpoint is served by the
+production mux. Output:
+
+```
+$ cd server
+$ CGO_ENABLED=0 go test ./internal/auth -run TestWhoami -v
+=== RUN   TestWhoami
+--- PASS: TestWhoami (0.01s)
+=== RUN   TestWhoamiAdminFlag
+--- PASS: TestWhoamiAdminFlag (0.01s)
+PASS
+ok  github.com/Kwik-Dev/geoLibre_storymaps/server/internal/auth (cached)
+
+$ CGO_ENABLED=0 go test ./internal/server -run TestWhoamiRoute -v
+=== RUN   TestWhoamiRoute
+--- PASS: TestWhoamiRoute (0.01s)   # via real router: no token→401, valid token→200, no password_hash
+PASS
+ok   github.com/Kwik-Dev/geoLibre_storymaps/server/internal/server 0.517s
+
+$ CGO_ENABLED=0 go build ./...   # (no output — clean)
+$ CGO_ENABLED=0 go vet ./...     # (no output — clean)
+$ ADMIN_EMAIL=admin@example.com ADMIN_PASSWORD='change-me' \
+    CGO_ENABLED=0 go test ./...  # all packages ok (auth, config, db, server)
+```
+
+P2.4 done 2026-08-24T18:50Z by pi (deepseek-v4-flash). GET /api/auth/whoami
+under RequireAuth returns `{"id","github_login","admin_email","role","admin"}`
+(incl. role + admin flag derived from role); without a token → 401; the response
+never contains password_hash. Files: `internal/auth/whoami.go` (WhoamiHandler),
+`internal/auth/whoami_test.go`, `internal/server/server.go` (New wires whoami +
+RequireAuth), `cmd/server/main.go` (passes whoami handler), new
+`internal/server/whoami_route_test.go` (production-wiring regression test).

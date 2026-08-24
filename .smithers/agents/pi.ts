@@ -19,9 +19,23 @@ export const PiAgent = new SmithersPiAgent({
   model: "qwen3.8:27b-mlx",
   mode: "text",
   config: {
-   maxTokens: 16000,
+   maxTokens: 128000,
    },
   skipGitRepoCheck: true,
 });
 
 export const pi = PiAgent;
+
+// A second pool backed by the CLOUD Ollama model deepseek-v4-flash (via
+// ollama-cloud) — used for the AI judge and diagnose roles, so a stronger
+// model grades the local model's work instead of the local model grading
+// itself.
+export const PiAgentCloud = new SmithersPiAgent({
+  provider: "ollama-cloud",
+  model: "deepseek-v4-flash",
+  mode: "text",
+  config: {
+   maxTokens: 256000,
+   },
+  skipGitRepoCheck: true,
+});

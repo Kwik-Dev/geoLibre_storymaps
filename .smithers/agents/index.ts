@@ -10,12 +10,12 @@ export { AntigravityAgent } from "./antigravity";
 //   smithers up .smithers/workflows/storymap-pieces.tsx
 //   or one card at a time:
 //   smithers oneshot "implement card P1.1 in server/; run VERIFY; update STATUS.md; no PR"
-import { PiAgent, pi as PiAgentInstance } from "./pi";
-export { PiAgent };
+import { PiAgent, pi as PiAgentInstance, PiAgentCloud } from "./pi";
+export { PiAgent, PiAgentCloud };
 export const implement = PiAgentInstance;
-export const review = PiAgentInstance;
+export const review = PiAgentCloud;
 export const planning = PiAgentInstance;
-export const research = PiAgentInstance;
+export const research = PiAgentCloud;
 
 // Legacy per-runner instances remain importable for direct use (vendor-specific).
 export { ClaudeCodeAgent as claudeCode } from "./claude-code";

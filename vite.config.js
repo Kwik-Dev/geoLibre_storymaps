@@ -12,5 +12,11 @@ export default defineConfig({
   base: './',
   server: {
     port: 5173,
+    proxy: {
+      // Dev-only proxy → Go backend on :8080.
+      // /api (REST) and /media (uploaded media) are forwarded with the same path.
+      '/api': 'http://localhost:8080',
+      '/media': 'http://localhost:8080',
+    },
   },
 });

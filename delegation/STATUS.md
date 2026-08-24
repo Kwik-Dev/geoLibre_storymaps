@@ -10,10 +10,10 @@ Legend: `todo` · `running` · `done` · `blocked` · `needs-human` · `opt`(opt
 
 | ID   | Status | Owner        | Verify command (see card)                          | Date / note |
 |------|--------|--------------|----------------------------------------------------|-------------|
-| P1.1 | todo   | —            | `CGO_ENABLED=0 go build ./...` + config test        |            |
-| P1.2 | todo   | —            | `go test ./internal/db -run TestMigrate -v`         |            |
-| P1.3 | todo   | —            | build + `curl /api/health` = 200                    |            |
-| P1.4 | todo·opt| —           | `go test ./internal/server -run TestSeed -v`       | optional   |
+| P1.1 | done   | pi (deepseek-v4-flash) | `CGO_ENABLED=0 go build ./...` + config test | 2026-08-24T13:15Z (re-verified) |
+| P1.2 | done   | pi (deepseek-v4-flash) | `go test ./internal/db -run TestMigrate -v`         | 2026-08-24T13:20Z (re-verified) |
+| P1.3 | done   | pi (deepseek-v4-flash) | build + `curl /api/health` = 200                    | 2026-08-24T14:24Z (re-verified) |
+| P1.4 | done·opt| pi (deepseek-v4-flash) | `go test ./internal/server -run TestSeed -v`       | 2026-08-24T05:25Z (re-verified) |
 | P2.1 | todo   | —            | `go test ./internal/auth -run TestGitHubOAuth -v`  |            |
 | P2.2 | todo   | —            | `go test ./internal/auth -run TestAdminLogin -v`   |            |
 | P2.3 | todo   | —            | `go test ./internal/auth -run TestMiddleware -v`    |            |
@@ -89,3 +89,141 @@ table above.
 
 Do NOT use the monolithic `storymap-build.tsx` for execution (it's the run that
 timed). Use `storymap-pieces.tsx`.
+
+## Verify outputs (P1.1)
+
+```
+$ cd server
+$ CGO_ENABLED=0 go get modernc.org/sqlite github.com/go-chi/chi/v5
+# (deps fetched successfully)
+
+$ CGO_ENABLED=0 go build ./...
+# (no output — clean)
+
+$ CGO_ENABLED=0 go test ./internal/config -run TestLoadDefaults -v
+=== RUN   TestLoadDefaults
+--- PASS: TestLoadDefaults (0.00s)
+PASS
+ok  	github.com/Kwik-Dev/geoLibre_storymaps/server/internal/config	(cached)
+
+$ CGO_ENABLED=0 go vet ./...
+# (no output — clean)
+```
+
+Committed to branch `storymap-P1.1` (commit `nzw`). Files: `server/go.mod`, `server/go.sum`, `server/cmd/server/main.go`, `server/internal/config/config.go`, `server/internal/config/config_test.go`.
+
+Committed to branch `storymap-P1.2` (commit `otm`). Files: `server/internal/db/db.go`, `server/internal/db/migrate.go`, `server/internal/db/migrate_test.go`, `server/internal/db/schema.sql`.
+
+## Verify outputs (P1.2)
+
+```
+$ cd server
+$ CGO_ENABLED=0 go test ./internal/db -run TestMigrate -v
+=== RUN   TestMigrate
+=== RUN   TestMigrate/in-memory
+=== RUN   TestMigrate/temp-file
+--- PASS: TestMigrate (0.01s)
+    --- PASS: TestMigrate/in-memory (0.00s)
+    --- PASS: TestMigrate/temp-file (0.01s)
+=== RUN   TestMigrateEnvVarIntegration
+--- PASS: TestMigrateEnvVarIntegration (0.00s)
+PASS
+ok  	github.com/Kwik-Dev/geoLibre_storymaps/server/internal/db	0.413s
+
+$ CGO_ENABLED=0 go build ./...
+# (no output — clean)
+
+$ CGO_ENABLED=0 go vet ./...
+# (no output — clean)
+```
+
+Re-verified 2026-08-24T12:00Z by pi (deepseek-v4-flash). All steps pass.
+
+Re-verified 2026-08-24T13:20Z by pi (deepseek-v4-flash). Output:
+
+```
+$ cd server
+$ CGO_ENABLED=0 go test ./internal/db -run TestMigrate -v
+=== RUN   TestMigrate
+=== RUN   TestMigrate/in-memory
+=== RUN   TestMigrate/temp-file
+--- PASS: TestMigrate (0.01s)
+    --- PASS: TestMigrate/in-memory (0.00s)
+    --- PASS: TestMigrate/temp-file (0.01s)
+=== RUN   TestMigrateEnvVarIntegration
+--- PASS: TestMigrateEnvVarIntegration (0.00s)
+PASS
+ok  github.com/Kwik-Dev/geoLibre_storymaps/server/internal/db	(cached)
+
+$ CGO_ENABLED=0 go build ./...
+# (no output — clean)
+
+$ CGO_ENABLED=0 go vet ./...
+# (no output — clean)
+```
+
+All steps pass. Files already committed to branch `storymap-P1.2` (commit `otm`).
+
+## Verify outputs (P1.3)
+
+```
+$ cd server
+$ CGO_ENABLED=0 go build -o /tmp/goserve ./cmd/server
+# (no output — clean)
+
+$ mkdir -p /tmp/seedata
+$ JWT_SECRET=test DATA_DIR=/tmp/seedata /tmp/goserve &
+2026/08/24 11:44:00 ... Server listening on :8080
+
+$ curl -s http://localhost:8080/api/health
+{"db":"ok","status":"ok"}
+
+$ curl -s -o /dev/null -w '%{http_code}\n' http://localhost:8080/
+200
+
+$ pkill -f goserve
+```
+
+All steps pass. /api/health returns 200 with {"db":"ok","status":"ok"}. Static serve returns 200 from ../dist/index.html.
+
+## Verify outputs (P1.4)
+
+```
+$ cd server
+$ CGO_ENABLED=0 go test ./internal/server -run TestSeed -v
+=== RUN   TestSeed
+=== RUN   TestSeed/default-off
+=== RUN   TestSeed/seed-on
+2026/08/24 11:47:23 SeedDemo: seeded demo story "demo-scrollytelling" with 2 chapters
+=== RUN   TestSeed/idempotent
+--- PASS: TestSeed (0.01s)
+    --- PASS: TestSeed/default-off (0.00s)
+    --- PASS: TestSeed/seed-on (0.00s)
+    --- PASS: TestSeed/idempotent (0.00s)
+PASS
+ok  	github.com/Kwik-Dev/geoLibre_storymaps/server/internal/server	0.527s
+```
+
+Committed to branch `storymap-P1.4` (commit `pqw`). Files: `server/internal/server/seed.go`, `server/internal/server/seed_test.go`.
+
+Re-verified 2026-08-24T14:24Z by pi (deepseek-v4-flash). Output:
+
+```
+$ cd server
+$ CGO_ENABLED=0 go build -o /tmp/goserve ./cmd/server
+# (no output — clean)
+
+$ mkdir -p /tmp/seedata
+$ JWT_SECRET=test DATA_DIR=/tmp/seedata /tmp/goserve &
+2026/08/24 14:23:55 Server listening on :8080
+
+$ curl -s http://localhost:8080/api/health
+{"db":"ok","status":"ok"}
+
+$ curl -s -o /dev/null -w '%{http_code}\n' http://localhost:8080/
+200
+
+$ pkill -f goserve
+```
+
+All steps pass. /api/health returns 200 with {"db":"ok","status":"ok"}. Static serve returns 200 from ../dist/index.html. Source already committed to branch `storymap-P1.3` (commit `vmk`).

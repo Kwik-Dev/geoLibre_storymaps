@@ -1,6 +1,7 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { AudioProvider, useAudio } from './audio/AudioContext.jsx';
-import { stories, defaultStoryId, getStory } from './stories.js';
+import { stories as embeddedStories, defaultStoryId } from './stories.js';
+import { getStories, getStory } from './getStory.js';
 import MapView from './components/MapView.jsx';
 import Story from './components/Story.jsx';
 import NavSidebar from './components/NavSidebar.jsx';
@@ -239,39 +240,93 @@ function StoryMap({ story }) {
     );
 }
 
+const PICKER_NOTE_STYLE = { fontStyle: 'italic', color: 'inherit', opacity: 0.85 };
+
 // Top-right control: switch between the storymap JSONs at runtime. Lives
 // outside the keyed <StoryMap> so it survives story remounts; pauses audio
 // before swapping so the previous chapter's track doesn't keep playing.
-function StoryPicker({ config, storyId, onSelect }) {
+// The options are data-driven (embedded + API stories merged), with explicit
+// loading / error / empty states (P5.3).
+function StoryPicker({ config, storyId, allStories, listState, onSelect }) {
     const audio = useAudio();
+    const { loading, error } = listState;
     return (
         <div id="story-picker" className={config.theme}>
             <label htmlFor="story-select">Story</label>
-            <select
-                id="story-select"
-                value={storyId}
-                onChange={(e) => {
-                    audio.pause();
-                    onSelect(e.target.value);
-                }}
-            >
-                {stories.map((s) => (
-                    <option key={s.id} value={s.id}>
-                        {s.label}
-                    </option>
-                ))}
-            </select>
+            {allStories.length === 0 && !loading ? (
+                <span style={PICKER_NOTE_STYLE}>No stories available. Create a story to get started.</span>
+            ) : loading ? (
+                <span style={PICKER_NOTE_STYLE}>Loading stories…</span>
+            ) : (
+                <select
+                    id="story-select"
+                    value={allStories.some((s) => s.id === storyId) ? storyId : ''}
+                    onChange={(e) => {
+                        audio.pause();
+                        onSelect(e.target.value);
+                    }}
+                >
+                    {allStories.map((s) => (
+                        <option key={s.id} value={s.id}>
+                            {s.label}
+                        </option>
+                    ))}
+                </select>
+            )}
+            {error && (
+                <span style={PICKER_NOTE_STYLE} title={error}>
+                    Server unavailable — showing embedded stories.
+                </span>
+            )}
         </div>
     );
 }
 
 export default function App() {
     const [selectedId, setSelectedId] = useState(defaultStoryId);
-    const story = getStory(selectedId);
+    // Start with the embedded stories so the picker is instantly usable even
+    // before the API resolves (and in no-server / file:// mode).
+    const [allStories, setAllStories] = useState(embeddedStories);
+    const [listState, setListState] = useState({ loading: true, error: null });
+    const [story, setStory] = useState({ id: defaultStoryId, config: null });
+
+    // Async load: merge embedded + API stories (P5.3). Graceful degradation:
+    // a fetch failure falls back to embedded only — never a crash.
+    useEffect(() => {
+        let alive = true;
+        (async () => {
+            try {
+                const merged = await getStories();
+                if (!alive) return;
+                setAllStories(merged);
+                setListState({ loading: false, error: null });
+            } catch (e) {
+                if (!alive) return;
+                setAllStories(embeddedStories);
+                setListState({ loading: false, error: e.message || String(e) });
+            }
+        })();
+        return () => {
+            alive = false;
+        };
+    }, []);
+
+    // Load the full config for the selected story (async; embedded resolves
+    // immediately).
+    useEffect(() => {
+        let alive = true;
+        getStory(selectedId).then((s) => {
+            if (!alive) return;
+            setStory(s && s.config ? { id: selectedId, config: s.config } : { id: selectedId, config: null });
+        });
+        return () => {
+            alive = false;
+        };
+    }, [selectedId]);
 
     // Keep the browser tab title in sync with the active story.
     useEffect(() => {
-        document.title = story.config.title;
+        if (story.config) document.title = story.config.title;
     }, [story]);
 
     const handleSelect = useCallback((id) => {
@@ -281,11 +336,23 @@ export default function App() {
         setSelectedId(id);
     }, []);
 
+    const pickerConfig = story.config || {};
+
     return (
         <AudioProvider>
-            <StoryPicker config={story.config} storyId={story.id} onSelect={handleSelect} />
-            {/* key forces a full remount (map, scrollama, state) per story */}
-            <StoryMap key={story.id} story={story.config} />
+            <StoryPicker
+                config={pickerConfig}
+                storyId={story.id}
+                allStories={allStories}
+                listState={listState}
+                onSelect={handleSelect}
+            />
+            {story.config ? (
+                // key forces a full remount (map, scrollama, state) per story
+                <StoryMap key={story.id} story={story.config} />
+            ) : (
+                <div style={{ padding: '2rem', textAlign: 'center' }}>Loading story…</div>
+            )}
         </AudioProvider>
     );
 }

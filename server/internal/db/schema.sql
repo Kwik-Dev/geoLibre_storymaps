@@ -63,6 +63,8 @@ CREATE TABLE IF NOT EXISTS media_assets (
 
 -- Indexes for common query paths
 CREATE INDEX IF NOT EXISTS idx_stories_slug          ON stories(slug);
+-- Case-insensitive uniqueness for generated slugs (P3.1).
+CREATE UNIQUE INDEX IF NOT EXISTS idx_stories_slug_ci    ON stories(lower(slug));
 CREATE INDEX IF NOT EXISTS idx_stories_author_id     ON stories(author_id);
 CREATE INDEX IF NOT EXISTS idx_chapters_story_id     ON chapters(story_id);
 CREATE INDEX IF NOT EXISTS idx_chapters_media_asset_id ON chapters(media_asset_id);

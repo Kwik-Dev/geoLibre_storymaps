@@ -12,6 +12,7 @@ import (
 	"github.com/go-chi/chi/v5"
 	"github.com/go-chi/chi/v5/middleware"
 
+	"github.com/Kwik-Dev/geoLibre_storymaps/server/internal/api"
 	"github.com/Kwik-Dev/geoLibre_storymaps/server/internal/auth"
 	"github.com/Kwik-Dev/geoLibre_storymaps/server/internal/config"
 )
@@ -30,14 +31,18 @@ type Server struct {
 //	POST /api/auth/admin/login        — admin-only local login (bcrypt, env-seeded)
 //	POST /api/auth/admin/refresh      — rotate the admin session
 //	GET  /api/auth/whoami             — current user profile (requires Bearer JWT)
+//	GET  /api/stories                 — public listing (anon) / filtered by role (auth)
+//	POST /api/stories                 — create a story (requires Bearer JWT)
+//	GET/PUT/DELETE /api/stories/:id   — read / update / soft-delete (authz by owner/admin)
 //	/*                               — static files from ../dist (SPA fallback to index.html)
 //	                                 — /api and /media paths are never served statically
 //
-// The admin and whoami handlers are optional: if nil, those routes are not
-// mounted (a pure GitHub-auth server can pass a nil whoami). All /api routes
-// run behind auth.RequireAuth, which enforces the public-route allowlist and
-// requires a valid Bearer JWT (or refresh cookie) for everything else.
-// No public registration route is ever mounted.
+// The admin, whoami, and stories handlers are optional: if nil, those routes
+// are not mounted (a pure GitHub-auth server can pass nil handlers). All /api
+// routes run behind auth.RequireAuth, which enforces the public-route
+// allowlist (GET /api/stories public listing, health, auth) and requires a
+// valid Bearer JWT (or refresh cookie) for everything else. No public
+// registration route is ever mounted.
 func New(cfg *config.Config, db *sql.DB, admin *auth.AdminHandler, whoami *auth.WhoamiHandler) *Server {
 	s := &Server{
 		cfg: cfg,
@@ -52,7 +57,7 @@ func New(cfg *config.Config, db *sql.DB, admin *auth.AdminHandler, whoami *auth.
 
 	// API routes with CORS; every /api route runs behind RequireAuth (which
 	// itself allowlists the public auth/health/stories-listing/export paths).
-	auther := auth.NewAuthenticator(cfg.JWTSecret, false)
+		auther := auth.NewAuthenticator(cfg.JWTSecret, false)
 	s.mux.Route("/api", func(r chi.Router) {
 		r.Use(s.corsMiddleware)
 		r.Use(auther.RequireAuth)
@@ -66,6 +71,9 @@ func New(cfg *config.Config, db *sql.DB, admin *auth.AdminHandler, whoami *auth.
 		if whoami != nil {
 			r.Get("/auth/whoami", whoami.ServeHTTP)
 		}
+		// Stories CRUD (P3.1). The handler enforces visibility/authz per-op;
+		// the middleware already allowlists the public GET /api/stories list.
+		api.NewStoriesHandler(db, auther).Routes(r)
 	})
 
 	// Static file serve for everything else (non-API, non-media)

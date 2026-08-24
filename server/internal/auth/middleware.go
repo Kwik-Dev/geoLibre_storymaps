@@ -87,6 +87,33 @@ func (a *Authenticator) RequireAuth(next http.Handler) http.Handler {
 	})
 }
 
+// UserFromRequest performs *optional* authentication: it returns the user for
+// a valid Bearer token (or refresh cookie), or nil if absent or invalid. It
+// never writes a 401. Handlers on public routes (e.g. the story list, which is
+// allowlisted so anonymous users can browse) use it to learn the caller's
+// identity without requiring a session — so an owner can also see their own
+// private stories in the same public listing.
+func (a *Authenticator) UserFromRequest(r *http.Request) *User {
+	tokenString := bearerToken(r)
+	if tokenString == "" {
+		if c, err := r.Cookie("refresh"); err == nil {
+			tokenString = c.Value
+		}
+	}
+	if tokenString == "" {
+		return nil
+	}
+	claims, err := a.jwt.Parse(tokenString)
+	if err != nil {
+		return nil
+	}
+	user, err := UserFromClaims(claims)
+	if err != nil {
+		return nil
+	}
+	return user
+}
+
 // isPublic reports whether the request hits an allowlisted /api path that is
 // served without a token. The refresh-cookie routes are admin-only but still
 // must be reachable before a session exists, so they are allowlisted too. The

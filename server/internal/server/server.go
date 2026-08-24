@@ -15,6 +15,7 @@ import (
 	"github.com/Kwik-Dev/geoLibre_storymaps/server/internal/api"
 	"github.com/Kwik-Dev/geoLibre_storymaps/server/internal/auth"
 	"github.com/Kwik-Dev/geoLibre_storymaps/server/internal/config"
+	"github.com/Kwik-Dev/geoLibre_storymaps/server/internal/media"
 )
 
 // Server wraps the chi router, config, and DB connection.
@@ -80,6 +81,10 @@ func New(cfg *config.Config, db *sql.DB, admin *auth.AdminHandler, whoami *auth.
 		// Legacy story-JSON export (P3.4). The route is allowlisted by the
 		// middleware; the handler enforces the public/owner/admin check.
 		api.NewExportHandler(db, auther).Routes(r)
+		// Media upload (P4.1). Requires a session (RequireAuth); the handler
+		// validates by magic bytes, caps the size, and stores a random-named
+		// file under MEDIA_DIR.
+		r.Post("/media/upload", media.NewUploadHandler(db, cfg.MediaDir, cfg.MaxUploadBytes).ServeHTTP)
 	})
 
 	// Static file serve for everything else (non-API, non-media)

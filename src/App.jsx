@@ -6,6 +6,8 @@ import { parseHash, navigateToStory, onHashChange } from './hashRoute.js';
 import MapView from './components/MapView.jsx';
 import Story from './components/Story.jsx';
 import NavSidebar from './components/NavSidebar.jsx';
+import StoryForm from './components/builder/StoryForm.jsx';
+import ChapterEditor from './components/builder/ChapterEditor.jsx';
 
 const layerTypes = {
     fill: ['fill-opacity'],
@@ -404,6 +406,22 @@ export default function App() {
         window.scrollTo(0, 0);
         navigateToStory(id);
     }, []);
+
+    if (route.type === 'create') {
+        return (
+            <AudioProvider>
+                <StoryForm />
+            </AudioProvider>
+        );
+    }
+
+    if (route.type === 'edit') {
+        return (
+            <AudioProvider>
+                <ChapterEditor storyId={route.id} />
+            </AudioProvider>
+        );
+    }
 
     if (route.type === 'list') {
         return (

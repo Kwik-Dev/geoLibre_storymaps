@@ -10,6 +10,19 @@
 
 export function parseHash() {
     const hash = (typeof window !== 'undefined' && window.location.hash) || '';
+    // #/create → the builder's new-story form.
+    if (hash === '#/create' || hash.startsWith('#/create?')) {
+        return { type: 'create' };
+    }
+    // #/stories/<id>/edit → the builder's chapter editor for that story.
+    const editMatch = hash.match(/^#\/stories\/([^/?#]+)\/edit/);
+    if (editMatch) {
+        try {
+            return { type: 'edit', id: decodeURIComponent(editMatch[1]) };
+        } catch (_) {
+            return { type: 'edit', id: editMatch[1] };
+        }
+    }
     const match = hash.match(/^#\/stories\/([^/?#]+)/);
     if (match) {
         try {
@@ -27,6 +40,21 @@ export function parseHash() {
 export function navigateToStory(id) {
     if (typeof window === 'undefined') return;
     const next = `#/stories/${encodeURIComponent(id)}`;
+    if (window.location.hash === next) return; // no-op on the same route
+    window.location.hash = next;
+}
+
+/** Navigate to the builder's new-story form. */
+export function navigateToCreate() {
+    if (typeof window === 'undefined') return;
+    if (window.location.hash === '#/create') return; // no-op on the same route
+    window.location.hash = '#/create';
+}
+
+/** Navigate to the builder's chapter editor for a story. */
+export function navigateToEdit(id) {
+    if (typeof window === 'undefined') return;
+    const next = `#/stories/${encodeURIComponent(id)}/edit`;
     if (window.location.hash === next) return; // no-op on the same route
     window.location.hash = next;
 }

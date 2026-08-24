@@ -1,6 +1,7 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { apiFetch } from '../../api/client.js';
 import Markdown from '../Markdown.jsx';
+import MediaUpload from './MediaUpload.jsx';
 
 // P6.2 — ChapterEditor.
 //
@@ -264,7 +265,11 @@ export default function ChapterEditor({ storyId }) {
             <h1>Chapters</h1>
             <p style={{ opacity: 0.85 }}>
                 Add, edit, reorder, or remove the chapters of this story. Use the buttons
-                to the left of each chapter to change its order.
+                to the left of each chapter to change its order.{' '}
+                <a href={`#/stories/${encodeURIComponent(storyId)}`} style={{ textDecoration: 'underline' }}>
+                    View story
+                </a>{' '}
+                · <a href="#/" style={{ textDecoration: 'underline' }}>All stories</a>
             </p>
 
             {notice && <p style={{ color: '#27ae60', fontStyle: 'italic' }}>{notice}</p>}
@@ -484,66 +489,21 @@ export default function ChapterEditor({ storyId }) {
                         </fieldset>
 
                         <fieldset style={{ border: '1px solid currentColor', borderRadius: 4, padding: '0.75rem', marginBottom: '0.75rem' }}>
-                            <legend style={{ opacity: 0.9 }}>Media (slot — P6.3 MediaUpload replaces this)</legend>
-                            <div style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap' }}>
-                                <div>
-                                    <label htmlFor="ce-mt" style={labelStyle}>Type</label>
-                                    <select
-                                        id="ce-mt"
-                                        value={draft.media_type}
-                                        onChange={(e) => setField('media_type', e.target.value)}
-                                        style={inputStyle}
-                                    >
-                                        <option value="none">none</option>
-                                        <option value="image">image</option>
-                                        <option value="video">video</option>
-                                        <option value="audio">audio</option>
-                                    </select>
-                                </div>
-                                <div>
-                                    <label htmlFor="ce-mrt" style={labelStyle}>Reference</label>
-                                    <select
-                                        id="ce-mrt"
-                                        value={draft.media_ref_type}
-                                        onChange={(e) => setField('media_ref_type', e.target.value)}
-                                        style={inputStyle}
-                                    >
-                                        <option value="none">none</option>
-                                        <option value="external">external</option>
-                                        <option value="local">local</option>
-                                    </select>
-                                </div>
-                                {draft.media_ref_type === 'external' && (
-                                    <div style={{ flex: 1, minWidth: 220 }}>
-                                        <label htmlFor="ce-murl" style={labelStyle}>External URL (https://)</label>
-                                        <input
-                                            id="ce-murl"
-                                            type="text"
-                                            value={draft.media_external_url}
-                                            onChange={(e) => setField('media_external_url', e.target.value)}
-                                            style={inputStyle}
-                                            placeholder="https://…"
-                                            maxLength={2048}
-                                        />
-                                    </div>
-                                )}
-                                {draft.media_ref_type === 'local' && (
-                                    <div style={{ flex: 1, minWidth: 160 }}>
-                                        <label htmlFor="ce-maid" style={labelStyle}>Media asset id</label>
-                                        <input
-                                            id="ce-maid"
-                                            type="text"
-                                            value={draft.media_asset_id}
-                                            onChange={(e) => setField('media_asset_id', e.target.value)}
-                                            style={inputStyle}
-                                            placeholder="id from upload"
-                                        />
-                                    </div>
-                                )}
-                            </div>
-                            <p style={{ fontSize: '0.85rem', opacity: 0.7, margin: '0.25rem 0 0' }}>
-                                The drag-drop / external-URL media picker (P6.3) replaces this basic slot.
-                            </p>
+                            <legend style={{ opacity: 0.9 }}>Media</legend>
+                            <MediaUpload
+                                value={{
+                                    media_type: draft.media_type,
+                                    media_ref_type: draft.media_ref_type,
+                                    media_external_url: draft.media_external_url,
+                                    media_asset_id: draft.media_asset_id,
+                                }}
+                                onChange={(media) => {
+                                    setField('media_type', media.media_type);
+                                    setField('media_ref_type', media.media_ref_type);
+                                    setField('media_external_url', media.media_external_url);
+                                    setField('media_asset_id', media.media_asset_id);
+                                }}
+                            />
                         </fieldset>
 
                         {formError && <p style={{ color: '#c0392b' }}>{formError}</p>}

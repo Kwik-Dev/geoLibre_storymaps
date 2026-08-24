@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { apiFetch } from '../../api/client.js';
-import { navigateToStory } from '../../hashRoute.js';
+import { navigateToEdit } from '../../hashRoute.js';
 
 // The themes the renderer supports (CSS classes .dark / .light in styles.css).
 export const THEMES = ['dark', 'light'];
@@ -53,9 +53,9 @@ export default function StoryForm({ onCreated }) {
                 throw new Error('The server did not return a story id.');
             }
             if (typeof onCreated === 'function') onCreated(story);
-            // The story's numeric id is a valid route for the export renderer
-            // (P3.4 export accepts numeric id or slug).
-            navigateToStory(String(id));
+            // After creating, go straight to the chapter editor so the user can
+            // add chapters + media (the P6.4 happy path: create → add chapter).
+            navigateToEdit(String(id));
         } catch (err) {
             if (err && err.status === 401) {
                 setAuthRequired(true);

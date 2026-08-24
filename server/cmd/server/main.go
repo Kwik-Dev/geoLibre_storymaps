@@ -1,10 +1,13 @@
 package main
 
 import (
-	"fmt"
 	"log"
+	"net/http"
+	"strconv"
 
 	"github.com/Kwik-Dev/geoLibre_storymaps/server/internal/config"
+	"github.com/Kwik-Dev/geoLibre_storymaps/server/internal/db"
+	"github.com/Kwik-Dev/geoLibre_storymaps/server/internal/server"
 )
 
 func main() {
@@ -13,11 +16,11 @@ func main() {
 		log.Fatalf("Failed to load config: %v", err)
 	}
 
-	log.Printf("Starting server on port %d", cfg.AppPort)
 	log.Printf("Data directory: %s", cfg.DataDir)
 	log.Printf("Database path: %s", cfg.DBPath)
 	log.Printf("Media directory: %s", cfg.MediaDir)
 	log.Printf("Max upload bytes: %d", cfg.MaxUploadBytes)
+	log.Printf("App port: %d", cfg.AppPort)
 	if cfg.AdminEmail != "" {
 		log.Printf("Admin email: %s", cfg.AdminEmail)
 	}
@@ -25,5 +28,21 @@ func main() {
 		log.Printf("Allowed media hosts: %v", cfg.AllowedMediaHosts)
 	}
 
-	fmt.Println("Config loaded successfully — exiting.")
+	database, err := db.Open(cfg)
+	if err != nil {
+		log.Fatalf("Failed to open database: %v", err)
+	}
+	defer database.Close()
+
+	if err := db.Migrate(database); err != nil {
+		log.Fatalf("Failed to run migrations: %v", err)
+	}
+
+	srv := server.New(cfg, database)
+
+	addr := ":" + strconv.Itoa(cfg.AppPort)
+	log.Printf("Server listening on %s", addr)
+	if err := http.ListenAndServe(addr, srv); err != nil {
+		log.Fatalf("Server error: %v", err)
+	}
 }

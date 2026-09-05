@@ -1,0 +1,23 @@
+@host = http://localhost:8080
+@admin_email = admin@example.com
+@admin_password = change-me
+
+### Admin login — captures the JWT as `login`
+# @name login
+POST {{host}}/api/auth/admin/login
+Content-Type: application/json
+
+{
+  "email": "{{admin_email}}",
+  "password": "{{admin_password}}"
+}
+
+### Whoami — current user (requires Bearer JWT)
+# @ref login
+GET {{host}}/api/auth/whoami
+Authorization: Bearer {{login.token}}
+
+### Refresh admin session (rotate the JWT)
+# @ref login
+POST {{host}}/api/auth/admin/refresh
+Authorization: Bearer {{login.token}}

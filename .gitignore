@@ -23,3 +23,9 @@ server/storymap-server
 delegation/
 handout-delegation.html
 audio-data-colleciton
+
+# Internal docs (removed from the public repo)
+GITHUB_SSO_SETUP.md
+feature_request_audio_playback.md
+feature_request_user_created_storymap.md
+AGENTS.md

@@ -1,0 +1,66 @@
+{
+  "title": "My Story",
+  "subtitle": "Sub",
+  "byline": "By",
+  "footer": "",
+  "theme": "dark",
+  "style": "https://tiles.openfreemap.org/styles/liberty",
+  "insetWidth": 0,
+  "insetHeight": 0,
+  "insetPosition": "bottom-left",
+  "globalView": {
+    "center": [
+      0,
+      20
+    ],
+    "zoom": 0.6,
+    "pitch": 0,
+    "bearing": 0
+  },
+  "startSlide": "none",
+  "endSlide": "none",
+  "chapters": [
+    {
+      "id": "1",
+      "title": "Chapter One",
+      "description": "# Hello",
+      "alignment": "left",
+      "hidden": false,
+      "location": {
+        "center": [
+          -8.86,
+          37.29
+        ],
+        "zoom": 11,
+        "pitch": 40,
+        "bearing": 0
+      },
+      "mapAnimation": "flyTo",
+      "rotateAnimation": false,
+      "onChapterEnter": [],
+      "onChapterExit": [],
+      "source": {
+        "id": 1
+      },
+      "image": "https://example.com/img.jpg",
+      "autoPlayAudio": false
+    },
+    {
+      "id": "2",
+      "title": "Chapter Two",
+      "description": "Second",
+      "alignment": "center",
+      "hidden": true,
+      "location": {
+        "center": [
+          126.06,
+          9.88
+        ],
+        "zoom": 10
+      },
+      "mapAnimation": "easeTo",
+      "rotateAnimation": true,
+      "autoPlayAudio": false
+    }
+  ]
+}

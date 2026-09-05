@@ -2,6 +2,7 @@ import React, { useRef, useState } from 'react';
 import { AudioProvider } from '../../audio/AudioContext.jsx';
 import ChapterCard from '../ChapterCard.jsx';
 import { getToken } from '../../api/client.js';
+import { basePath } from '../../basePath.js';
 
 // P6.3 — MediaUpload.
 //
@@ -32,7 +33,7 @@ export const EMPTY_MEDIA = {
     media_asset_id: '',
 };
 
-const base = (import.meta.env.VITE_API || '/api').replace(/\/+$/, '');
+const base = basePath + (import.meta.env.VITE_API || '/api').replace(/\/+$/, '');
 
 /**
  * Client-side external-URL validator mirroring P4.2 (server/internal/media/
@@ -110,9 +111,11 @@ export default function MediaUpload({ value = EMPTY_MEDIA, onChange, onUploaded,
             onChange({ ...EMPTY_MEDIA });
             return;
         }
-        // Keep the existing type/url/asset when switching ref modes; external
-        // keeps the url, local keeps the asset id.
-        onChange({ ...value, media_ref_type: nextRef });
+        // When enabling a ref mode, default an unset media_type to 'image' so
+        // the backend's "external/local requires a concrete media_type" guard
+        // passes without the user having to also pick a type manually.
+        const nextType = value.media_type && value.media_type !== 'none' ? value.media_type : 'image';
+        onChange({ ...value, media_ref_type: nextRef, media_type: nextType });
     };
 
     const setType = (nextType) => {
@@ -190,7 +193,7 @@ export default function MediaUpload({ value = EMPTY_MEDIA, onChange, onUploaded,
         previewSrc = value.media_external_url || '';
         previewPoster = previewSrc;
     } else if (ref === 'local' && value.media_asset_id) {
-        previewSrc = `/media/${value.media_asset_id}`;
+        previewSrc = basePath + `/media/${value.media_asset_id}`;
         previewPoster = previewSrc;
     }
 
@@ -331,7 +334,7 @@ export default function MediaUpload({ value = EMPTY_MEDIA, onChange, onUploaded,
                     {!uploading && ref === 'local' && value.media_asset_id && (
                         <p style={{ fontSize: '0.85rem', opacity: 0.85, margin: '0 0 0.35rem' }}>
                             Media asset id: <code>{value.media_asset_id}</code> (served at{' '}
-                            <code>/media/{value.media_asset_id}</code>). Choose a file again to replace it.
+                            <code>{basePath}/media/{value.media_asset_id}</code>). Choose a file again to replace it.
                         </p>
                     )}
                 </div>

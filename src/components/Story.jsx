@@ -9,7 +9,7 @@ const alignments = { left: 'lefty', center: 'centered', right: 'righty', full: '
  * chapter. Scrollama fires onStepEnter/onStepExit (delegated to App) when a
  * step crosses the 50% viewport line — scroll position drives the camera.
  */
-export default function Story({ config, activeId, ready, onStepEnter, onStepExit }) {
+export default function Story({ config, activeId, ready, cardHidden, onToggleCard, onStepEnter, onStepExit }) {
     const handlerRef = useRef({ onStepEnter, onStepExit });
     handlerRef.current = { onStepEnter, onStepExit };
 
@@ -45,7 +45,19 @@ export default function Story({ config, activeId, ready, onStepEnter, onStepExit
                         id={chapter.id}
                         className={`step ${alignment}${active ? ' active' : ''}${chapter.hidden ? ' hidden' : ''}`}
                     >
-                        <ChapterCard chapter={chapter} index={idx} theme={theme} />
+                        {/* Scale wrapper: the card itself carries an inline
+                            transform (drag), so the grow/shrink animation lives
+                            on this wrapper to avoid being overridden. */}
+                        <div className="sm-card-scale">
+                            <ChapterCard
+                                chapter={chapter}
+                                index={idx}
+                                theme={theme}
+                                active={active}
+                                cardHidden={cardHidden}
+                                onToggleCard={onToggleCard}
+                            />
+                        </div>
                     </div>
                 );
             })}

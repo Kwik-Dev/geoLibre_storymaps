@@ -48,7 +48,7 @@ func TestStoryView(t *testing.T) {
 	}
 	chapters := loadChapters(t, database, storyID)
 
-	gotJSON, err := json.Marshal(StoryView(story, chapters))
+	gotJSON, err := json.Marshal(StoryView(story, chapters, ""))
 	if err != nil {
 		t.Fatalf("marshal StoryView: %v", err)
 	}

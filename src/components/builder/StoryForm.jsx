@@ -1,13 +1,15 @@
 import React, { useState } from 'react';
 import { apiFetch } from '../../api/client.js';
 import { navigateToEdit } from '../../hashRoute.js';
+import { basePath } from '../../basePath.js';
 
 // The themes the renderer supports (CSS classes .dark / .light in styles.css).
 export const THEMES = ['dark', 'light'];
 
 // The start of the GitHub OAuth flow (§7.2). Same-origin `/api` is proxied to
 // the Go backend in dev (vite.config.js) and served by the same binary in prod.
-const OAUTH_START_PATH = '/api/auth/github';
+// The base path (if any) is prepended so the flow stays under the app's subpath.
+const OAUTH_START_PATH = basePath + '/api/auth/github';
 
 // P6.1 — create a story.
 //

@@ -134,6 +134,9 @@ func (a *Authenticator) isPublic(r *http.Request) bool {
 		return true
 	case method == http.MethodPost && path == "/api/auth/admin/refresh":
 		return true
+	case method == http.MethodPost && path == "/api/auth/logout":
+		// Logout always succeeds (clears a possibly-stale cookie).
+		return true
 	case method == http.MethodGet && path == "/api/stories":
 		// Public listing — anonymous users see public stories only.
 		return true

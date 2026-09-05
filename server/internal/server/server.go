@@ -55,6 +55,12 @@ func New(cfg *config.Config, db *sql.DB, admin *auth.AdminHandler, whoami *auth.
 	s.mux.Use(middleware.Logger)
 	s.mux.Use(middleware.Recoverer)
 	s.mux.Use(middleware.RequestID)
+	// Strip the configured BASE_PATH prefix (e.g. "/maps") from every request
+	// so the app can be served under a subpath behind a reverse proxy that
+	// forwards the full path. No-op when BASE_PATH is empty.
+	if cfg.BasePath != "" {
+		s.mux.Use(s.stripBasePath)
+	}
 
 	// API routes with CORS; every /api route runs behind RequireAuth (which
 	// itself allowlists the public auth/health/stories-listing/export paths).
@@ -67,6 +73,13 @@ func New(cfg *config.Config, db *sql.DB, admin *auth.AdminHandler, whoami *auth.
 	// selects an S3-backed store (configured via env S3_BUCKET etc.).
 	store, _ := media.NewStore(media.StoreKind(cfg.StoreKind), cfg.MediaDir)
 
+	// GitHub OAuth handler (SSO). Reads GITHUB_CLIENT_ID / GITHUB_CLIENT_SECRET
+	// / FRONTEND_ORIGIN from the environment. The authorize + callback routes
+	// are allowlisted as public in auth.RequireAuth.
+	github := auth.NewGitHubHandler(auth.GitHubConfigFromEnv(), db)
+	// Logout clears the httpOnly refresh cookie. Public so it always succeeds.
+	logout := auth.NewLogoutHandler(false)
+
 	s.mux.Route("/api", func(r chi.Router) {
 		r.Use(s.corsMiddleware)
 		r.Use(auther.RequireAuth)
@@ -77,6 +90,11 @@ func New(cfg *config.Config, db *sql.DB, admin *auth.AdminHandler, whoami *auth.
 				ar.Post("/admin/refresh", admin.Refresh)
 			})
 		}
+		// GitHub SSO (public authorize + callback).
+		r.Get("/auth/github", github.Authorize)
+		r.Get("/auth/github/callback", github.Callback)
+		// Logout (public — always clears the cookie).
+		r.Post("/auth/logout", logout.ServeHTTP)
 		if whoami != nil {
 			r.Get("/auth/whoami", whoami.ServeHTTP)
 		}
@@ -90,7 +108,7 @@ func New(cfg *config.Config, db *sql.DB, admin *auth.AdminHandler, whoami *auth.
 		api.NewChaptersHandler(db).SetAllowedMediaHosts(cfg.AllowedMediaHosts).Routes(r)
 		// Legacy story-JSON export (P3.4). The route is allowlisted by the
 		// middleware; the handler enforces the public/owner/admin check.
-		api.NewExportHandler(db, auther).Routes(r)
+		api.NewExportHandler(db, auther, cfg.BasePath).Routes(r)
 		// Media upload (P4.1 / P7.1). Requires a session (RequireAuth); the handler
 		// validates by magic bytes, caps the size, and persists via the configured
 		// Store (LocalStore by default; S3Store when STORE_KIND=s3).
@@ -115,6 +133,23 @@ func New(cfg *config.Config, db *sql.DB, admin *auth.AdminHandler, whoami *auth.
 // ServeHTTP implements http.Handler by delegating to the chi Mux.
 func (s *Server) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	s.mux.ServeHTTP(w, r)
+}
+
+// stripBasePath rewrites the request path to remove the configured BASE_PATH
+// prefix (e.g. "/maps/api/health" → "/api/health"). It is a no-op for paths
+// that do not start with the prefix. The prefix is stored on the Server so the
+// middleware can read it without re-parsing the environment.
+func (s *Server) stripBasePath(next http.Handler) http.Handler {
+	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		p := r.URL.Path
+		if p == s.cfg.BasePath {
+			// Exact match → serve the app root.
+			r.URL.Path = "/"
+		} else if strings.HasPrefix(p, s.cfg.BasePath+"/") {
+			r.URL.Path = strings.TrimPrefix(p, s.cfg.BasePath)
+		}
+		next.ServeHTTP(w, r)
+	})
 }
 
 // handleHealth responds with a JSON health check.
@@ -178,7 +213,7 @@ func (s *Server) corsMiddleware(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		allowedOrigins := os.Getenv("CORS_ORIGINS")
 		if allowedOrigins == "" {
-			allowedOrigins = "http://localhost:5173,http://localhost:8080,http://127.0.0.1:5173,http://127.0.0.1:8080"
+			allowedOrigins = "http://localhost:5173,http://localhost:5174,http://localhost:8080,http://localhost:8081,http://127.0.0.1:5173,http://127.0.0.1:5174,http://127.0.0.1:8080,http://127.0.0.1:8081"
 		}
 		origin := r.Header.Get("Origin")
 		for _, allowed := range strings.Split(allowedOrigins, ",") {

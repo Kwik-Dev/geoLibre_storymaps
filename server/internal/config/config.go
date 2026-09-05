@@ -21,6 +21,7 @@ type Config struct {
 	MaxUploadBytes     int64    // maximum upload size in bytes (default 25 MB)
 	AppPort            int      // HTTP listen port (default 8080)
 	ModerationRequired bool     // when true, stories set to public go to status=pending (P7.2)
+	BasePath           string   // URL prefix the app is served under (e.g. "/maps"); "" = root
 }
 
 const (
@@ -45,6 +46,7 @@ func Load() (*Config, error) {
 		MaxUploadBytes: getEnvInt64("MEDIA_MAX_BYTES", defaultMaxUploadBytes),
 		AppPort:       getEnvInt("APP_PORT", defaultAppPort),
 		ModerationRequired: os.Getenv("MODERATION_REQUIRED") == "1",
+		BasePath:      normalizeBasePath(os.Getenv("BASE_PATH")),
 	}
 
 	if hosts := os.Getenv("ALLOWED_MEDIA_HOSTS"); hosts != "" {
@@ -70,6 +72,21 @@ func getEnv(key, fallback string) string {
 		return v
 	}
 	return fallback
+}
+
+// normalizeBasePath normalizes a BASE_PATH value to a leading-slash, no
+// trailing-slash prefix (e.g. "/maps"), or "" when unset/root. It is used to
+// mount the app under a subpath (e.g. storyboard.ink/maps) behind a reverse
+// proxy that forwards the full path.
+func normalizeBasePath(p string) string {
+	p = strings.TrimSpace(p)
+	if p == "" || p == "/" {
+		return ""
+	}
+	if !strings.HasPrefix(p, "/") {
+		p = "/" + p
+	}
+	return strings.TrimRight(p, "/")
 }
 
 // getEnvInt returns the integer value of the environment variable named by

@@ -94,23 +94,8 @@ Then finish the WordPress install in the browser at `https://storyboard.ink/`
 
 ## 4. Deploy GeoLibre Storymaps
 
-From your machine, in the project root:
-
-```bash
-./deploy/deploy.sh user@host storyboard.ink /maps
-```
-
-This builds the frontend with `VITE_BASE_PATH=/maps`, builds the static Go
-binary, uploads it to `/opt/storymaps/`, and installs the systemd unit + Caddy
-config.
-
-Then create the env file on the VPS:
-
-```bash
-ssh user@host 'sudo nano /opt/storymaps/.env'
-```
-
-Copy from `deploy/.env.example` and set at minimum:
+First, create the production env file on your machine (in the project root).
+Copy `deploy/.env.example` → `.env.prod` and fill in real values:
 
 ```
 JWT_SECRET=<openssl rand -hex 32>
@@ -120,18 +105,33 @@ GITHUB_CLIENT_ID=<from GitHub OAuth app>
 GITHUB_CLIENT_SECRET=<from GitHub OAuth app>
 FRONTEND_ORIGIN=https://storyboard.ink
 BASE_PATH=/maps
+DATA_DIR=/opt/storymaps/data
 ```
 
-Start the server:
+Then deploy from the project root:
 
 ```bash
-ssh user@host 'sudo systemctl start storymap-server'
-ssh user@host 'sudo systemctl status storymap-server'
+./deploy/deploy.sh user@host
 ```
+
+The domain and base path are read from `.env.prod` (domain from
+`FRONTEND_ORIGIN`, base path from `BASE_PATH`); pass them explicitly to
+override:
+
+```bash
+./deploy/deploy.sh user@host storyboard.ink /maps
+```
+
+This builds the frontend with `VITE_BASE_PATH=/maps`, builds the static Go
+binary, generates the Caddyfile from `deploy/Caddyfile` (a template), uploads
+everything (including `.env.prod` → `/opt/storymaps/.env`), installs the
+systemd unit + Caddy config, reloads Caddy, and restarts the server.
 
 ## 5. Caddy config
 
-`deploy/deploy.sh` installs `deploy/Caddyfile` to `/etc/caddy/Caddyfile` and
+`deploy/Caddyfile` is a template with `__DOMAIN__` / `__BASE_PATH__` /
+`__APP_PORT__` / `__WP_PORT__` placeholders. `deploy.sh` substitutes the values
+from `.env.prod` and installs the result to `/etc/caddy/Caddyfile`, then
 reloads Caddy. It routes `/maps/*` to the Go server and everything else to
 Apache:
 
@@ -152,7 +152,8 @@ domain's A record at the droplet IP first.
 ## 6. GitHub OAuth app (SSO)
 
 GeoLibre uses GitHub OAuth2 for sign-in. You create an OAuth App in GitHub,
-then put its credentials in `/opt/storymaps/.env`.
+then put its credentials in `.env.prod` (which `deploy.sh` uploads to
+`/opt/storymaps/.env`).
 
 ### 6a. Create the OAuth App
 
@@ -171,9 +172,10 @@ then put its credentials in `/opt/storymaps/.env`.
 > `BASE_PATH` to `FRONTEND_ORIGIN` when building the redirect, so the two must
 > agree.
 
-### 6b. Put the credentials in the env file
+### 6b. Put the credentials in `.env.prod`
 
-On the VPS, edit `/opt/storymaps/.env` and set:
+Add the credentials to `.env.prod` on your machine (the file you created in
+step 4), then re-run the deploy:
 
 ```
 GITHUB_CLIENT_ID=<the Client ID from step 5>
@@ -182,11 +184,12 @@ FRONTEND_ORIGIN=https://storyboard.ink
 BASE_PATH=/maps
 ```
 
-Then restart the server:
-
 ```bash
-ssh user@host 'sudo systemctl restart storymap-server'
+./deploy/deploy.sh user@host
 ```
+
+The script uploads `.env.prod` to `/opt/storymaps/.env` and restarts the
+server automatically.
 
 ### 6c. Test the flow
 

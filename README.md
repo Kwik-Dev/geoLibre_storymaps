@@ -79,3 +79,10 @@ Behavior (per the feature request):
 Tracks: `public/audio/161697_ocean-1.mp3`, `161698_ocean-and-plane.mp3`,
 `174763_pacific-ocean.mp3` (CC-BY freesound.org previews, from
 `audio-data-colleciton/freesound_audio_ocean/`).
+
+## Credits
+
+This project is derived from [GeoLibre](https://github.com/opengeos/GeoLibre)
+and [MapLibre Storytelling](https://github.com/opengeos/maplibre-gl-storymaps),
+both © 2026 Qiusheng Wu, licensed under the MIT License. See [`NOTICE`](NOTICE)
+and [`LICENSE`](LICENSE) for full attribution.

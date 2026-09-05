@@ -1,0 +1,28 @@
+# NOTICE
+
+GeoLibre Storymaps is derived from the following open-source projects. Their
+copyright notices and license terms are preserved here as required by the MIT
+License.
+
+## GeoLibre
+
+- Repository: https://github.com/opengeos/GeoLibre
+- Copyright (c) 2026 Qiusheng Wu
+- License: MIT
+
+The scrollytelling storymap frontend and the "A Tour of Five Cities" sample
+story are derived from GeoLibre's storymap components and sample data.
+
+## MapLibre Storytelling
+
+- Repository: https://github.com/opengeos/maplibre-gl-storymaps
+- Copyright (c) 2026 Qiusheng Wu
+- License: MIT
+
+The storymap concept and chapter structure are inspired by MapLibre
+Storytelling.
+
+---
+
+The MIT License text for these projects is reproduced in the `LICENSE` file at
+the root of this repository.

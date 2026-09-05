@@ -1,8 +1,7 @@
 # GeoLibre Storymaps — React + Audio
 
 React (Vite) refactor of [`a-tour-of-five-cities.html`](a-tour-of-five-cities.html) — a
-MapLibre GL scrollytelling story — with per-chapter audio playback
-([`feature_request_audio_playback.md`](feature_request_audio_playback.md)).
+MapLibre GL scrollytelling story — with per-chapter audio playback.
 
 ## Run
 
@@ -65,7 +64,7 @@ Each chapter supports two new config fields:
 | `audio` | string (URL) | Track played while the chapter is active |
 | `autoPlayAudio` | boolean | Start the track automatically on chapter enter |
 
-Behavior (per the feature request):
+Behavior:
 
 1. A **single shared `HTMLAudioElement`** (module-level singleton in `AudioContext.jsx`)
    is reused by every chapter — one track at a time.

@@ -1,27 +1,35 @@
-# GeoLibre Storymaps + WordPress — Caddy reverse proxy
+# GeoLibre Storymaps + WordPress — Caddy reverse proxy (TEMPLATE)
 #
-# storyboard.ink runs WordPress (Apache) at the root and GeoLibre Storymaps
-# under /maps (the Go server). Caddy terminates HTTPS and routes:
+# This file is a template: deploy.sh substitutes the __PLACEHOLDERS__ below
+# from .env.prod (or CLI args) before installing it to /etc/caddy/Caddyfile.
+# Do not edit the placeholders by hand.
 #
-#   /maps/*  → Go server on 127.0.0.1:8081   (GeoLibre Storymaps)
-#   /*       → Apache on 127.0.0.1:8080      (WordPress)
+# __DOMAIN__ runs WordPress (Apache) at the root and GeoLibre Storymaps
+# under __BASE_PATH__ (the Go server). Caddy terminates HTTPS and routes:
 #
-# IMPORTANT: the Go server strips the /maps prefix itself (BASE_PATH=/maps),
-# so Caddy must forward the FULL path — do NOT strip it here.
+#   __BASE_PATH__/*  → Go server on 127.0.0.1:__APP_PORT__   (GeoLibre Storymaps)
+#   /*               → Apache on 127.0.0.1:__WP_PORT__       (WordPress)
+#
+# IMPORTANT: the Go server strips the __BASE_PATH__ prefix itself
+# (BASE_PATH=__BASE_PATH__), so Caddy must forward the FULL path — do NOT
+# strip it here.
 #
 # The GitHub OAuth App's callback URL must be:
-#   https://storyboard.ink/maps/api/auth/github/callback
-# (it already includes the base path because the server appends BASE_PATH to
-#  FRONTEND_ORIGIN when building the redirect).
+#   https://__DOMAIN____BASE_PATH__/api/auth/github/callback
 
-storyboard.ink {
-    # GeoLibre Storymaps — forward the full /maps path to the Go server.
-    handle /maps/* {
-        reverse_proxy 127.0.0.1:8081
+__DOMAIN__ {
+    # Normalize __BASE_PATH__ (no trailing slash) → __BASE_PATH__/ so the SPA
+    # loads with a consistent base URL (handle __BASE_PATH__/* below does not
+    # match the bare path).
+    redir __BASE_PATH__ __BASE_PATH__/ 308
+
+    # GeoLibre Storymaps — forward the full __BASE_PATH__ path to the Go server.
+    handle __BASE_PATH__/* {
+        reverse_proxy 127.0.0.1:__APP_PORT__
     }
 
-    # Everything else → WordPress (Apache on 127.0.0.1:8080).
+    # Everything else → WordPress (Apache on 127.0.0.1:__WP_PORT__).
     handle {
-        reverse_proxy 127.0.0.1:8080
+        reverse_proxy 127.0.0.1:__WP_PORT__
     }
 }

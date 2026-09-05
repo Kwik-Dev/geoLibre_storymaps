@@ -24,7 +24,7 @@ prefix itself (`BASE_PATH=/maps`), so Caddy forwards the **full** path.
 ├── server/storymap-server   # the Go binary
 ├── dist/index.html          # the built frontend
 ├── data/                    # SQLite + uploaded media (persistent)
-└── .env                     # env vars (see deploy/.env.example)
+└── .env                     # env vars (uploaded from .env.prod)
 ```
 
 ## 1. One-time VPS setup
@@ -46,24 +46,10 @@ Point your domain's **A record** at the VPS IP before Caddy tries to get a cert.
 > or 22.04.** If you must stay on 18.04, install an older Caddy (2.6.x) or use
 > Nginx + certbot instead.
 
-## 2. Deploy
+## 2. Create the production env file (`.env.prod`)
 
-From the project root (on your machine):
-
-```bash
-./deploy/deploy.sh user@host yourdomain.com
-```
-
-This builds the frontend + Go binary, uploads them, installs the systemd unit
-and the Caddy config, and reloads Caddy.
-
-## 3. Create the env file
-
-```bash
-ssh user@host 'sudo nano /opt/storymaps/.env'
-```
-
-Copy from `deploy/.env.example` and set at minimum:
+On your machine, in the project root, create `.env.prod` (copy from
+`deploy/.env.example`) and fill in real values:
 
 ```
 JWT_SECRET=<openssl rand -hex 32>
@@ -75,17 +61,36 @@ FRONTEND_ORIGIN=https://yourdomain.com
 BASE_PATH=/maps
 ```
 
-`BASE_PATH` must match the subpath in the Caddyfile and `VITE_BASE_PATH`
-used at build time. When WordPress owns the root, use `/maps`.
+`deploy.sh` reads this file to derive the domain (from `FRONTEND_ORIGIN`), the
+base path, and the ports, and uploads it to `/opt/storymaps/.env` on the VPS
+(chmod 600, owned by the `storymaps` service user). `BASE_PATH` must match the
+subpath in the Caddyfile and `VITE_BASE_PATH` used at build time. When
+WordPress owns the root, use `/maps`.
 
-## 4. Start the server
+> `DATA_DIR` must be an absolute path (`/opt/storymaps/data`), not the dev
+> default `./data` — the server runs with `WorkingDirectory=/opt/storymaps/server`.
+
+## 3. Deploy
+
+From the project root (on your machine):
 
 ```bash
-ssh user@host 'sudo systemctl start storymap-server'
-ssh user@host 'sudo systemctl status storymap-server'
+./deploy/deploy.sh user@host
 ```
 
-## 5. GitHub OAuth app
+The domain and base path are read from `.env.prod`; pass them explicitly to
+override:
+
+```bash
+./deploy/deploy.sh user@host yourdomain.com /maps
+```
+
+This builds the frontend + Go binary, generates the Caddyfile from
+`deploy/Caddyfile` (a template), uploads everything (including `.env.prod` →
+`/opt/storymaps/.env`), installs the systemd unit + Caddy config, reloads
+Caddy, and restarts the server.
+
+## 4. GitHub OAuth app
 
 In your GitHub OAuth app settings, set the **Authorization callback URL** to:
 
@@ -98,11 +103,8 @@ The base path (`/maps`) is required because the server appends `BASE_PATH` to
 
 ## Updating
 
-Re-run `./deploy/deploy.sh user@host yourdomain.com`, then:
-
-```bash
-ssh user@host 'sudo systemctl restart storymap-server'
-```
+Re-run `./deploy/deploy.sh user@host` — it rebuilds, re-uploads, and restarts
+the server automatically. No manual `systemctl restart` needed.
 
 ## Troubleshooting
 

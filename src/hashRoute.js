@@ -10,6 +10,10 @@
 
 export function parseHash() {
     const hash = (typeof window !== 'undefined' && window.location.hash) || '';
+    // #/manage → the storymap management (CRUD) page.
+    if (hash === '#/manage' || hash.startsWith('#/manage?')) {
+        return { type: 'manage' };
+    }
     // #/create → the builder's new-story form.
     if (hash === '#/create' || hash.startsWith('#/create?')) {
         return { type: 'create' };

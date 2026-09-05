@@ -24,7 +24,7 @@ func newExportRouter(t *testing.T, database *sql.DB) *chi.Mux {
 	auther := auth.NewAuthenticator(testSecret, false)
 	r.Route("/api", func(api chi.Router) {
 		api.Use(auther.RequireAuth)
-		NewExportHandler(database, auther).Routes(api)
+		NewExportHandler(database, auther, "").Routes(api)
 	})
 	return r
 }

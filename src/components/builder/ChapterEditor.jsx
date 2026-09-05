@@ -100,7 +100,16 @@ function draftToPayload(d) {
     if (exit) payload.on_chapter_exit = exit;
 
     // Media slot (P6.3 will replace). Send the grouped media fields.
-    payload.media_type = d.media_type;
+    // Safety net: an external/local ref needs a concrete media_type — default
+    // to 'image' if it was left as 'none' (mirrors the backend matrix).
+    let mediaType = d.media_type;
+    if (
+        (d.media_ref_type === 'external' || d.media_ref_type === 'local') &&
+        (!mediaType || mediaType === 'none')
+    ) {
+        mediaType = 'image';
+    }
+    payload.media_type = mediaType;
     payload.media_ref_type = d.media_ref_type;
     payload.media_external_url = (d.media_external_url || '').trim();
     const asset = (d.media_asset_id || '').trim();

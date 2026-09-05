@@ -32,11 +32,20 @@ export default function MapView({ config, mapRef, insetMapRef, markerRef, insetM
             style: config.style,
             center: openLocation.center,
             zoom: openLocation.zoom,
-            bearing: openLocation.bearing,
-            pitch: openLocation.pitch,
+            // Default missing bearing/pitch to 0 — a chapter location saved
+            // without them (e.g. from the builder) would otherwise pass
+            // `undefined` into MapLibre's transform and crash its terrain
+            // elevation logic with "Invalid LngLat object: (NaN, NaN)".
+            bearing: openLocation.bearing ?? 0,
+            pitch: openLocation.pitch ?? 0,
+            // Non-interactive map (scroll drives the chapters). Only the zoom
+            // in/out buttons are added below — no drag pan/rotate or keyboard.
             interactive: false,
         });
         mapRef.current = map;
+
+        // Zoom in/out controls (bottom-right, clear of the picker / nav / inset).
+        map.addControl(new maplibregl.NavigationControl({ showCompass: false }), 'bottom-right');
 
         if (config.inset) {
             const inset = new maplibregl.Map({

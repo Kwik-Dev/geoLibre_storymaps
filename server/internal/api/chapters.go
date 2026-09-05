@@ -215,7 +215,7 @@ func (h *ChaptersHandler) Create(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	mapAnim := strings.ToLower(strings.TrimSpace(body.MapAnimation))
+	mapAnim := strings.TrimSpace(body.MapAnimation)
 	if mapAnim == "" {
 		mapAnim = "flyTo"
 	}
@@ -410,7 +410,7 @@ func (h *ChaptersHandler) Update(w http.ResponseWriter, r *http.Request) {
 		hidden = *body.Hidden
 	}
 	if body.MapAnimation != nil {
-		m := strings.ToLower(strings.TrimSpace(*body.MapAnimation))
+		m := strings.TrimSpace(*body.MapAnimation)
 		if m != "flyTo" && m != "easeTo" {
 			writeJSON(w, http.StatusBadRequest, map[string]string{"error": "map_animation must be 'flyTo' or 'easeTo'"})
 			return

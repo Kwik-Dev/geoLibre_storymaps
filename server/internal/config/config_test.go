@@ -12,7 +12,7 @@ func TestLoadDefaults(t *testing.T) {
 		"ADMIN_EMAIL", "ADMIN_PASSWORD",
 		"MEDIA_DIR", "ALLOWED_MEDIA_HOSTS",
 		"MEDIA_MAX_BYTES", "APP_PORT",
-		"MODERATION_REQUIRED",
+		"MODERATION_REQUIRED", "BASE_PATH",
 	} {
 		os.Unsetenv(key)
 	}
@@ -59,6 +59,10 @@ func TestLoadDefaults(t *testing.T) {
 
 	if cfg.ModerationRequired != false {
 		t.Errorf("expected MODERATION_REQUIRED default false, got %v", cfg.ModerationRequired)
+	}
+
+	if cfg.BasePath != "" {
+		t.Errorf("expected BASE_PATH default empty, got %q", cfg.BasePath)
 	}
 
 	if cfg.AllowedMediaHosts != nil {

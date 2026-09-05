@@ -74,7 +74,7 @@ type ChapterView struct {
 // StoryView converts a stories row and its chapters into the exact legacy
 // story JSON shape the renderer consumes. It maps snake_case/int DB values to
 // camelCase and omits empty media fields. This is the P3.3 HANDOFF.
-func StoryView(s Story, chapters []Chapter) any {
+func StoryView(s Story, chapters []Chapter, basePath string) any {
 	doc := StoryViewDoc{
 		Title:         s.Title,
 		Subtitle:      s.Subtitle,
@@ -91,13 +91,13 @@ func StoryView(s Story, chapters []Chapter) any {
 		Chapters:      make([]ChapterView, 0, len(chapters)),
 	}
 	for _, c := range chapters {
-		doc.Chapters = append(doc.Chapters, chapterView(c))
+		doc.Chapters = append(doc.Chapters, chapterView(c, basePath))
 	}
 	return doc
 }
 
 // chapterView maps a DB chapter row to the legacy camelCase chapter shape.
-func chapterView(c Chapter) ChapterView {
+func chapterView(c Chapter, basePath string) ChapterView {
 	v := ChapterView{
 		ID:              strconv.FormatInt(c.ID, 10),
 		Title:           c.Title,
@@ -122,11 +122,11 @@ func chapterView(c Chapter) ChapterView {
 	}
 	switch c.MediaType {
 	case "image":
-		v.Image = mediaURL(c)
+		v.Image = mediaURL(c, basePath)
 	case "video":
-		v.Video = mediaURL(c)
+		v.Video = mediaURL(c, basePath)
 	case "audio":
-		v.Audio = mediaURL(c)
+		v.Audio = mediaURL(c, basePath)
 	}
 	return v
 }
@@ -139,15 +139,17 @@ func chapterView(c Chapter) ChapterView {
 // handler performs *optional* auth to learn the caller's identity and enforce
 // the private-story check itself.
 type ExportHandler struct {
-	db     *sql.DB
-	auther *auth.Authenticator
+	db       *sql.DB
+	auther   *auth.Authenticator
+	basePath string
 }
 
 // NewExportHandler builds an ExportHandler backed by db. auther is used for
 // optional authentication (so an owner/admin can export a private story); it may
-// be nil, in which case only public stories can be exported.
-func NewExportHandler(db *sql.DB, auther *auth.Authenticator) *ExportHandler {
-	return &ExportHandler{db: db, auther: auther}
+// be nil, in which case only public stories can be exported. basePath is the URL
+// prefix the app is served under (e.g. "/maps"); "" = root.
+func NewExportHandler(db *sql.DB, auther *auth.Authenticator, basePath string) *ExportHandler {
+	return &ExportHandler{db: db, auther: auther, basePath: basePath}
 }
 
 // Routes registers the export route on the given router. It is meant to be
@@ -192,7 +194,7 @@ func (h *ExportHandler) Export(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 	w.Header().Set("Content-Disposition", fmt.Sprintf("attachment; filename=\"%s.storymap.json\"", s.Slug))
 	w.WriteHeader(http.StatusOK)
-	_ = json.NewEncoder(w).Encode(StoryView(s, chapters))
+	_ = json.NewEncoder(w).Encode(StoryView(s, chapters, h.basePath))
 }
 
 // scanStory scans a stories row into a Story.
@@ -232,14 +234,16 @@ func (h *ExportHandler) loadChapters(storyID int64) ([]Chapter, error) {
 
 // mediaURL resolves a chapter's media to the URL the renderer loads directly.
 // External refs use the stored URL; local refs point at the media serve path
-// (P4.x serves /media/:aid). Empty refs yield "" (omitted by omitempty).
-func mediaURL(c Chapter) string {
+// (P4.x serves /media/:aid), prefixed with the base path (if any) so the URL
+// stays under the subpath the app is served from. Empty refs yield "" (omitted
+// by omitempty).
+func mediaURL(c Chapter, basePath string) string {
 	switch c.MediaRefType {
 	case "external":
 		return c.MediaExternalURL
 	case "local":
 		if c.MediaAssetID != nil {
-			return fmt.Sprintf("/media/%d", *c.MediaAssetID)
+			return basePath + fmt.Sprintf("/media/%d", *c.MediaAssetID)
 		}
 	}
 	return ""

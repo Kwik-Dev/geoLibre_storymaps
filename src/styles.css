@@ -16,8 +16,21 @@ a, a:hover, a:visited { color: #0071bc; }
 .fully { width: 100%; margin: auto; }
 .light { color: #444; background-color: #fafafa; }
 .dark { color: #fafafa; background-color: #444; }
-.step { padding-bottom: 50vh; opacity: 0.25; transition: opacity 0.3s; }
+.step { padding-bottom: 50vh; opacity: 0.25; transition: opacity 0.4s ease; }
 .step.active { opacity: 0.95; }
+/* Grow/shrink the card on chapter switch. The scale lives on a wrapper
+   (.sm-card-scale) because the card itself carries an inline transform from
+   the drag feature. Inactive cards sit smaller, the active card grows to full
+   size, and a leaving card shrinks + fades out before the camera flies. */
+.step .sm-card-scale { transition: transform 0.4s ease; }
+.step:not(.active) .sm-card-scale { transform: scale(0.85); }
+.step.active .sm-card-scale { transform: scale(1); }
+.step.leaving { opacity: 0; }
+.step.leaving .sm-card-scale { transform: scale(0.72); }
+/* The incoming card is hidden (and slightly smaller) while the camera flies,
+   then grows in when it becomes active on arrival. */
+.step.incoming { opacity: 0; }
+.step.incoming .sm-card-scale { transform: scale(0.8); }
 /* Start/closing slides are empty full-height scroll targets (#998). */
 .sm-slide-step { min-height: 90vh; padding-bottom: 0; }
 /* Solid cover painted over the map for a blank/black slide; below the
@@ -31,6 +44,7 @@ a, a:hover, a:visited { color: #0071bc; }
 .sm-body p { margin: 0; }
 .sm-body img { width: 100%; max-height: 38vh; object-fit: cover; border-radius: 2px; }
 .sm-body video { width: 100%; max-height: 38vh; object-fit: cover; border-radius: 2px; background: #000; }
+.sm-body .sm-video-embed { width: 100%; aspect-ratio: 16 / 9; max-height: 38vh; border: 0; border-radius: 2px; background: #000; display: block; }
 /* Sound-wave placeholder for audio-only chapters (no photo). */
 .sm-wave { width: 100%; max-height: 38vh; box-sizing: border-box; display: flex; align-items: center; justify-content: center; background: rgba(127,127,127,0.08); border-radius: 2px; padding: 4vh 0; }
 .sm-wave svg { width: 55%; max-width: 220px; height: 60px; display: block; }
@@ -55,6 +69,10 @@ a, a:hover, a:visited { color: #0071bc; }
 #nav-toggle { position: fixed; left: 12px; top: 12px; z-index: 21; width: 32px; height: 32px; border: none; border-radius: 6px; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 16px; box-shadow: 0 4px 16px rgba(0,0,0,0.3); }
 #nav-toggle.dark { background: rgba(40,40,40,0.85); color: #fafafa; }
 #nav-toggle.light { background: rgba(250,250,250,0.92); color: #444; }
+/* Hide/show the chapter card body from a button in the card's own header. */
+.sm-card-toggle { margin-left: auto; padding: 2px 8px; border: 1px solid rgba(127,127,127,0.4); border-radius: 4px; cursor: pointer; font-size: 11px; background: transparent; color: inherit; }
+.sm-card.card-hidden .sm-body { display: none; }
+.sm-card.card-hidden-full { display: none; }
 /* Story picker (top-right): choose which storymap JSON drives the app. */
 #story-picker { position: fixed; top: 12px; right: 12px; z-index: 30; display: flex; align-items: center; gap: 6px; padding: 6px 10px; border-radius: 6px; font-size: 12px; box-shadow: 0 4px 16px rgba(0,0,0,0.3); }
 #story-picker.dark { background: rgba(40,40,40,0.85); color: #fafafa; }

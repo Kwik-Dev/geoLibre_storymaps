@@ -7,6 +7,7 @@ import (
 	"net/http"
 	"os"
 	"strconv"
+	"strings"
 	"sync"
 	"time"
 
@@ -29,6 +30,7 @@ type GitHubConfig struct {
 	OAuthBase      string // token/authorize base, default https://github.com/login/oauth
 	APIBase        string // default https://api.github.com
 	FrontendOrigin string // where to redirect the browser after login
+	BasePath       string // URL prefix the app is served under (e.g. "/maps"); "" = root
 	JWTSecret      string
 	Secure         bool   // mark the refresh cookie Secure (production/https only)
 }
@@ -36,7 +38,7 @@ type GitHubConfig struct {
 // GitHubConfigFromEnv builds a GitHubConfig from the environment:
 //
 //	GITHUB_CLIENT_ID, GITHUB_CLIENT_SECRET, GITHUB_OAUTH_BASE,
-//	GITHUB_API_BASE, FRONTEND_ORIGIN, JWT_SECRET.
+//	GITHUB_API_BASE, FRONTEND_ORIGIN, BASE_PATH, JWT_SECRET.
 func GitHubConfigFromEnv() GitHubConfig {
 	return GitHubConfig{
 		ClientID:       os.Getenv("GITHUB_CLIENT_ID"),
@@ -44,6 +46,7 @@ func GitHubConfigFromEnv() GitHubConfig {
 		OAuthBase:      getEnv("GITHUB_OAUTH_BASE", defaultOAuthBase),
 		APIBase:        getEnv("GITHUB_API_BASE", defaultAPIBase),
 		FrontendOrigin: getEnv("FRONTEND_ORIGIN", defaultFrontendOrigin),
+		BasePath:       normalizeBasePath(os.Getenv("BASE_PATH")),
 		JWTSecret:      os.Getenv("JWT_SECRET"),
 	}
 }
@@ -140,6 +143,21 @@ func getEnv(key, fallback string) string {
 		return v
 	}
 	return fallback
+}
+
+// normalizeBasePath normalizes a BASE_PATH value to a leading-slash, no
+// trailing-slash prefix (e.g. "/maps"), or "" when unset/root. It mirrors the
+// config package's helper so the auth package can build base-path-aware
+// redirect URLs without importing config.
+func normalizeBasePath(p string) string {
+	p = strings.TrimSpace(p)
+	if p == "" || p == "/" {
+		return ""
+	}
+	if !strings.HasPrefix(p, "/") {
+		p = "/" + p
+	}
+	return strings.TrimRight(p, "/")
 }
 
 // writeJSON writes v as JSON with the given status code.

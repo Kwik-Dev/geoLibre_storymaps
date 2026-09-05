@@ -106,17 +106,20 @@ func (h *GitHubHandler) Callback(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	// Redirect to the frontend origin, carrying the user id in the hash.
-	dest := strings.TrimRight(h.cfg.FrontendOrigin, "/") + "/#/"
+	// Redirect to the frontend origin (under the base path, if any), carrying
+	// the user id in the hash.
+	dest := strings.TrimRight(h.cfg.FrontendOrigin, "/") + h.cfg.BasePath + "/#/"
 	if user.ID > 0 {
 		dest += fmt.Sprintf("user/%d", user.ID)
 	}
 	http.Redirect(w, r, dest, http.StatusFound)
 }
 
-// redirectURI is the callback URL GitHub redirects the browser back to.
+// redirectURI is the callback URL GitHub redirects the browser back to. It
+// includes the base path (if any) so the callback lands on the same subpath
+// the app is served under.
 func (h *GitHubHandler) redirectURI() string {
-	return strings.TrimRight(h.cfg.FrontendOrigin, "/") + "/api/auth/github/callback"
+	return strings.TrimRight(h.cfg.FrontendOrigin, "/") + h.cfg.BasePath + "/api/auth/github/callback"
 }
 
 // exchangeCode POSTs the authorization code to the GitHub token endpoint and

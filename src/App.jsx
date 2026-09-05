@@ -1,9 +1,16 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { AudioProvider, useAudio } from './audio/AudioContext.jsx';
-import { stories, defaultStoryId, getStory } from './stories.js';
+import { AuthProvider } from './auth/AuthContext.jsx';
+import { stories as embeddedStories } from './stories.js';
+import { getStories, getStory } from './getStory.js';
+import { parseHash, navigateToStory, onHashChange } from './hashRoute.js';
 import MapView from './components/MapView.jsx';
 import Story from './components/Story.jsx';
 import NavSidebar from './components/NavSidebar.jsx';
+import AuthButtons from './components/AuthButtons.jsx';
+import StoryForm from './components/builder/StoryForm.jsx';
+import ChapterEditor from './components/builder/ChapterEditor.jsx';
+import StoryManager from './components/builder/StoryManager.jsx';
 
 const layerTypes = {
     fill: ['fill-opacity'],
@@ -39,17 +46,26 @@ function slideBg(mode, theme) {
     return null;
 }
 
-function StoryMap({ story }) {
+// How long the outgoing chapter card's shrink animation plays before the
+// camera starts flying to the next chapter (ms).
+const SHRINK_MS = 300;
+
+function StoryMap({ story, storyId }) {
     const config = story;
     const [ready, setReady] = useState(false);
     const [activeId, setActiveId] = useState(() =>
-        config.startSlide && config.startSlide !== 'none' ? null : config.chapters[0].id
+        config.startSlide && config.startSlide !== 'none'
+            ? null
+            : config.chapters && config.chapters[0]
+              ? config.chapters[0].id
+              : null
     );
     const [chromeHidden, setChromeHidden] = useState(
         Boolean(config.startSlide && config.startSlide !== 'none')
     );
     const [slideCover, setSlideCover] = useState(null);
     const [navHidden, setNavHidden] = useState(Boolean(config.hideChapterNav));
+    const [cardHidden, setCardHidden] = useState(false);
 
     const mapRef = useRef(null);
     const insetMapRef = useRef(null);
@@ -57,6 +73,22 @@ function StoryMap({ story }) {
     const insetMarkerRef = useRef(null);
     const cameraTokenRef = useRef(0);
     const startSlideInitializedRef = useRef(false);
+    // Tracks the currently-displayed active card (for the shrink transition).
+    const activeIdRef = useRef(activeId);
+    // Tracks the card that is about to be revealed (hidden until the camera
+    // arrives, then grown in).
+    const incomingIdRef = useRef(null);
+    // Pending fly / reveal timers, cancelled on rapid scroll or unmount.
+    const flyTimeoutRef = useRef(null);
+    const revealTimeoutRef = useRef(null);
+
+    // Clear any pending transition timers on unmount.
+    useEffect(() => {
+        return () => {
+            if (flyTimeoutRef.current) window.clearTimeout(flyTimeoutRef.current);
+            if (revealTimeoutRef.current) window.clearTimeout(revealTimeoutRef.current);
+        };
+    }, []);
 
     const audio = useAudio();
     const audioRef = useRef(audio);
@@ -83,6 +115,7 @@ function StoryMap({ story }) {
     const enterSlide = useCallback(
         (mode, isStart) => {
             setActiveId(null);
+            activeIdRef.current = null;
             setChromeHidden(true);
             const bg = slideBg(mode, config.theme);
             if (bg) {
@@ -114,7 +147,6 @@ function StoryMap({ story }) {
     const handleStepEnter = useCallback(
         (response) => {
             const id = response.element.id;
-            setActiveId(id);
             if (id === config.startStepId || id === config.endStepId) {
                 // Skip the redundant first enter for the start slide that was
                 // already initialized synchronously on map load (#998).
@@ -132,38 +164,91 @@ function StoryMap({ story }) {
             const map = mapRef.current;
             if (!map) return;
 
-            // Cancel any in-progress move (e.g. a prior chapter's rotation) and
-            // bump the token so its pending moveend handler is ignored.
-            map.stop();
-            const token = ++cameraTokenRef.current;
-            map[chapter.mapAnimation || 'flyTo'](chapter.location);
-
-            // Re-show the marker in case a preceding global slide hid it.
-            setMarkersVisible(true);
-            if (config.showMarkers && markerRef.current) markerRef.current.setLngLat(chapter.location.center);
-            if (insetMapRef.current && insetMarkerRef.current) {
-                insetMapRef.current.setCenter(chapter.location.center);
-                insetMarkerRef.current.setLngLat(chapter.location.center);
+            // Cancel any pending fly/reveal from a previous rapid scroll.
+            if (flyTimeoutRef.current) {
+                window.clearTimeout(flyTimeoutRef.current);
+                flyTimeoutRef.current = null;
             }
-            if (chapter.onChapterEnter?.length > 0) chapter.onChapterEnter.forEach((l) => setLayerOpacity(map, l));
+            if (revealTimeoutRef.current) {
+                window.clearTimeout(revealTimeoutRef.current);
+                revealTimeoutRef.current = null;
+            }
 
-            // Audio: start this chapter's track (single shared element).
-            if (chapter.audio && chapter.autoPlayAudio) audioRef.current.playChapter(chapter);
+            // Shrink the currently-active card before the camera moves.
+            const prevId = activeIdRef.current;
+            const prevEl = prevId && prevId !== id ? document.getElementById(prevId) : null;
+            if (prevEl) prevEl.classList.add('leaving');
 
-            if (chapter.rotateAnimation) {
-                map.once('moveend', () => {
-                    if (token !== cameraTokenRef.current) return;
+            // Hide the incoming card until the camera arrives, so the map flies
+            // with no card visible and the new one grows in on reveal.
+            if (incomingIdRef.current && incomingIdRef.current !== id) {
+                const prevIncoming = document.getElementById(incomingIdRef.current);
+                if (prevIncoming) prevIncoming.classList.remove('incoming');
+            }
+            const incomingEl = document.getElementById(id);
+            if (incomingEl) incomingEl.classList.add('incoming');
+            incomingIdRef.current = id;
+
+            // Reveal the new card (and run the rotate animation) once the
+            // camera arrives. Guarded by the camera token so a stale moveend
+            // from an interrupted fly is ignored.
+            const reveal = () => {
+                if (revealTimeoutRef.current) {
+                    window.clearTimeout(revealTimeoutRef.current);
+                    revealTimeoutRef.current = null;
+                }
+                setActiveId(id);
+                activeIdRef.current = id;
+                // Remove 'leaving'/'incoming' after React has re-rendered (added
+                // the new card's .active) so it doesn't flash back to a default
+                // state before growing in.
+                window.setTimeout(() => {
+                    if (prevEl) prevEl.classList.remove('leaving');
+                    if (incomingEl) incomingEl.classList.remove('incoming');
+                }, 0);
+                if (chapter.rotateAnimation) {
                     const bearing = map.getBearing();
                     map.rotateTo(bearing + 180, { duration: 30000, easing: (t) => t });
+                }
+            };
+
+            // Delay the camera move so the outgoing card's shrink animation
+            // plays first, then fly, then reveal the new card on arrival.
+            flyTimeoutRef.current = window.setTimeout(() => {
+                flyTimeoutRef.current = null;
+                map.stop();
+                const token = ++cameraTokenRef.current;
+                map[chapter.mapAnimation || 'flyTo'](chapter.location);
+
+                // Re-show the marker in case a preceding global slide hid it.
+                setMarkersVisible(true);
+                if (config.showMarkers && markerRef.current) markerRef.current.setLngLat(chapter.location.center);
+                if (insetMapRef.current && insetMarkerRef.current) {
+                    insetMapRef.current.setCenter(chapter.location.center);
+                    insetMarkerRef.current.setLngLat(chapter.location.center);
+                }
+                if (chapter.onChapterEnter?.length > 0) chapter.onChapterEnter.forEach((l) => setLayerOpacity(map, l));
+
+                // Audio: start this chapter's track (single shared element).
+                if (chapter.audio && chapter.autoPlayAudio) audioRef.current.playChapter(chapter);
+
+                map.once('moveend', () => {
+                    if (token !== cameraTokenRef.current) return;
+                    reveal();
                 });
-            }
+                // Fallback: reveal even if moveend never fires.
+                revealTimeoutRef.current = window.setTimeout(reveal, 2000);
+            }, SHRINK_MS);
         },
         [enterSlide, setMarkersVisible]
     );
 
     const handleStepExit = useCallback((response) => {
         const id = response.element.id;
-        setActiveId((prev) => (prev === id ? null : prev));
+        // Deliberately do NOT clear activeId here. The outgoing card stays
+        // "active" (full opacity) so the shrink transition in handleStepEnter
+        // can play before the camera flies; the new card is revealed on
+        // arrival. (Scrolling to a start/end slide clears it via enterSlide.)
         const chapter = config.chapters.find((c) => c.id === id);
         if (!chapter) return;
         if (chapter.onChapterExit?.length > 0) {
@@ -191,6 +276,43 @@ function StoryMap({ story }) {
         (card || el).scrollIntoView({ block: 'center' });
     }, []);
 
+    // A story with no chapters has nothing to scroll through — show a friendly
+    // empty state instead of rendering a blank map (and avoid crashing on
+    // config.chapters[0] being undefined).
+    if (!config.chapters || config.chapters.length === 0) {
+        return (
+            <div
+                style={{
+                    padding: '3rem 1.5rem',
+                    textAlign: 'center',
+                    maxWidth: 720,
+                    margin: '0 auto',
+                    color: 'inherit',
+                }}
+            >
+                <h1>{config.title || 'Story'}</h1>
+                <p style={{ opacity: 0.85 }}>
+                    This story has no chapters yet.{' '}
+                    {storyId != null && (
+                        <>
+                            <a
+                                href={`#/stories/${encodeURIComponent(storyId)}/edit`}
+                                style={{ textDecoration: 'underline' }}
+                            >
+                                Add a chapter
+                            </a>{' '}
+                            or{' '}
+                        </>
+                    )}
+                    <a href="#/" style={{ textDecoration: 'underline' }}>
+                        back to all stories
+                    </a>
+                    .
+                </p>
+            </div>
+        );
+    }
+
     return (
         <>
             <MapView
@@ -212,6 +334,8 @@ function StoryMap({ story }) {
                     config={config}
                     activeId={activeId}
                     ready={ready}
+                    cardHidden={cardHidden}
+                    onToggleCard={() => setCardHidden((h) => !h)}
                     onStepEnter={handleStepEnter}
                     onStepExit={handleStepExit}
                 />
@@ -239,53 +363,263 @@ function StoryMap({ story }) {
     );
 }
 
+const PICKER_NOTE_STYLE = { fontStyle: 'italic', color: 'inherit', opacity: 0.85 };
+
 // Top-right control: switch between the storymap JSONs at runtime. Lives
 // outside the keyed <StoryMap> so it survives story remounts; pauses audio
 // before swapping so the previous chapter's track doesn't keep playing.
-function StoryPicker({ config, storyId, onSelect }) {
+// The options are data-driven (embedded + API stories merged), with explicit
+// loading / error / empty states (P5.3). Selection writes the hash (P5.4).
+function StoryPicker({ config, storyId, allStories, listState, onSelect }) {
     const audio = useAudio();
+    const { loading, error } = listState;
     return (
         <div id="story-picker" className={config.theme}>
             <label htmlFor="story-select">Story</label>
-            <select
-                id="story-select"
-                value={storyId}
-                onChange={(e) => {
-                    audio.pause();
-                    onSelect(e.target.value);
-                }}
-            >
-                {stories.map((s) => (
-                    <option key={s.id} value={s.id}>
-                        {s.label}
-                    </option>
-                ))}
-            </select>
+            {allStories.length === 0 && !loading ? (
+                <span style={PICKER_NOTE_STYLE}>No stories available. Create a story to get started.</span>
+            ) : loading ? (
+                <span style={PICKER_NOTE_STYLE}>Loading stories…</span>
+            ) : (
+                <select
+                    id="story-select"
+                    value={allStories.some((s) => s.id === storyId) ? storyId : ''}
+                    onChange={(e) => {
+                        audio.pause();
+                        onSelect(e.target.value);
+                    }}
+                >
+                    {allStories.map((s) => (
+                        <option key={s.id} value={s.id}>
+                            {s.label}
+                        </option>
+                    ))}
+                </select>
+            )}
+            {error && (
+                <span style={PICKER_NOTE_STYLE} title={error}>
+                    Server unavailable — showing embedded stories.
+                </span>
+            )}
+            <span style={{ marginLeft: '0.75rem' }}>
+                <AuthButtons />
+            </span>
         </div>
     );
 }
 
-export default function App() {
-    const [selectedId, setSelectedId] = useState(defaultStoryId);
-    const story = getStory(selectedId);
+// P5.4 empty-state + list view for the `#/` route. Handles: nothing at all →
+// "Create a story" CTA; server down with none embedded → a clear no-embedded
+// note; otherwise the clickable story list (each links to #/stories/<id>).
+function StoryList({ allStories, listState }) {
+    const { loading, error } = listState;
+    return (
+        <div
+            style={{
+                fontFamily: 'inherit',
+                padding: '3rem 1.5rem',
+                maxWidth: 720,
+                margin: '0 auto',
+                textAlign: 'center',
+                color: 'inherit',
+            }}
+        >
+            <div
+                style={{
+                    display: 'flex',
+                    justifyContent: 'flex-end',
+                    marginBottom: '1rem',
+                }}
+            >
+                <AuthButtons />
+            </div>
+            <h1>Storymaps</h1>
+            <p style={{ opacity: 0.85 }}>
+                Choose a story to explore, or{' '}
+                <a href="#/manage" style={{ textDecoration: 'underline' }}>
+                    create your own
+                </a>
+                .
+            </p>
+
+            {loading && allStories.length === 0 && (
+                <p style={PICKER_NOTE_STYLE}>Loading stories…</p>
+            )}
+
+            {!loading && allStories.length === 0 ? (
+                error ? (
+                    <p style={PICKER_NOTE_STYLE}>
+                        No embedded stories available. Start the server (or open a build with
+                        bundled stories) to explore or create one.
+                    </p>
+                ) : (
+                    <p>
+                        No stories yet.{' '}
+                        <a href="#/create">Create a story</a> to get started.
+                    </p>
+                )
+            ) : (
+                <>
+                    {error && (
+                        <p style={PICKER_NOTE_STYLE}>Server unavailable — showing embedded stories only.</p>
+                    )}
+                    <ul style={{ listStyle: 'none', padding: 0 }}>
+                        {allStories.map((s) => (
+                            <li key={s.id} style={{ margin: '0.5rem 0' }}>
+                                <a
+                                    href={`#/stories/${encodeURIComponent(s.id)}`}
+                                    style={{ textDecoration: 'none', fontSize: '1.1rem' }}
+                                >
+                                    {s.label}
+                                </a>
+                            </li>
+                        ))}
+                    </ul>
+                </>
+            )}
+        </div>
+    );
+}
+
+function AppInner() {
+    // The hash is the source of truth for what we show (P5.4).
+    const [route, setRoute] = useState(parseHash);
+    const [allStories, setAllStories] = useState(embeddedStories);
+    const [listState, setListState] = useState({ loading: true, error: null });
+    const [story, setStory] = useState({ id: null, config: null });
+    const [storyState, setStoryState] = useState({ loading: false, notFound: false });
+
+    // Keep the route in sync with location.hash (deep links + picker nav).
+    useEffect(() => onHashChange(() => setRoute(parseHash())), []);
+
+    // Async load: merge embedded + API stories (P5.3). Graceful degradation:
+    // a fetch failure falls back to embedded only — never a crash.
+    useEffect(() => {
+        let alive = true;
+        (async () => {
+            try {
+                const merged = await getStories();
+                if (!alive) return;
+                setAllStories(merged);
+                setListState({ loading: false, error: null });
+            } catch (e) {
+                if (!alive) return;
+                setAllStories(embeddedStories);
+                setListState({ loading: false, error: e.message || String(e) });
+            }
+        })();
+        return () => {
+            alive = false;
+        };
+    }, []);
+
+    // Load the full config for the routed story. `#/` (list) loads nothing.
+    useEffect(() => {
+        if (route.type !== 'story') {
+            setStory({ id: null, config: null });
+            setStoryState({ loading: false, notFound: false });
+            return undefined;
+        }
+        const id = route.id;
+        let alive = true;
+        setStoryState((s) => ({ ...s, loading: true, notFound: false }));
+        setStory({ id, config: null });
+        getStory(id).then((s) => {
+            if (!alive) return;
+            setStoryState({ loading: false, notFound: !(s && s.config) });
+            setStory(s && s.config ? { id, config: s.config } : { id, config: null });
+        });
+        return () => {
+            alive = false;
+        };
+    }, [route]);
 
     // Keep the browser tab title in sync with the active story.
     useEffect(() => {
-        document.title = story.config.title;
+        if (story.config) document.title = story.config.title;
     }, [story]);
 
+    // Selecting a story navigates by hash (fires hashchange → route update).
     const handleSelect = useCallback((id) => {
-        // Jump to the top so the new story's first step (or start slide) is
-        // in view; Scrollama re-scans on remount.
         window.scrollTo(0, 0);
-        setSelectedId(id);
+        navigateToStory(id);
     }, []);
 
+    if (route.type === 'create') {
+        return (
+            <AudioProvider>
+                <StoryForm />
+            </AudioProvider>
+        );
+    }
+
+    if (route.type === 'manage') {
+        return (
+            <AudioProvider>
+                <StoryManager />
+            </AudioProvider>
+        );
+    }
+
+    if (route.type === 'edit') {
+        return (
+            <AudioProvider>
+                <ChapterEditor storyId={route.id} />
+            </AudioProvider>
+        );
+    }
+
+    if (route.type === 'list') {
+        return (
+            <AudioProvider>
+                <StoryList allStories={allStories} listState={listState} />
+            </AudioProvider>
+        );
+    }
+
+    // story route: not-found / loading / ready states.
+    let content;
+    if (storyState.notFound || (storyState.loading === false && !story.config)) {
+        content = (
+            <div style={{ padding: '3rem 1.5rem', textAlign: 'center', maxWidth: 720, margin: '0 auto' }}>
+                <h1>Story not found</h1>
+                <p>The story you&apos;re looking for doesn&apos;t exist or isn&apos;t available.</p>
+                <p>
+                    <a href="#/">← Back to all stories</a>{' '}
+                    <span style={{ opacity: 0.6 }}>or</span>{' '}
+                    <a href="#/create">create a new story</a>.
+                </p>
+            </div>
+        );
+    } else if (storyState.loading || !story.config) {
+        content = (
+            <div style={{ padding: '2rem', textAlign: 'center' }}>Loading story…</div>
+        );
+    } else {
+        content = (
+            <>
+                <StoryPicker
+                    config={story.config}
+                    storyId={story.id}
+                    allStories={allStories}
+                    listState={listState}
+                    onSelect={handleSelect}
+                />
+                {/* key forces a full remount (map, scrollama, state) per story */}
+                <StoryMap key={story.id} story={story.config} storyId={story.id} />
+            </>
+        );
+    }
+
+    return <AudioProvider>{content}</AudioProvider>;
+}
+
+// Wrap the whole app in AuthProvider so the header Sign in / Sign out controls
+// (and any future auth-gated UI) share one whoami-backed session state.
+export default function App() {
     return (
-        <AudioProvider>
-            <StoryPicker config={story.config} storyId={story.id} onSelect={handleSelect} />
-            {/* key forces a full remount (map, scrollama, state) per story */}
-            <StoryMap key={story.id} story={story.config} />
-        </AudioProvider>
+        <AuthProvider>
+            <AppInner />
+        </AuthProvider>
     );
 }

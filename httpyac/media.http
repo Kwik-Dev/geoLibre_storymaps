@@ -1,0 +1,26 @@
+@host = http://localhost:8080
+# @import ./auth.http
+
+### Upload media (multipart 'file'; requires Bearer JWT)
+# @ref login
+# @name upload
+POST {{host}}/api/media/upload
+Authorization: Bearer {{login.token}}
+Content-Type: multipart/form-data; boundary=----WebKitFormBoundary7MA4YWxkTrZu0gW
+
+------WebKitFormBoundary7MA4YWxkTrZu0gW
+Content-Disposition: form-data; name="file"; filename="test.png"
+Content-Type: image/png
+
+< ./test.png
+------WebKitFormBoundary7MA4YWxkTrZu0gW--
+
+### Serve uploaded media (public; /media/<id>)
+# @ref upload
+GET {{host}}{{upload.url}}
+
+### Soft-delete media (owner/admin only)
+# @ref login
+# @ref upload
+DELETE {{host}}/api/media/{{upload.id}}
+Authorization: Bearer {{login.token}}

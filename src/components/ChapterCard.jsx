@@ -1,5 +1,7 @@
 import React, { useRef } from 'react';
 import { useAudio } from '../audio/AudioContext.jsx';
+import Markdown from './Markdown.jsx';
+import { youtubeEmbedUrl } from '../media/youtube.js';
 
 // Relative bar heights for the sound-wave placeholder shown on chapters
 // without a photo (e.g. the freesound field recordings).
@@ -12,7 +14,7 @@ const WAVE_BARS = [
  * Draggable / resizable story card: title bar (with per-chapter audio toggle),
  * image/video/waveform + description body, and a bottom-right resize handle.
  */
-export default function ChapterCard({ chapter, index, theme }) {
+export default function ChapterCard({ chapter, index, theme, active, cardHidden, onToggleCard }) {
     const cardRef = useRef(null);
     const offsetRef = useRef({ x: 0, y: 0 });
     const { state, toggle } = useAudio();
@@ -68,8 +70,13 @@ export default function ChapterCard({ chapter, index, theme }) {
         window.addEventListener('pointerup', up);
     };
 
+    // When the card is hidden: the active card keeps its header (so the Show
+    // button stays reachable) but hides its body; every other chapter's card is
+    // hidden entirely so their titles don't clutter the map view.
+    const hiddenClass = cardHidden ? (active ? ' card-hidden' : ' card-hidden-full') : '';
+
     return (
-        <div className={`sm-card ${theme}`} ref={cardRef}>
+        <div className={`sm-card ${theme}${hiddenClass}`} ref={cardRef}>
             <div className="sm-bar" onPointerDown={onBarPointerDown} onDoubleClick={onBarDoubleClick}>
                 <span className="sm-grip">☰</span>
                 <span className="sm-title">{chapter.title || `Chapter ${index + 1}`}</span>
@@ -88,18 +95,42 @@ export default function ChapterCard({ chapter, index, theme }) {
                         {isThisPlaying ? '🔊' : '🔈'}
                     </button>
                 )}
+                <button
+                    type="button"
+                    className="sm-card-toggle"
+                    aria-pressed={cardHidden ? 'false' : 'true'}
+                    aria-label={cardHidden ? 'Show chapter card' : 'Hide chapter card'}
+                    title={cardHidden ? 'Show chapter card' : 'Hide chapter card'}
+                    onClick={(e) => {
+                        e.stopPropagation();
+                        if (onToggleCard) onToggleCard();
+                    }}
+                >
+                    {cardHidden ? 'Show' : 'Hide'}
+                </button>
             </div>
             <div className="sm-body">
                 {chapter.video ? (
-                    <video
-                        src={chapter.video}
-                        poster={chapter.image}
-                        controls
-                        loop
-                        muted
-                        playsInline
-                        preload="metadata"
-                    />
+                    youtubeEmbedUrl(chapter.video) ? (
+                        <iframe
+                            className="sm-video-embed"
+                            src={youtubeEmbedUrl(chapter.video)}
+                            title={chapter.title || 'Video'}
+                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                            allowFullScreen
+                            frameBorder="0"
+                        />
+                    ) : (
+                        <video
+                            src={chapter.video}
+                            poster={chapter.image}
+                            controls
+                            loop
+                            muted
+                            playsInline
+                            preload="metadata"
+                        />
+                    )
                 ) : chapter.image ? (
                     <img src={chapter.image} alt={chapter.title || ''} />
                 ) : (
@@ -125,9 +156,13 @@ export default function ChapterCard({ chapter, index, theme }) {
                         </svg>
                     </div>
                 )}
-                {chapter.description && (
+                {chapter.description ? (
                     <p dangerouslySetInnerHTML={{ __html: chapter.description }} />
-                )}
+                ) : chapter.description_md ? (
+                    <div className="sm-description-md">
+                        <Markdown text={chapter.description_md} />
+                    </div>
+                ) : null}
             </div>
             <div className="sm-resize" onPointerDown={onResizePointerDown} />
         </div>

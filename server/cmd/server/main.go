@@ -3,6 +3,7 @@ package main
 import (
 	"log"
 	"net/http"
+	"os"
 	"strconv"
 
 	"github.com/Kwik-Dev/geoLibre_storymaps/server/internal/auth"
@@ -27,6 +28,15 @@ func main() {
 	}
 	if len(cfg.AllowedMediaHosts) > 0 {
 		log.Printf("Allowed media hosts: %v", cfg.AllowedMediaHosts)
+	}
+
+	// Ensure the data + media directories exist before opening the DB, so a
+	// fresh checkout starts cleanly without a manual mkdir.
+	if err := os.MkdirAll(cfg.DataDir, 0o755); err != nil {
+		log.Fatalf("Failed to create data directory: %v", err)
+	}
+	if err := os.MkdirAll(cfg.MediaDir, 0o755); err != nil {
+		log.Fatalf("Failed to create media directory: %v", err)
 	}
 
 	database, err := db.Open(cfg)

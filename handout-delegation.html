@@ -1,0 +1,650 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GeoLibre Storymaps — Task Delegation Handout</title>
+<style>
+  :root {
+    --bg: #0f1117;
+    --surface: #1a1d27;
+    --border: #2e3147;
+    --accent: #5b8dee;
+    --accent2: #7c3aed;
+    --green: #22c55e;
+    --yellow: #eab308;
+    --red: #ef4444;
+    --text: #e2e8f0;
+    --muted: #8892a4;
+    --code-bg: #131620;
+    --radius: 8px;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; background: var(--bg); color: var(--text); line-height: 1.6; }
+  .page { max-width: 960px; margin: 0 auto; padding: 48px 24px 80px; }
+
+  h1 { font-size: 1.9rem; font-weight: 700; color: #fff; }
+  h2 { font-size: 1.3rem; font-weight: 600; color: var(--accent); margin: 36px 0 12px; }
+  h3 { font-size: 1.05rem; font-weight: 600; color: #fff; margin: 0 0 8px; }
+  p { color: var(--muted); margin-bottom: 10px; }
+  strong { color: var(--text); }
+  ul, ol { padding-left: 20px; color: var(--muted); }
+  li { margin-bottom: 4px; }
+
+  .meta { color: var(--muted); font-size: 0.85rem; margin-top: 6px; }
+
+  .alert {
+    background: #1f1a09; border: 1px solid #a16207; border-radius: var(--radius);
+    padding: 14px 18px; margin: 20px 0; color: #fde68a; font-size: 0.9rem;
+  }
+  .alert strong { color: #fde68a; }
+
+  .overview-grid {
+    display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 12px; margin: 16px 0 32px;
+  }
+  .kpi {
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: var(--radius); padding: 16px;
+  }
+  .kpi-val { font-size: 2rem; font-weight: 700; color: var(--accent); line-height: 1; }
+  .kpi-label { font-size: 0.8rem; color: var(--muted); margin-top: 4px; }
+
+  .milestone {
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: var(--radius); padding: 24px; margin: 20px 0;
+  }
+  .milestone-header {
+    display: flex; align-items: center; gap: 12px; margin-bottom: 16px;
+  }
+  .badge {
+    display: inline-flex; align-items: center; justify-content: center;
+    width: 36px; height: 36px; border-radius: 50%; font-weight: 700;
+    font-size: 0.85rem; flex-shrink: 0;
+  }
+  .badge-blue { background: #1e3a8a; color: #93c5fd; }
+  .badge-purple { background: #3b0764; color: #d8b4fe; }
+  .badge-green { background: #14532d; color: #86efac; }
+  .badge-yellow { background: #713f12; color: #fde68a; }
+  .badge-orange { background: #7c2d12; color: #fed7aa; }
+  .badge-teal { background: #134e4a; color: #99f6e4; }
+  .badge-pink { background: #831843; color: #fbcfe8; }
+
+  .tags { display: flex; flex-wrap: wrap; gap: 6px; margin: 12px 0; }
+  .tag {
+    font-size: 0.75rem; padding: 2px 8px; border-radius: 999px;
+    border: 1px solid var(--border); color: var(--muted);
+  }
+  .tag-go { border-color: #06b6d4; color: #67e8f9; }
+  .tag-react { border-color: #6366f1; color: #a5b4fc; }
+  .tag-sql { border-color: #f59e0b; color: #fde68a; }
+  .tag-auth { border-color: #ef4444; color: #fca5a5; }
+  .tag-media { border-color: #8b5cf6; color: #c4b5fd; }
+
+  .section-label {
+    font-size: 0.7rem; font-weight: 600; text-transform: uppercase;
+    letter-spacing: 0.08em; color: var(--muted); margin: 16px 0 6px;
+  }
+
+  .files { display: flex; flex-wrap: wrap; gap: 6px; }
+  .file {
+    font-size: 0.78rem; font-family: "SF Mono", "Fira Mono", monospace;
+    background: var(--code-bg); border: 1px solid var(--border);
+    border-radius: 4px; padding: 2px 7px; color: #a5f3fc;
+  }
+  .file-new { border-color: #166534; color: #86efac; }
+
+  .prompt-box {
+    background: var(--code-bg); border: 1px solid var(--border);
+    border-radius: var(--radius); margin: 12px 0 0; position: relative;
+  }
+  .prompt-box pre {
+    font-family: "SF Mono", "Fira Mono", monospace;
+    font-size: 0.8rem; color: #e2e8f0; padding: 16px 18px;
+    white-space: pre-wrap; word-break: break-word; overflow: hidden;
+  }
+  .copy-btn {
+    position: absolute; top: 10px; right: 10px;
+    background: #2e3147; border: 1px solid var(--border); color: var(--muted);
+    border-radius: 5px; padding: 4px 10px; font-size: 0.75rem; cursor: pointer;
+    transition: all 0.15s;
+  }
+  .copy-btn:hover { background: var(--accent); color: #fff; border-color: var(--accent); }
+  .copy-btn.copied { background: var(--green); color: #fff; border-color: var(--green); }
+
+  .checklist { list-style: none; padding: 0; }
+  .checklist li {
+    display: flex; align-items: flex-start; gap: 8px;
+    color: var(--muted); font-size: 0.88rem; margin-bottom: 6px;
+  }
+  .checklist li::before {
+    content: "○"; color: var(--border); flex-shrink: 0; margin-top: 1px;
+  }
+
+  .deps {
+    display: flex; align-items: center; gap: 6px; flex-wrap: wrap;
+    font-size: 0.82rem; color: var(--muted); margin-top: 10px;
+  }
+  .dep-pill {
+    background: #1e293b; border: 1px solid #334155;
+    border-radius: 4px; padding: 2px 8px; color: #94a3b8;
+  }
+  .dep-arrow { color: var(--border); }
+
+  hr { border: none; border-top: 1px solid var(--border); margin: 40px 0; }
+
+  .tip {
+    background: #0c1a2e; border: 1px solid #1e3a5f; border-radius: var(--radius);
+    padding: 14px 18px; margin: 12px 0; font-size: 0.875rem; color: #93c5fd;
+  }
+  .tip strong { color: #bfdbfe; }
+
+  .flow {
+    display: flex; align-items: center; gap: 10px; flex-wrap: wrap;
+    margin: 14px 0; font-size: 0.85rem;
+  }
+  .flow-step {
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: 6px; padding: 6px 12px; color: var(--text);
+  }
+  .flow-arrow { color: var(--muted); font-size: 1.1rem; }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <h1>GeoLibre Storymaps</h1>
+  <p class="meta">Task Delegation Handout — User-Created Storymaps Feature &nbsp;·&nbsp; 7 milestones &nbsp;·&nbsp; Use one at a time to keep agent context small</p>
+
+  <div class="alert">
+    <strong>Why this handout exists:</strong> The full workflow runs M1→M7 in one session, which pushes the local Ollama model past its practical context limit and causes timeouts. Instead, delegate <strong>one milestone at a time</strong> in a fresh session. Each section below is a self-contained prompt you can paste directly.
+  </div>
+
+  <div class="overview-grid">
+    <div class="kpi"><div class="kpi-val">7</div><div class="kpi-label">Milestones</div></div>
+    <div class="kpi"><div class="kpi-val">Go</div><div class="kpi-label">Backend language</div></div>
+    <div class="kpi"><div class="kpi-val">SQLite</div><div class="kpi-label">Database (modernc)</div></div>
+    <div class="kpi"><div class="kpi-val">React 18</div><div class="kpi-label">Frontend stack</div></div>
+  </div>
+
+  <h2>Architecture at a glance</h2>
+  <div class="flow">
+    <div class="flow-step">GitHub OAuth2</div><div class="flow-arrow">→</div>
+    <div class="flow-step">Go REST API</div><div class="flow-arrow">→</div>
+    <div class="flow-step">SQLite (stories, chapters, media)</div><div class="flow-arrow">→</div>
+    <div class="flow-step">React frontend (existing renderer)</div>
+  </div>
+  <p>The existing <code>StoryMap</code> renderer is reused as-is. The only change: story objects come from a live API instead of build-time imports. Embedded stories keep working with no server.</p>
+
+  <div class="tip">
+    <strong>Locked decisions (do not re-open these):</strong><br>
+    (1) GitHub OAuth2 for users, local email+password is admin-only — no public sign-up.<br>
+    (2) Per-story <code>private | public</code> visibility, chosen by the owner.<br>
+    (3) Media is either an external URL (S3/Drive/any https) the user supplies, or a local upload to the Go server's disk.<br>
+    (4) Embedded JSON storymaps keep working without a server (static fallback).<br>
+    (5) User-created story descriptions are Markdown; embedded stories keep HTML descriptions (dual renderer).
+  </div>
+
+  <hr>
+  <h2>Dependency order</h2>
+  <div class="flow">
+    <div class="flow-step">M1 Backend skeleton</div><div class="flow-arrow">→</div>
+    <div class="flow-step">M2 Auth</div><div class="flow-arrow">→</div>
+    <div class="flow-step">M3 CRUD</div><div class="flow-arrow">→</div>
+    <div class="flow-step">M4 Media</div><div class="flow-arrow">→</div>
+    <div class="flow-step">M5 Frontend cut-over</div><div class="flow-arrow">→</div>
+    <div class="flow-step">M6 Builder UI</div><div class="flow-arrow">→</div>
+    <div class="flow-step">M7 Hardening</div>
+  </div>
+  <p>Each milestone depends on the previous one. Complete and verify M1 before starting M2, and so on.</p>
+
+  <hr>
+
+  <!-- M1 -->
+  <div class="milestone">
+    <div class="milestone-header">
+      <div class="badge badge-blue">M1</div>
+      <div>
+        <h3>Backend skeleton</h3>
+        <div class="tags">
+          <span class="tag tag-go">Go</span>
+          <span class="tag tag-sql">SQLite</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="section-label">What to build</div>
+    <ul>
+      <li>Create <code>server/</code> Go module using <strong>chi</strong> router and <strong>modernc.org/sqlite</strong> (pure-Go, no CGO)</li>
+      <li>Config from env: <code>PORT</code>, <code>DATABASE_URL</code>, <code>MEDIA_DIR</code>, <code>JWT_SECRET</code></li>
+      <li>DB open + idempotent versioned migrations (WAL mode, <code>busy_timeout</code>)</li>
+      <li>Optional seed of embedded <code>*-storymap.json</code> files on first boot</li>
+      <li><code>GET /api/health</code> → <code>{"ok":true,"version":"M1"}</code></li>
+      <li>Serve <code>../dist</code> static files as fallback (SPA catch-all)</li>
+      <li><code>go build ./...</code> and <code>go vet ./...</code> must pass green</li>
+    </ul>
+
+    <div class="section-label">Files to create</div>
+    <div class="files">
+      <span class="file file-new">server/main.go</span>
+      <span class="file file-new">server/go.mod</span>
+      <span class="file file-new">server/go.sum</span>
+      <span class="file file-new">server/config/config.go</span>
+      <span class="file file-new">server/db/db.go</span>
+      <span class="file file-new">server/db/migrations.go</span>
+      <span class="file file-new">server/api/health.go</span>
+      <span class="file file-new">server/api/router.go</span>
+    </div>
+
+    <div class="section-label">Acceptance criteria</div>
+    <ul class="checklist">
+      <li><code>go build ./...</code> exits 0</li>
+      <li><code>go vet ./...</code> exits 0</li>
+      <li><code>GET /api/health</code> returns 200 JSON</li>
+      <li>Server starts and serves <code>../dist/index.html</code> at <code>/</code></li>
+    </ul>
+
+    <div class="section-label">Delegation prompt (paste into a fresh agent session)</div>
+    <div class="prompt-box">
+      <button class="copy-btn" onclick="copyPrompt(this)">Copy</button>
+      <pre>You are implementing Milestone 1 (backend skeleton) of the user-created storymaps feature for the GeoLibre Storymaps project.
+
+SPEC: Read `feature_request_user_created_storymap.md` for the full design. AGENTS.md has the project overview.
+
+YOUR TASK — create a `server/` Go module at the project root with:
+- Pure-Go SQLite via modernc.org/sqlite (no CGO), chi router
+- Config from env: PORT (default 8080), DATABASE_URL (default ./stories.db), MEDIA_DIR (default ./media), JWT_SECRET
+- DB open + idempotent versioned migrations (WAL mode, busy_timeout=5000ms)
+- Optional seed: on first boot, if the DB has no stories, import any *-storymap.json files found at the project root into the stories table
+- GET /api/health → {"ok":true,"version":"M1"}
+- Serve ../dist as static SPA fallback (catch-all for non-API routes)
+- go build ./... and go vet ./... must pass green
+
+CONSTRAINTS:
+- Do NOT touch any existing React/Vite source files (src/, public/, *.json storymap files)
+- Do NOT open a pull request
+- When done, run `go build ./...` and `go vet ./...` and report the output
+- If you hit an ambiguity or destructive action, stop and ask me
+
+Report: what files you created, whether the build passes, and any blockers.</pre>
+    </div>
+  </div>
+
+  <!-- M2 -->
+  <div class="milestone">
+    <div class="milestone-header">
+      <div class="badge badge-red" style="background:#450a0a;color:#fca5a5;">M2</div>
+      <div>
+        <h3>GitHub SSO + admin login</h3>
+        <div class="tags">
+          <span class="tag tag-go">Go</span>
+          <span class="tag tag-auth">Auth</span>
+          <span class="tag tag-sql">SQLite</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="section-label">What to build</div>
+    <ul>
+      <li><code>GET /api/auth/github</code> — redirect to GitHub OAuth2 with a CSRF <code>state</code> token</li>
+      <li><code>GET /api/auth/github/callback</code> — verify <code>state</code>, exchange code, upsert user by <code>github_id</code>, issue JWT</li>
+      <li>Admin-only local login: <code>POST /api/auth/login</code> (bcrypt), seeded from <code>ADMIN_EMAIL</code>/<code>ADMIN_PASSWORD</code> env — <strong>no public self-registration</strong></li>
+      <li>JWT session middleware: all other <code>/api/*</code> routes require a valid JWT</li>
+      <li><code>POST /api/auth/logout</code> — clear the cookie</li>
+    </ul>
+
+    <div class="section-label">Prereq</div>
+    <div class="deps"><div class="dep-pill">M1 complete</div></div>
+
+    <div class="section-label">Files to create / modify</div>
+    <div class="files">
+      <span class="file file-new">server/auth/github.go</span>
+      <span class="file file-new">server/auth/jwt.go</span>
+      <span class="file file-new">server/auth/middleware.go</span>
+      <span class="file file-new">server/auth/admin.go</span>
+      <span class="file">server/db/migrations.go</span>
+      <span class="file">server/api/router.go</span>
+    </div>
+
+    <div class="section-label">Delegation prompt</div>
+    <div class="prompt-box">
+      <button class="copy-btn" onclick="copyPrompt(this)">Copy</button>
+      <pre>You are implementing Milestone 2 (GitHub SSO + admin login) of the user-created storymaps feature. M1 (Go backend skeleton) is already done in `server/`.
+
+SPEC: Read `feature_request_user_created_storymap.md` sections 2 (decisions) and 4.2 (auth/users schema). AGENTS.md has the project overview.
+
+YOUR TASK:
+1. GitHub OAuth2 flow: GET /api/auth/github (redirect + CSRF state cookie) and GET /api/auth/github/callback (verify state, exchange code for token, call GitHub /user API, upsert user by github_id, issue JWT as HttpOnly cookie). Env vars: GITHUB_CLIENT_ID, GITHUB_CLIENT_SECRET, GITHUB_REDIRECT_URL.
+2. Admin-only local login: POST /api/auth/login accepts email+password (bcrypt check). Seed the admin from ADMIN_EMAIL / ADMIN_PASSWORD env on first boot. Role must be "admin". No public self-registration.
+3. JWT middleware: attach to all /api routes that are NOT /api/auth/*. Return 401 on missing/invalid token.
+4. POST /api/auth/logout: clear the session cookie.
+5. Add the users table migration (see spec section 4.2) if not already present.
+
+CONSTRAINTS:
+- Do NOT touch React/Vite source files
+- Do NOT open a pull request
+- When done, run `go build ./...` and `go vet ./...` and report results
+- If you encounter an ambiguity or destructive action, stop and ask me
+
+Report: files changed, whether build passes, any blockers.</pre>
+    </div>
+  </div>
+
+  <!-- M3 -->
+  <div class="milestone">
+    <div class="milestone-header">
+      <div class="badge badge-green">M3</div>
+      <div>
+        <h3>Stories + chapters CRUD</h3>
+        <div class="tags">
+          <span class="tag tag-go">Go</span>
+          <span class="tag tag-sql">SQLite</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="section-label">What to build</div>
+    <ul>
+      <li><code>GET /api/stories</code> — list public stories + owner's own stories (auth required)</li>
+      <li><code>POST /api/stories</code> — create story (auth required)</li>
+      <li><code>GET/PUT/DELETE /api/stories/:id</code> — owner or admin only for write ops</li>
+      <li><code>GET/POST/PUT/DELETE /api/stories/:id/chapters</code> — CRUD + reorder</li>
+      <li><code>GET /api/stories/:id/export</code> — dump as the legacy storymap JSON shape</li>
+      <li>DB→camelCase JSON adapter; visibility <code>private|public</code> enforced</li>
+    </ul>
+
+    <div class="section-label">Prereq</div>
+    <div class="deps">
+      <div class="dep-pill">M1</div><div class="dep-arrow">→</div>
+      <div class="dep-pill">M2 complete</div>
+    </div>
+
+    <div class="section-label">Delegation prompt</div>
+    <div class="prompt-box">
+      <button class="copy-btn" onclick="copyPrompt(this)">Copy</button>
+      <pre>You are implementing Milestone 3 (stories + chapters CRUD API) of the user-created storymaps feature. M1 and M2 are complete in `server/`.
+
+SPEC: Read `feature_request_user_created_storymap.md` sections 4.1 (ERD) and 5 (API surface). AGENTS.md has the project overview.
+
+YOUR TASK:
+1. Add stories and chapters table migrations (see spec section 4.1 ERD).
+2. Implement these endpoints (all require auth middleware from M2):
+   - GET /api/stories — list: public stories + requester's own private stories
+   - POST /api/stories — create story (sets owner = current user)
+   - GET /api/stories/:id — public stories visible to anyone; private only to owner/admin
+   - PUT /api/stories/:id — owner or admin only
+   - DELETE /api/stories/:id — owner or admin only
+   - GET /api/stories/:id/chapters — same visibility rules
+   - POST /api/stories/:id/chapters — owner only; assign position
+   - PUT /api/stories/:id/chapters/:cid — owner only
+   - DELETE /api/stories/:id/chapters/:cid — owner only
+   - PATCH /api/stories/:id/chapters/reorder — owner only; accepts ordered array of chapter ids
+   - GET /api/stories/:id/export — export as legacy storymap JSON (the shape in src/stories.js: {id, title, subtitle, chapters:[{id,title,description,...,location}]})
+3. Return snake_case from DB, map to camelCase in JSON responses.
+
+CONSTRAINTS:
+- Do NOT touch React/Vite source files
+- Do NOT open a pull request
+- Run `go build ./...` and `go vet ./...` when done
+- Stop and ask if any ambiguity or destructive action arises
+
+Report: files changed, build status, any blockers.</pre>
+    </div>
+  </div>
+
+  <!-- M4 -->
+  <div class="milestone">
+    <div class="milestone-header">
+      <div class="badge badge-purple">M4</div>
+      <div>
+        <h3>Media upload + serving</h3>
+        <div class="tags">
+          <span class="tag tag-go">Go</span>
+          <span class="tag tag-media">Media</span>
+          <span class="tag tag-sql">SQLite</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="section-label">What to build</div>
+    <ul>
+      <li><code>POST /api/media/upload</code> — magic-byte MIME validation (image/audio/video only), configurable size cap, random basename under <code>MEDIA_DIR</code>, no path traversal</li>
+      <li>Per-chapter media is either a <strong>local asset</strong> (upload) or an <strong>external https URL</strong> the user supplies — validated: https-only, length-bounded</li>
+      <li><code>GET /media/:aid</code> — serve stored files; private-story media requires auth + ownership check</li>
+      <li><code>DELETE /api/media/:aid</code> — soft-delete (owner or admin)</li>
+      <li>Add <code>media_assets</code> table migration (spec section 4.1)</li>
+    </ul>
+
+    <div class="section-label">Prereq</div>
+    <div class="deps">
+      <div class="dep-pill">M3 complete</div>
+    </div>
+
+    <div class="section-label">Delegation prompt</div>
+    <div class="prompt-box">
+      <button class="copy-btn" onclick="copyPrompt(this)">Copy</button>
+      <pre>You are implementing Milestone 4 (media upload + serving) of the user-created storymaps feature. M1, M2, M3 are done in `server/`.
+
+SPEC: Read `feature_request_user_created_storymap.md` sections 2 (decision #3 on media), 4.1 (MEDIA_ASSETS table), and any media API surface in section 5. AGENTS.md has the project overview.
+
+YOUR TASK:
+1. Add media_assets table migration (see spec ERD section 4.1).
+2. POST /api/media/upload:
+   - Auth required; owner = current user
+   - Magic-byte MIME validation: accept only image/* , audio/* , video/*
+   - Configurable size cap from env MAX_UPLOAD_BYTES (default 100MB)
+   - Store with a random UUID basename under MEDIA_DIR (from env, default ./media)
+   - No path traversal; reject filenames with ../ or absolute paths
+   - Return media asset JSON with id, kind, mime, bytes, url
+3. GET /media/:aid — serve stored file; if the asset belongs to a private story, require auth + ownership (owner or admin).
+4. DELETE /api/media/:aid — soft-delete (set deleted_at); owner or admin only.
+5. A chapter's media_ref_type field can be "local" (media_asset_id FK) or "external" (media_external_url). Validate external URLs: must be https://, max 2048 chars.
+
+CONSTRAINTS:
+- Do NOT touch React/Vite source files
+- Do NOT open a pull request
+- Run `go build ./...` and `go vet ./...` when done
+- Stop and ask if any ambiguity or destructive action
+
+Report: files changed, build status, any blockers.</pre>
+    </div>
+  </div>
+
+  <!-- M5 -->
+  <div class="milestone">
+    <div class="milestone-header">
+      <div class="badge badge-teal">M5</div>
+      <div>
+        <h3>Frontend cut-over</h3>
+        <div class="tags">
+          <span class="tag tag-react">React</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="section-label">What to build</div>
+    <ul>
+      <li>Async <code>getStory(id)</code> — fetch from <code>/api/stories/:id</code>, fall back to embedded stories when no server</li>
+      <li><code>#/stories/&lt;id&gt;</code> hash routing to open a story by ID</li>
+      <li>Data-driven <code>StoryPicker</code>: merge embedded stories + API stories in the dropdown</li>
+      <li>Markdown renderer for user stories: <code>react-markdown</code> + <code>remark-gfm</code> + <code>rehype-sanitize</code>; keep <code>dangerouslySetInnerHTML</code> for embedded HTML stories</li>
+      <li><strong>Preserve static/no-server mode:</strong> embedded stories still render when the API is unreachable</li>
+      <li><code>npm run build</code> must pass green</li>
+    </ul>
+
+    <div class="section-label">Prereq</div>
+    <div class="deps">
+      <div class="dep-pill">M4 complete</div>
+    </div>
+
+    <div class="section-label">Files to touch</div>
+    <div class="files">
+      <span class="file">src/stories.js</span>
+      <span class="file">src/App.jsx</span>
+      <span class="file">src/components/ChapterCard.jsx</span>
+      <span class="file file-new">src/api.js</span>
+    </div>
+
+    <div class="section-label">Delegation prompt</div>
+    <div class="prompt-box">
+      <button class="copy-btn" onclick="copyPrompt(this)">Copy</button>
+      <pre>You are implementing Milestone 5 (frontend cut-over) of the user-created storymaps feature. The Go backend (M1–M4) is complete in `server/`.
+
+SPEC: Read `feature_request_user_created_storymap.md`, `AGENTS.md` (architecture section), and skim `src/App.jsx` and `src/stories.js` to understand the current flow.
+
+YOUR TASK:
+1. Create `src/api.js`: async helpers `listStories()` (GET /api/stories) and `getStory(id)` (GET /api/stories/:id). Both must gracefully fall back (return null / empty array) when the API is unreachable so embedded-story mode still works.
+2. Update `src/stories.js`: export a merged list of embedded stories + API stories. Embedded stories always appear first. API stories are fetched async on app load.
+3. Update `src/App.jsx` StoryPicker: support both embedded and API stories in the dropdown. Add a minimal auth status indicator (show username if logged in, a "Sign in with GitHub" link if not).
+4. Add hash routing: if `window.location.hash` matches `#/stories/<id>`, auto-select that story on load (works for both embedded and API stories).
+5. Add a Markdown renderer in `ChapterCard.jsx`: if the story came from the API (has a `_source: "api"` flag), render `description` as Markdown using `react-markdown` + `remark-gfm` + `rehype-sanitize`. Otherwise keep existing `dangerouslySetInnerHTML` for embedded HTML stories.
+6. Run `npm run build` and confirm it passes.
+
+CONSTRAINTS:
+- Preserve static/no-server mode: embedded stories must work with no backend
+- Do NOT rewrite the map, scroll, or camera logic
+- Do NOT open a pull request
+- Stop and ask if any ambiguity or destructive action
+
+Report: files changed, whether `npm run build` passes, any blockers.</pre>
+    </div>
+  </div>
+
+  <!-- M6 -->
+  <div class="milestone">
+    <div class="milestone-header">
+      <div class="badge badge-yellow">M6</div>
+      <div>
+        <h3>Story builder UI</h3>
+        <div class="tags">
+          <span class="tag tag-react">React</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="section-label">What to build</div>
+    <ul>
+      <li><code>StoryForm</code> — create/edit title, subtitle, byline, theme, visibility (<code>private|public</code>)</li>
+      <li><code>ChapterEditor</code> — add/edit/reorder chapters: location picker, media type + external-URL-or-upload toggle, live Markdown preview for description</li>
+      <li><code>MediaUpload</code> — drag-and-drop or file picker; calls <code>POST /api/media/upload</code></li>
+      <li>Create flow: fill form → save → set visibility → redirect to <code>#/stories/&lt;id&gt;</code></li>
+      <li><code>npm run build</code> must pass green</li>
+    </ul>
+
+    <div class="section-label">Prereq</div>
+    <div class="deps">
+      <div class="dep-pill">M5 complete</div>
+    </div>
+
+    <div class="section-label">Delegation prompt</div>
+    <div class="prompt-box">
+      <button class="copy-btn" onclick="copyPrompt(this)">Copy</button>
+      <pre>You are implementing Milestone 6 (story builder UI) of the user-created storymaps feature. M1–M5 are complete. Read `feature_request_user_created_storymap.md` and `AGENTS.md` for context.
+
+YOUR TASK — build a creator UI that lets an authenticated user build a storymap without touching JSON files:
+
+1. `src/components/StoryForm.jsx` — form for story metadata: title, subtitle, byline, footer, theme (dark/light), map style, visibility (private/public). Calls POST /api/stories to create, PUT /api/stories/:id to update.
+
+2. `src/components/ChapterEditor.jsx` — per-chapter editor:
+   - Title, description (Markdown textarea with live preview using react-markdown + rehype-sanitize)
+   - Alignment picker (left/right/center/full)
+   - Location: lat/lng/zoom/pitch/bearing text inputs (the map is non-interactive per AGENTS.md)
+   - Media: radio toggle between "External URL" (text input, validates https://) and "Upload file" (via MediaUpload). Shows current media type (image/audio/video).
+   - Add / delete / reorder chapters (drag handle or up/down arrows)
+
+3. `src/components/MediaUpload.jsx` — file input or drag-drop zone, calls POST /api/media/upload, returns the media asset id + url.
+
+4. Wire a "Create story" button (visible only when logged in) into App.jsx that opens StoryForm in a modal or route. After save, redirect to #/stories/<id>.
+
+5. Run `npm run build` and confirm it passes.
+
+CONSTRAINTS:
+- Keep the existing scrollytelling view completely unchanged — builder is additive
+- Use only libraries already in package.json or react-markdown/remark-gfm/rehype-sanitize (already used in M5)
+- Do NOT open a pull request
+- Stop and ask if ambiguity or destructive action arises
+
+Report: files changed, build status, any blockers.</pre>
+    </div>
+  </div>
+
+  <!-- M7 -->
+  <div class="milestone">
+    <div class="milestone-header">
+      <div class="badge badge-pink">M7</div>
+      <div>
+        <h3>Hardening &amp; docs</h3>
+        <div class="tags">
+          <span class="tag tag-go">Go</span>
+          <span class="tag tag-react">React</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="section-label">What to build</div>
+    <ul>
+      <li>Moderation gate: stories set to <code>public</code> remain in <code>pending_review</code> status until an admin approves them</li>
+      <li>Soft-delete purge cron: a background goroutine that hard-deletes media assets soft-deleted more than 30 days ago (configurable)</li>
+      <li>Optional server-mediated external URL proxying (for object-store/Drive URLs behind auth)</li>
+      <li>Update <code>README.md</code>: new server setup instructions, env vars, running with and without the server</li>
+      <li>Verify the security checklist from the spec (XSS, upload validation, OAuth CSRF, private media gate, secrets not in client)</li>
+    </ul>
+
+    <div class="section-label">Prereq</div>
+    <div class="deps">
+      <div class="dep-pill">M6 complete</div>
+    </div>
+
+    <div class="section-label">Delegation prompt</div>
+    <div class="prompt-box">
+      <button class="copy-btn" onclick="copyPrompt(this)">Copy</button>
+      <pre>You are implementing Milestone 7 (hardening + docs) of the user-created storymaps feature. M1–M6 are complete. Read `feature_request_user_created_storymap.md` section 6 (hardening) and `AGENTS.md`.
+
+YOUR TASK:
+1. Moderation gate: when a user sets story visibility to "public", set status to "pending_review" instead of immediately public. Admins can approve/reject via PUT /api/admin/stories/:id/review. Only approved public stories appear in the public list.
+
+2. Soft-delete purge: a background goroutine that runs on a configurable schedule (env PURGE_AFTER_DAYS, default 30). Hard-delete media_assets rows where deleted_at < now()-PURGE_AFTER_DAYS and remove the file from disk. Log what it purges.
+
+3. Security audit — check and patch if needed:
+   - Markdown is sanitized server-side before storage AND client-side via rehype-sanitize (no XSS)
+   - Upload endpoint: magic-byte MIME check, no path traversal, size cap enforced
+   - OAuth callback verifies state parameter before exchanging the code (CSRF protection)
+   - Private story media (GET /media/:aid) checks ownership before serving
+   - JWT_SECRET, ADMIN_PASSWORD, GITHUB_CLIENT_SECRET not exposed in any API response or frontend bundle
+
+4. Update README.md: add a "Running the server" section with env vars table, how to build and start the Go server, and how the static fallback (no-server) mode still works.
+
+5. Run `go build ./...`, `go vet ./...`, and `npm run build` — all must pass.
+
+CONSTRAINTS:
+- Do NOT open a pull request
+- Stop and ask if any ambiguity or destructive action
+
+Report: everything you changed, all build results, any remaining blockers.</pre>
+    </div>
+  </div>
+
+  <hr>
+  <h2>Tips for keeping context small</h2>
+  <ul>
+    <li><strong>One milestone per fresh session.</strong> Don't load the previous milestone's conversation history.</li>
+    <li><strong>Reference files by path, not by pasting them.</strong> The delegation prompts above tell the agent which files to read — don't paste the full file contents.</li>
+    <li><strong>Verify before moving on.</strong> After each milestone, confirm the build command passes before starting the next one.</li>
+    <li><strong>Use <code>go build ./...</code> as the fast feedback loop</strong> for M1–M4; use <code>npm run build</code> for M5–M6.</li>
+    <li><strong>The feature request file is the source of truth.</strong> Each prompt already tells the agent to read it; you don't need to paste it again.</li>
+  </ul>
+
+</div>
+
+<script>
+function copyPrompt(btn) {
+  const pre = btn.nextElementSibling;
+  navigator.clipboard.writeText(pre.textContent.trim()).then(() => {
+    btn.textContent = 'Copied!';
+    btn.classList.add('copied');
+    setTimeout(() => { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 2000);
+  });
+}
+</script>
+</body>
+</html>

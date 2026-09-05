@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>storymap-pieces.tsx — Auto-fix + Escalate Flow</title>
+<style>
+  :root {
+    --task: #2563eb;
+    --loop: #0d9488;
+    --gate: #d97706;
+    --decision: #7c3aed;
+    --commit: #16a34a;
+    --deny: #dc2626;
+    --escalate: #ea580c;
+    --ink: #1f2937;
+    --muted: #6b7280;
+    --bg: #f8fafc;
+    --card: #ffffff;
+    --border: #e5e7eb;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    color: var(--ink);
+    background: var(--bg);
+    line-height: 1.55;
+  }
+  .wrap { max-width: 1080px; margin: 0 auto; padding: 40px 24px 80px; }
+  h1 { font-size: 26px; margin: 0 0 6px; }
+  h2 { font-size: 20px; margin: 40px 0 12px; border-bottom: 2px solid var(--border); padding-bottom: 8px; }
+  h3 { font-size: 15px; margin: 0 0 8px; }
+  .sub { color: var(--muted); margin: 0 0 24px; font-size: 14px; }
+  .card { background: var(--card); border: 1px solid var(--border); border-radius: 10px; padding: 20px 24px; margin: 16px 0; }
+  .legend { display: flex; flex-wrap: wrap; gap: 10px 22px; margin: 16px 0; }
+  .legend .item { display: flex; align-items: center; gap: 8px; font-size: 13px; }
+  .swatch { width: 14px; height: 14px; border-radius: 3px; display: inline-block; }
+  .swatch.task { background: var(--task); }
+  .swatch.loop { background: var(--loop); }
+  .swatch.gate { background: var(--gate); }
+  .swatch.decision { background: var(--decision); }
+  .swatch.commit { background: var(--commit); }
+  .swatch.deny { background: var(--deny); }
+  .swatch.escalate { background: var(--escalate); }
+  svg { display: block; max-width: 100%; height: auto; }
+  .note { font-size: 13px; color: var(--muted); }
+  .warn { font-size: 13px; color: #92400e; background: #fffbeb; border: 1px solid #fde68a; border-radius: 8px; padding: 12px 16px; margin: 12px 0; }
+  code { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 13px; background: #f1f5f9; padding: 1px 5px; border-radius: 4px; }
+  table { border-collapse: collapse; width: 100%; font-size: 13px; }
+  th, td { text-align: left; padding: 8px 10px; border: 1px solid var(--border); vertical-align: top; }
+  th { background: #f1f5f9; }
+  .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  @media (max-width: 720px) { .two-col { grid-template-columns: 1fr; } }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <h1>storymap-pieces.tsx — Auto-fix + Escalate Flow</h1>
+  <p class="sub">The merged workflow: each card is a <code>ReviewLoop</code> (implement → AI-judge → one auto-fix),
+  each milestone ends with an <code>EscalationChain</code> (diagnose → human fallback). Gates remain advisory
+  (<code>onDeny="continue"</code>).</p>
+
+  <div class="legend">
+    <span class="item"><span class="swatch task"></span> Task (agent work)</span>
+    <span class="item"><span class="swatch loop"></span> ReviewLoop (implement + auto-fix)</span>
+    <span class="item"><span class="swatch gate"></span> Approval gate (human)</span>
+    <span class="item"><span class="swatch decision"></span> AI judge / decision</span>
+    <span class="item"><span class="swatch commit"></span> Commit (<code>but</code>)</span>
+    <span class="item"><span class="swatch escalate"></span> EscalationChain</span>
+    <span class="item"><span class="swatch deny"></span> Deny / unresolved path</span>
+  </div>
+
+  <h2>1 · Overall workflow</h2>
+  <div class="card">
+    <svg viewBox="0 0 760 560" xmlns="http://www.w3.org/2000/svg" font-family="inherit">
+      <defs>
+        <marker id="arr" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto">
+          <path d="M0,0 L9,3 L0,6 Z" fill="#64748b"/>
+        </marker>
+      </defs>
+
+      <rect x="280" y="10" width="200" height="44" rx="8" fill="#2563eb"/>
+      <text x="380" y="37" text-anchor="middle" fill="#fff" font-size="14" font-weight="600">env-check (Task)</text>
+
+      <polygon points="380,74 480,96 380,118 280,96" fill="#d97706"/>
+      <text x="380" y="100" text-anchor="middle" fill="#fff" font-size="12" font-weight="600">env-gate</text>
+      <line x1="380" y1="54" x2="380" y2="74" stroke="#64748b" stroke-width="2" marker-end="url(#arr)"/>
+
+      <!-- M1 -->
+      <rect x="280" y="138" width="200" height="40" rx="8" fill="#0d9488"/>
+      <text x="380" y="163" text-anchor="middle" fill="#fff" font-size="13" font-weight="600">M1 cards (ReviewLoop ×4)</text>
+      <line x1="380" y1="118" x2="380" y2="138" stroke="#64748b" stroke-width="2" marker-end="url(#arr)"/>
+
+      <rect x="280" y="198" width="200" height="40" rx="8" fill="#ea580c"/>
+      <text x="380" y="223" text-anchor="middle" fill="#fff" font-size="13" font-weight="600">escalate-M1 (EscalationChain)</text>
+      <line x1="380" y1="178" x2="380" y2="198" stroke="#64748b" stroke-width="2" marker-end="url(#arr)"/>
+
+      <polygon points="380,258 480,280 380,302 280,280" fill="#d97706"/>
+      <text x="380" y="284" text-anchor="middle" fill="#fff" font-size="12" font-weight="600">M1-gate</text>
+      <line x1="380" y1="238" x2="380" y2="258" stroke="#64748b" stroke-width="2" marker-end="url(#arr)"/>
+
+      <!-- M2 -->
+      <rect x="280" y="322" width="200" height="40" rx="8" fill="#0d9488"/>
+      <text x="380" y="347" text-anchor="middle" fill="#fff" font-size="13" font-weight="600">M2 cards (ReviewLoop ×4)</text>
+      <line x1="380" y1="302" x2="380" y2="322" stroke="#64748b" stroke-width="2" marker-end="url(#arr)"/>
+
+      <text x="380" y="392" text-anchor="middle" fill="#6b7280" font-size="18">⋮</text>
+      <line x1="380" y1="362" x2="380" y2="384" stroke="#64748b" stroke-width="2" marker-end="url(#arr)"/>
+
+      <!-- M7 -->
+      <rect x="280" y="404" width="200" height="40" rx="8" fill="#0d9488"/>
+      <text x="380" y="429" text-anchor="middle" fill="#fff" font-size="13" font-weight="600">M7 cards (ReviewLoop ×4)</text>
+      <line x1="380" y1="396" x2="380" y2="404" stroke="#64748b" stroke-width="2" marker-end="url(#arr)"/>
+
+      <rect x="280" y="464" width="200" height="40" rx="8" fill="#ea580c"/>
+      <text x="380" y="489" text-anchor="middle" fill="#fff" font-size="13" font-weight="600">escalate-M7 (EscalationChain)</text>
+      <line x1="380" y1="444" x2="380" y2="464" stroke="#64748b" stroke-width="2" marker-end="url(#arr)"/>
+
+      <polygon points="380,524 480,546 380,568 280,546" fill="#d97706"/>
+      <text x="380" y="550" text-anchor="middle" fill="#fff" font-size="12" font-weight="600">M7-gate</text>
+      <line x1="380" y1="504" x2="380" y2="524" stroke="#64748b" stroke-width="2" marker-end="url(#arr)"/>
+
+      <!-- ship-report -->
+      <rect x="280" y="588" width="200" height="40" rx="8" fill="#2563eb"/>
+      <text x="380" y="613" text-anchor="middle" fill="#fff" font-size="13" font-weight="600">ship-report (Task)</text>
+      <line x1="380" y1="568" x2="380" y2="588" stroke="#64748b" stroke-width="2" marker-end="url(#arr)"/>
+
+      <text x="500" y="120" fill="#6b7280" font-size="11">each milestone = cards →</text>
+      <text x="500" y="134" fill="#6b7280" font-size="11">escalate → gate (Sequence)</text>
+      <line x1="480" y1="96" x2="500" y2="118" stroke="#94a3b8" stroke-width="1" stroke-dasharray="3,3"/>
+    </svg>
+    <p class="note">Each milestone is a <code>Sequence</code> of <code>ReviewLoop</code> cards, an
+    <code>EscalationChain</code>, and a human <code>Approval</code> gate. Ordering is enforced by the
+    <code>Sequence</code> structure (the loops don't forward <code>dependsOn</code>).</p>
+  </div>
+
+  <h2>2 · A single card — the ReviewLoop (implement → judge → one auto-fix)</h2>
+  <div class="card">
+    <svg viewBox="0 0 760 420" xmlns="http://www.w3.org/2000/svg" font-family="inherit">
+      <defs>
+        <marker id="arr2" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto">
+          <path d="M0,0 L9,3 L0,6 Z" fill="#64748b"/>
+        </marker>
+        <marker id="arrRed2" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto">
+          <path d="M0,0 L9,3 L0,6 Z" fill="#dc2626"/>
+        </marker>
+      </defs>
+
+      <!-- cycle 1 -->
+      <rect x="280" y="10" width="200" height="44" rx="8" fill="#0d9488"/>
+      <text x="380" y="37" text-anchor="middle" fill="#fff" font-size="13" font-weight="600">implement (cycle 1)</text>
+
+      <polygon points="380,74 500,114 380,154 260,114" fill="#7c3aed"/>
+      <text x="380" y="110" text-anchor="middle" fill="#fff" font-size="13" font-weight="600">AI judge</text>
+      <text x="380" y="126" text-anchor="middle" fill="#fff" font-size="13" font-weight="600">approved?</text>
+      <line x1="380" y1="54" x2="380" y2="74" stroke="#64748b" stroke-width="2" marker-end="url(#arr2)"/>
+
+      <!-- yes -->
+      <text x="180" y="106" text-anchor="middle" fill="#16a34a" font-size="13" font-weight="600">Yes</text>
+      <line x1="260" y1="114" x2="200" y2="114" stroke="#16a34a" stroke-width="2" marker-end="url(#arr2)"/>
+      <rect x="60" y="170" width="240" height="44" rx="8" fill="#16a34a"/>
+      <text x="180" y="197" text-anchor="middle" fill="#fff" font-size="12" font-weight="600">done + but commit (no push)</text>
+      <line x1="180" y1="114" x2="180" y2="170" stroke="#16a34a" stroke-width="2" marker-end="url(#arr2)"/>
+
+      <!-- no -> cycle 2 -->
+      <text x="580" y="106" text-anchor="middle" fill="#dc2626" font-size="13" font-weight="600">No</text>
+      <line x1="500" y1="114" x2="560" y2="114" stroke="#dc2626" stroke-width="2" marker-end="url(#arrRed2)"/>
+
+      <rect x="500" y="170" width="240" height="44" rx="8" fill="#0d9488"/>
+      <text x="620" y="197" text-anchor="middle" fill="#fff" font-size="12" font-weight="600">fix (cycle 2, with feedback)</text>
+      <line x1="620" y1="114" x2="620" y2="170" stroke="#dc2626" stroke-width="2" marker-end="url(#arrRed2)"/>
+
+      <polygon points="620,234 740,274 620,314 500,274" fill="#7c3aed"/>
+      <text x="620" y="270" text-anchor="middle" fill="#fff" font-size="13" font-weight="600">AI judge</text>
+      <text x="620" y="286" text-anchor="middle" fill="#fff" font-size="13" font-weight="600">approved?</text>
+      <line x1="620" y1="214" x2="620" y2="234" stroke="#64748b" stroke-width="2" marker-end="url(#arr2)"/>
+
+      <!-- yes -->
+      <text x="470" y="266" text-anchor="middle" fill="#16a34a" font-size="13" font-weight="600">Yes</text>
+      <line x1="500" y1="274" x2="490" y2="274" stroke="#16a34a" stroke-width="2" marker-end="url(#arr2)"/>
+      <rect x="60" y="330" width="240" height="44" rx="8" fill="#16a34a"/>
+      <text x="180" y="357" text-anchor="middle" fill="#fff" font-size="12" font-weight="600">done + but commit (no push)</text>
+      <line x1="180" y1="274" x2="180" y2="330" stroke="#16a34a" stroke-width="2" marker-end="url(#arr2)"/>
+
+      <!-- no -> escalate -->
+      <text x="700" y="266" text-anchor="middle" fill="#dc2626" font-size="13" font-weight="600">No</text>
+      <line x1="740" y1="274" x2="720" y2="274" stroke="#dc2626" stroke-width="2" marker-end="url(#arrRed2)"/>
+      <rect x="500" y="330" width="240" height="44" rx="8" fill="#ea580c"/>
+      <text x="620" y="357" text-anchor="middle" fill="#fff" font-size="12" font-weight="600">return-last → escalate</text>
+      <line x1="620" y1="314" x2="620" y2="330" stroke="#dc2626" stroke-width="2" marker-end="url(#arrRed2)"/>
+
+      <text x="380" y="400" text-anchor="middle" fill="#6b7280" font-size="11">maxIterations=2 · onMaxReached="return-last"</text>
+    </svg>
+    <p class="note">The <code>ReviewLoop</code> runs the producer (implement) then the AI judge. If the judge
+    rejects, the loop folds the judge's feedback into the producer and runs <strong>one</strong> auto-fix
+    (cycle 2). If still rejected, <code>onMaxReached="return-last"</code> hands the unapproved result to the
+    <code>EscalationChain</code> instead of failing the run.</p>
+  </div>
+
+  <h2>3 · The EscalationChain (diagnose → human fallback)</h2>
+  <div class="card">
+    <svg viewBox="0 0 760 260" xmlns="http://www.w3.org/2000/svg" font-family="inherit">
+      <defs>
+        <marker id="arr3" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto">
+          <path d="M0,0 L9,3 L0,6 Z" fill="#64748b"/>
+        </marker>
+        <marker id="arrRed3" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto">
+          <path d="M0,0 L9,3 L0,6 Z" fill="#dc2626"/>
+        </marker>
+      </defs>
+
+      <rect x="280" y="10" width="200" height="44" rx="8" fill="#ea580c"/>
+      <text x="380" y="37" text-anchor="middle" fill="#fff" font-size="13" font-weight="600">diagnose (agents.research)</text>
+
+      <polygon points="380,74 500,114 380,154 260,114" fill="#7c3aed"/>
+      <text x="380" y="110" text-anchor="middle" fill="#fff" font-size="13" font-weight="600">resolved?</text>
+      <line x1="380" y1="54" x2="380" y2="74" stroke="#64748b" stroke-width="2" marker-end="url(#arr3)"/>
+
+      <!-- yes -->
+      <text x="180" y="106" text-anchor="middle" fill="#16a34a" font-size="13" font-weight="600">Yes</text>
+      <line x1="260" y1="114" x2="200" y2="114" stroke="#16a34a" stroke-width="2" marker-end="url(#arr3)"/>
+      <rect x="60" y="170" width="240" height="44" rx="8" fill="#16a34a"/>
+      <text x="180" y="197" text-anchor="middle" fill="#fff" font-size="12" font-weight="600">no escalation (all cards approved)</text>
+      <line x1="180" y1="114" x2="180" y2="170" stroke="#16a34a" stroke-width="2" marker-end="url(#arr3)"/>
+
+      <!-- no -->
+      <text x="580" y="106" text-anchor="middle" fill="#dc2626" font-size="13" font-weight="600">No</text>
+      <line x1="500" y1="114" x2="560" y2="114" stroke="#dc2626" stroke-width="2" marker-end="url(#arrRed3)"/>
+      <rect x="500" y="170" width="240" height="44" rx="8" fill="#d97706"/>
+      <text x="620" y="197" text-anchor="middle" fill="#fff" font-size="12" font-weight="600">human fallback (Approval)</text>
+      <line x1="620" y1="114" x2="620" y2="170" stroke="#dc2626" stroke-width="2" marker-end="url(#arrRed3)"/>
+
+      <text x="380" y="240" text-anchor="middle" fill="#6b7280" font-size="11">escalateIf: r => !r.resolved · humanFallback=true</text>
+    </svg>
+    <p class="note">The <code>diagnose</code> level reads each card's judge output. If every card is approved it
+    sets <code>resolved=true</code> and the chain ends silently. If any card is unapproved it sets
+    <code>resolved=false</code>, which triggers the human fallback <code>Approval</code> — this is the
+    "escalate to me" step.</p>
+  </div>
+
+  <h2>4 · Gates are still advisory (approve vs. deny)</h2>
+  <div class="card">
+    <svg viewBox="0 0 760 300" xmlns="http://www.w3.org/2000/svg" font-family="inherit">
+      <defs>
+        <marker id="arr4" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto">
+          <path d="M0,0 L9,3 L0,6 Z" fill="#64748b"/>
+        </marker>
+        <marker id="arrRed4" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto">
+          <path d="M0,0 L9,3 L0,6 Z" fill="#dc2626"/>
+        </marker>
+      </defs>
+
+      <polygon points="380,20 500,60 380,100 260,60" fill="#7c3aed"/>
+      <text x="380" y="56" text-anchor="middle" fill="#fff" font-size="13" font-weight="600">Human reviews</text>
+      <text x="380" y="72" text-anchor="middle" fill="#fff" font-size="13" font-weight="600">milestone M</text>
+
+      <text x="180" y="52" text-anchor="middle" fill="#16a34a" font-size="13" font-weight="600">Approve</text>
+      <line x1="260" y1="60" x2="200" y2="60" stroke="#16a34a" stroke-width="2" marker-end="url(#arr4)"/>
+      <rect x="60" y="120" width="240" height="44" rx="8" fill="#16a34a"/>
+      <text x="180" y="147" text-anchor="middle" fill="#fff" font-size="13" font-weight="600">Continue to next milestone</text>
+      <line x1="180" y1="60" x2="180" y2="120" stroke="#16a34a" stroke-width="2" marker-end="url(#arr4)"/>
+
+      <text x="580" y="52" text-anchor="middle" fill="#dc2626" font-size="13" font-weight="600">Deny</text>
+      <line x1="500" y1="60" x2="560" y2="60" stroke="#dc2626" stroke-width="2" marker-end="url(#arrRed4)"/>
+      <rect x="500" y="120" width="240" height="44" rx="8" fill="#dc2626"/>
+      <text x="620" y="147" text-anchor="middle" fill="#fff" font-size="13" font-weight="600">Record denial + note</text>
+      <line x1="620" y1="60" x2="620" y2="120" stroke="#dc2626" stroke-width="2" marker-end="url(#arrRed4)"/>
+
+      <rect x="500" y="200" width="240" height="44" rx="8" fill="#d97706"/>
+      <text x="620" y="227" text-anchor="middle" fill="#fff" font-size="13" font-weight="600">Continue anyway (advisory)</text>
+      <line x1="620" y1="164" x2="620" y2="200" stroke="#dc2626" stroke-width="2" marker-end="url(#arrRed4)"/>
+
+      <text x="620" y="270" text-anchor="middle" fill="#6b7280" font-size="11">onDeny="continue" → recorded, not enforced</text>
+    </svg>
+    <p class="note">The milestone gates (<code>env-gate</code>, <code>M1-gate</code>…) are unchanged: a deny is
+    <strong>recorded</strong> but the workflow continues. The <em>enforcement</em> now lives in the
+    <code>ReviewLoop</code> (AI judge) + <code>EscalationChain</code> (human fallback), not in these gates.</p>
+  </div>
+
+  <h2>5 · Known limitation + summary</h2>
+  <div class="warn">
+    <strong>⚠️ No per-card timeout.</strong> <code>ReviewLoop</code> does not expose <code>timeoutMs</code>, so a
+    single hung generation (the local Ollama model can stall) will block the run indefinitely.
+    <code>maxIterations=2</code> bounds <em>attempts</em>, not <em>duration</em>. If a card hangs:
+    <code>smithers cancel &lt;run-id&gt;</code> (or <code>smithers retry-task</code>), then resume. To restore a
+    hard timeout, swap the card <code>ReviewLoop</code> for a raw <code>&lt;Loop&gt;</code> with
+    <code>timeoutMs</code> on the producer <code>Task</code>.
+  </div>
+
+  <div class="card">
+    <table>
+      <thead>
+        <tr><th>Concern</th><th>Where it lives now</th></tr>
+      </thead>
+      <tbody>
+        <tr><td><strong>Implement a card</strong></td><td><code>ReviewLoop</code> producer (<code>agents.implement</code>), cycle 1</td></tr>
+        <tr><td><strong>One auto-fix</strong></td><td><code>ReviewLoop</code> cycle 2, with the judge's feedback folded in</td></tr>
+        <tr><td><strong>AI judge</strong></td><td><code>ReviewLoop</code> reviewer (<code>agents.review</code>), must return <code>approved: boolean</code></td></tr>
+        <tr><td><strong>Escalate to human</strong></td><td><code>EscalationChain</code> diagnose level → human fallback <code>Approval</code></td></tr>
+        <tr><td><strong>Commit</strong></td><td>In the producer prompt: <code>but commit -b storymap-&lt;id&gt;</code> (no push, no PR)</td></tr>
+        <tr><td><strong>Milestone gate</strong></td><td><code>Approval</code> with <code>onDeny="continue"</code> (advisory)</td></tr>
+        <tr><td><strong>Timeout</strong></td><td>❌ Not enforced (see warning above)</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+</div>
+</body>
+</html>

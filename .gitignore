@@ -1,3 +1,19 @@
 /dist
 /node_modules
 /public
+
+# Local env (secrets — never commit). Copy .env.example → .env
+.env
+.env.*
+!.env.example
+
+# Smithers run store (ephemeral — never commit)
+smithers.db
+smithers.db-shm
+smithers.db-wal
+
+# Local dev runtime artifacts (never commit)
+.run/
+logs/
+server/data/
+server/storymap-server

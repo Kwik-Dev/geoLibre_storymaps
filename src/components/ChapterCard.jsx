@@ -1,5 +1,6 @@
 import React, { useRef } from 'react';
 import { useAudio } from '../audio/AudioContext.jsx';
+import Markdown from './Markdown.jsx';
 
 // Relative bar heights for the sound-wave placeholder shown on chapters
 // without a photo (e.g. the freesound field recordings).
@@ -125,9 +126,13 @@ export default function ChapterCard({ chapter, index, theme }) {
                         </svg>
                     </div>
                 )}
-                {chapter.description && (
+                {chapter.description ? (
                     <p dangerouslySetInnerHTML={{ __html: chapter.description }} />
-                )}
+                ) : chapter.description_md ? (
+                    <div className="sm-description-md">
+                        <Markdown text={chapter.description_md} />
+                    </div>
+                ) : null}
             </div>
             <div className="sm-resize" onPointerDown={onResizePointerDown} />
         </div>

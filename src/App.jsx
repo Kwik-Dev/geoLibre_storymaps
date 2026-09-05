@@ -1,9 +1,13 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { AudioProvider, useAudio } from './audio/AudioContext.jsx';
-import { stories, defaultStoryId, getStory } from './stories.js';
+import { stories as embeddedStories } from './stories.js';
+import { getStories, getStory } from './getStory.js';
+import { parseHash, navigateToStory, onHashChange } from './hashRoute.js';
 import MapView from './components/MapView.jsx';
 import Story from './components/Story.jsx';
 import NavSidebar from './components/NavSidebar.jsx';
+import StoryForm from './components/builder/StoryForm.jsx';
+import ChapterEditor from './components/builder/ChapterEditor.jsx';
 
 const layerTypes = {
     fill: ['fill-opacity'],
@@ -239,53 +243,227 @@ function StoryMap({ story }) {
     );
 }
 
+const PICKER_NOTE_STYLE = { fontStyle: 'italic', color: 'inherit', opacity: 0.85 };
+
 // Top-right control: switch between the storymap JSONs at runtime. Lives
 // outside the keyed <StoryMap> so it survives story remounts; pauses audio
 // before swapping so the previous chapter's track doesn't keep playing.
-function StoryPicker({ config, storyId, onSelect }) {
+// The options are data-driven (embedded + API stories merged), with explicit
+// loading / error / empty states (P5.3). Selection writes the hash (P5.4).
+function StoryPicker({ config, storyId, allStories, listState, onSelect }) {
     const audio = useAudio();
+    const { loading, error } = listState;
     return (
         <div id="story-picker" className={config.theme}>
             <label htmlFor="story-select">Story</label>
-            <select
-                id="story-select"
-                value={storyId}
-                onChange={(e) => {
-                    audio.pause();
-                    onSelect(e.target.value);
-                }}
-            >
-                {stories.map((s) => (
-                    <option key={s.id} value={s.id}>
-                        {s.label}
-                    </option>
-                ))}
-            </select>
+            {allStories.length === 0 && !loading ? (
+                <span style={PICKER_NOTE_STYLE}>No stories available. Create a story to get started.</span>
+            ) : loading ? (
+                <span style={PICKER_NOTE_STYLE}>Loading stories…</span>
+            ) : (
+                <select
+                    id="story-select"
+                    value={allStories.some((s) => s.id === storyId) ? storyId : ''}
+                    onChange={(e) => {
+                        audio.pause();
+                        onSelect(e.target.value);
+                    }}
+                >
+                    {allStories.map((s) => (
+                        <option key={s.id} value={s.id}>
+                            {s.label}
+                        </option>
+                    ))}
+                </select>
+            )}
+            {error && (
+                <span style={PICKER_NOTE_STYLE} title={error}>
+                    Server unavailable — showing embedded stories.
+                </span>
+            )}
+        </div>
+    );
+}
+
+// P5.4 empty-state + list view for the `#/` route. Handles: nothing at all →
+// "Create a story" CTA; server down with none embedded → a clear no-embedded
+// note; otherwise the clickable story list (each links to #/stories/<id>).
+function StoryList({ allStories, listState }) {
+    const { loading, error } = listState;
+    return (
+        <div
+            style={{
+                fontFamily: 'inherit',
+                padding: '3rem 1.5rem',
+                maxWidth: 720,
+                margin: '0 auto',
+                textAlign: 'center',
+                color: 'inherit',
+            }}
+        >
+            <h1>Storymaps</h1>
+            <p style={{ opacity: 0.85 }}>Choose a story to explore, or create your own.</p>
+
+            {loading && allStories.length === 0 && (
+                <p style={PICKER_NOTE_STYLE}>Loading stories…</p>
+            )}
+
+            {!loading && allStories.length === 0 ? (
+                error ? (
+                    <p style={PICKER_NOTE_STYLE}>
+                        No embedded stories available. Start the server (or open a build with
+                        bundled stories) to explore or create one.
+                    </p>
+                ) : (
+                    <p>
+                        No stories yet.{' '}
+                        <a href="#/create">Create a story</a> to get started.
+                    </p>
+                )
+            ) : (
+                <>
+                    {error && (
+                        <p style={PICKER_NOTE_STYLE}>Server unavailable — showing embedded stories only.</p>
+                    )}
+                    <ul style={{ listStyle: 'none', padding: 0 }}>
+                        {allStories.map((s) => (
+                            <li key={s.id} style={{ margin: '0.5rem 0' }}>
+                                <a
+                                    href={`#/stories/${encodeURIComponent(s.id)}`}
+                                    style={{ textDecoration: 'none', fontSize: '1.1rem' }}
+                                >
+                                    {s.label}
+                                </a>
+                            </li>
+                        ))}
+                    </ul>
+                </>
+            )}
         </div>
     );
 }
 
 export default function App() {
-    const [selectedId, setSelectedId] = useState(defaultStoryId);
-    const story = getStory(selectedId);
+    // The hash is the source of truth for what we show (P5.4).
+    const [route, setRoute] = useState(parseHash);
+    const [allStories, setAllStories] = useState(embeddedStories);
+    const [listState, setListState] = useState({ loading: true, error: null });
+    const [story, setStory] = useState({ id: null, config: null });
+    const [storyState, setStoryState] = useState({ loading: false, notFound: false });
+
+    // Keep the route in sync with location.hash (deep links + picker nav).
+    useEffect(() => onHashChange(() => setRoute(parseHash())), []);
+
+    // Async load: merge embedded + API stories (P5.3). Graceful degradation:
+    // a fetch failure falls back to embedded only — never a crash.
+    useEffect(() => {
+        let alive = true;
+        (async () => {
+            try {
+                const merged = await getStories();
+                if (!alive) return;
+                setAllStories(merged);
+                setListState({ loading: false, error: null });
+            } catch (e) {
+                if (!alive) return;
+                setAllStories(embeddedStories);
+                setListState({ loading: false, error: e.message || String(e) });
+            }
+        })();
+        return () => {
+            alive = false;
+        };
+    }, []);
+
+    // Load the full config for the routed story. `#/` (list) loads nothing.
+    useEffect(() => {
+        if (route.type !== 'story') {
+            setStory({ id: null, config: null });
+            setStoryState({ loading: false, notFound: false });
+            return undefined;
+        }
+        const id = route.id;
+        let alive = true;
+        setStoryState((s) => ({ ...s, loading: true, notFound: false }));
+        setStory({ id, config: null });
+        getStory(id).then((s) => {
+            if (!alive) return;
+            setStoryState({ loading: false, notFound: !(s && s.config) });
+            setStory(s && s.config ? { id, config: s.config } : { id, config: null });
+        });
+        return () => {
+            alive = false;
+        };
+    }, [route]);
 
     // Keep the browser tab title in sync with the active story.
     useEffect(() => {
-        document.title = story.config.title;
+        if (story.config) document.title = story.config.title;
     }, [story]);
 
+    // Selecting a story navigates by hash (fires hashchange → route update).
     const handleSelect = useCallback((id) => {
-        // Jump to the top so the new story's first step (or start slide) is
-        // in view; Scrollama re-scans on remount.
         window.scrollTo(0, 0);
-        setSelectedId(id);
+        navigateToStory(id);
     }, []);
 
-    return (
-        <AudioProvider>
-            <StoryPicker config={story.config} storyId={story.id} onSelect={handleSelect} />
-            {/* key forces a full remount (map, scrollama, state) per story */}
-            <StoryMap key={story.id} story={story.config} />
-        </AudioProvider>
-    );
+    if (route.type === 'create') {
+        return (
+            <AudioProvider>
+                <StoryForm />
+            </AudioProvider>
+        );
+    }
+
+    if (route.type === 'edit') {
+        return (
+            <AudioProvider>
+                <ChapterEditor storyId={route.id} />
+            </AudioProvider>
+        );
+    }
+
+    if (route.type === 'list') {
+        return (
+            <AudioProvider>
+                <StoryList allStories={allStories} listState={listState} />
+            </AudioProvider>
+        );
+    }
+
+    // story route: not-found / loading / ready states.
+    let content;
+    if (storyState.notFound || (storyState.loading === false && !story.config)) {
+        content = (
+            <div style={{ padding: '3rem 1.5rem', textAlign: 'center', maxWidth: 720, margin: '0 auto' }}>
+                <h1>Story not found</h1>
+                <p>The story you&apos;re looking for doesn&apos;t exist or isn&apos;t available.</p>
+                <p>
+                    <a href="#/">← Back to all stories</a>{' '}
+                    <span style={{ opacity: 0.6 }}>or</span>{' '}
+                    <a href="#/create">create a new story</a>.
+                </p>
+            </div>
+        );
+    } else if (storyState.loading || !story.config) {
+        content = (
+            <div style={{ padding: '2rem', textAlign: 'center' }}>Loading story…</div>
+        );
+    } else {
+        content = (
+            <>
+                <StoryPicker
+                    config={story.config}
+                    storyId={story.id}
+                    allStories={allStories}
+                    listState={listState}
+                    onSelect={handleSelect}
+                />
+                {/* key forces a full remount (map, scrollama, state) per story */}
+                <StoryMap key={story.id} story={story.config} />
+            </>
+        );
+    }
+
+    return <AudioProvider>{content}</AudioProvider>;
 }

@@ -1,0 +1,60 @@
+@host = http://localhost:8080
+# @import ./auth.http
+
+### Create a story (requires Bearer JWT)
+# @ref login
+# @name createStory
+POST {{host}}/api/stories
+Content-Type: application/json
+Authorization: Bearer {{login.token}}
+
+{
+  "title": "My Ocean Journey",
+  "subtitle": "A tour of five cities",
+  "byline": "Test Author",
+  "visibility": "public"
+}
+
+### List stories (public listing; auth shows your private ones too)
+# @ref login
+GET {{host}}/api/stories
+Authorization: Bearer {{login.token}}
+
+### Get a story by id
+# @ref createStory
+GET {{host}}/api/stories/{{createStory.id}}
+
+### Update a story (owner/admin only)
+# @ref login
+# @ref createStory
+PUT {{host}}/api/stories/{{createStory.id}}
+Content-Type: application/json
+Authorization: Bearer {{login.token}}
+
+{
+  "title": "My Ocean Journey (updated)",
+  "subtitle": "A tour of five cities",
+  "visibility": "public"
+}
+
+### Export story as legacy storymap JSON (public/owner/admin)
+# @ref createStory
+GET {{host}}/api/stories/{{createStory.id}}/export
+
+### Approve a story (moderation; only meaningful when MODERATION_REQUIRED=1)
+# @ref login
+# @ref createStory
+POST {{host}}/api/stories/{{createStory.id}}/approve
+Authorization: Bearer {{login.token}}
+
+### Reject a story (moderation)
+# @ref login
+# @ref createStory
+POST {{host}}/api/stories/{{createStory.id}}/reject
+Authorization: Bearer {{login.token}}
+
+### Soft-delete a story (owner/admin only)
+# @ref login
+# @ref createStory
+DELETE {{host}}/api/stories/{{createStory.id}}
+Authorization: Bearer {{login.token}}

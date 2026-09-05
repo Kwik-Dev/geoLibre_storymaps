@@ -1,0 +1,76 @@
+@host = http://localhost:8080
+# @import ./auth.http
+# @import ./stories.http
+
+### Create a chapter (requires Bearer JWT; owner/admin of the story)
+# @ref login
+# @ref createStory
+# @name createChapter
+POST {{host}}/api/stories/{{createStory.id}}/chapters
+Content-Type: application/json
+Authorization: Bearer {{login.token}}
+
+{
+  "title": "Chapter 1 — The Harbor",
+  "description_md": "A **markdown** description of the first stop.",
+  "alignment": "center",
+  "location": {
+    "center": [139.6917, 35.6895],
+    "zoom": 10,
+    "pitch": 0,
+    "bearing": 0
+  },
+  "map_animation": "flyTo",
+  "media_type": "none",
+  "media_ref_type": "none"
+}
+
+### List chapters for a story
+# @ref createStory
+GET {{host}}/api/stories/{{createStory.id}}/chapters
+
+### Get a single chapter
+# @ref createStory
+# @ref createChapter
+GET {{host}}/api/stories/{{createStory.id}}/chapters/{{createChapter.id}}
+
+### Update a chapter
+# @ref login
+# @ref createStory
+# @ref createChapter
+PUT {{host}}/api/stories/{{createStory.id}}/chapters/{{createChapter.id}}
+Content-Type: application/json
+Authorization: Bearer {{login.token}}
+
+{
+  "title": "Chapter 1 — The Harbor (updated)",
+  "description_md": "An **updated** markdown description.",
+  "alignment": "left",
+  "location": {
+    "center": [139.6917, 35.6895],
+    "zoom": 11,
+    "pitch": 0,
+    "bearing": 0
+  },
+  "media_type": "none",
+  "media_ref_type": "none"
+}
+
+### Reorder chapters (send the full ordered id list)
+# @ref login
+# @ref createStory
+# @ref createChapter
+POST {{host}}/api/stories/{{createStory.id}}/chapters/reorder
+Content-Type: application/json
+Authorization: Bearer {{login.token}}
+
+[
+  { "id": {{createChapter.id}}, "position": 1 }
+]
+
+### Delete a chapter
+# @ref login
+# @ref createStory
+# @ref createChapter
+DELETE {{host}}/api/stories/{{createStory.id}}/chapters/{{createChapter.id}}
+Authorization: Bearer {{login.token}}

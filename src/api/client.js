@@ -85,3 +85,39 @@ export async function updateStory(id, data) {
 export async function deleteStory(id) {
     await apiFetch(`/stories/${encodeURIComponent(id)}`, { method: 'DELETE' });
 }
+
+/**
+ * POST /api/stories/:id/approve — set status='approved' so a public story
+ * appears in the anonymous listing. Admin only.
+ */
+export async function approveStory(id) {
+    const resp = await apiFetch(`/stories/${encodeURIComponent(id)}/approve`, { method: 'POST' });
+    return resp.json();
+}
+
+/**
+ * POST /api/stories/:id/reject — set a pending story back to status='draft'
+ * (hidden from the public list). Admin only; only pending stories can be
+ * rejected.
+ */
+export async function rejectStory(id) {
+    const resp = await apiFetch(`/stories/${encodeURIComponent(id)}/reject`, { method: 'POST' });
+    return resp.json();
+}
+
+/**
+ * POST /api/auth/admin/login — local email/password login for the seeded
+ * admin. On success the server sets an httpOnly refresh cookie and returns
+ * { token, role }. The access token is stored in memory (setToken) so
+ * subsequent requests carry the Authorization header.
+ */
+export async function adminLogin(email, password) {
+    const resp = await apiFetch('/auth/admin/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, password }),
+    });
+    const data = await resp.json();
+    if (data && data.token) setToken(data.token);
+    return data;
+}

@@ -1,7 +1,8 @@
 import React, { useCallback, useEffect, useState } from 'react';
-import { listStories, deleteStory, updateStory } from '../../api/client.js';
+import { listStories, deleteStory, updateStory, approveStory, rejectStory } from '../../api/client.js';
 import { useAuth } from '../../auth/AuthContext.jsx';
 import AuthButtons from '../AuthButtons.jsx';
+import AdminLogin from './AdminLogin.jsx';
 
 const btnStyle = {
     padding: '0.3rem 0.7rem',
@@ -34,6 +35,32 @@ const rowStyle = {
     borderBottom: '1px solid rgba(127,127,127,0.25)',
 };
 
+// Status badge colors: draft = neutral, pending = amber (awaiting review),
+// approved = green (live in the public list).
+const STATUS_BADGE = {
+    draft: { background: 'rgba(127,127,127,0.2)', color: 'inherit' },
+    pending: { background: 'rgba(230,126,34,0.25)', color: '#e67e22' },
+    approved: { background: 'rgba(46,204,113,0.2)', color: '#27ae60' },
+};
+
+function StatusBadge({ status }) {
+    const style = STATUS_BADGE[status] || STATUS_BADGE.draft;
+    return (
+        <span
+            style={{
+                display: 'inline-block',
+                padding: '0.05rem 0.45rem',
+                borderRadius: 999,
+                fontSize: '0.75rem',
+                fontWeight: 600,
+                ...style,
+            }}
+        >
+            {status}
+        </span>
+    );
+}
+
 // Storymap management (CRUD) page — #/manage. Lists the stories the current
 // user can see (their own + public) with View / Edit / Delete actions and a
 // "New story" entry point. Create/update/delete require a session; the list
@@ -47,6 +74,14 @@ export default function StoryManager() {
     const [renaming, setRenaming] = useState(null);
     const [renameValue, setRenameValue] = useState('');
     const [savingRename, setSavingRename] = useState(false);
+    const [moderating, setModerating] = useState(null);
+    const [showAdminLogin, setShowAdminLogin] = useState(false);
+
+    // Admins can approve/reject stories (the moderation gate, P7.2). The
+    // whoami response carries `admin` (bool) and `role`; either is sufficient.
+    const isAdmin = Boolean(user && (user.admin || user.role === 'admin'));
+    // The moderation queue: public stories awaiting an admin decision.
+    const pendingStories = stories.filter((s) => s.status === 'pending');
 
     const load = useCallback(async () => {
         setLoading(true);
@@ -110,6 +145,32 @@ export default function StoryManager() {
         }
     };
 
+    const handleApprove = async (s) => {
+        setModerating(s.id);
+        setError(null);
+        try {
+            await approveStory(s.id);
+            await load();
+        } catch (e) {
+            setError((e && e.message) || 'Failed to approve story.');
+        } finally {
+            setModerating(null);
+        }
+    };
+
+    const handleReject = async (s) => {
+        setModerating(s.id);
+        setError(null);
+        try {
+            await rejectStory(s.id);
+            await load();
+        } catch (e) {
+            setError((e && e.message) || 'Failed to reject story.');
+        } finally {
+            setModerating(null);
+        }
+    };
+
     return (
         <div style={{ maxWidth: 760, margin: '0 auto', padding: '2rem 1.5rem', color: 'inherit' }}>
             <div
@@ -134,6 +195,84 @@ export default function StoryManager() {
                     + New story
                 </a>
             </div>
+
+            {isAdmin && pendingStories.length > 0 && (
+                <div
+                    style={{
+                        margin: '1rem 0',
+                        padding: '0.75rem 1rem',
+                        border: '1px solid rgba(230,126,34,0.5)',
+                        borderRadius: 6,
+                    }}
+                >
+                    <h2 style={{ margin: '0 0 0.5rem', fontSize: '1.1rem' }}>
+                        Moderation queue ({pendingStories.length})
+                    </h2>
+                    {pendingStories.map((s) => (
+                        <div
+                            key={s.id}
+                            style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', padding: '0.4rem 0' }}
+                        >
+                            <div style={{ flex: 1, minWidth: 0 }}>
+                                <div style={{ fontWeight: 600 }}>{s.title}</div>
+                                <div style={{ opacity: 0.7, fontSize: '0.85rem' }}>{s.created_at}</div>
+                            </div>
+                            <a href={`#/stories/${encodeURIComponent(s.id)}`} style={btnStyle}>
+                                View
+                            </a>
+                            <button
+                                type="button"
+                                style={btnStyle}
+                                disabled={moderating === s.id}
+                                onClick={() => handleApprove(s)}
+                            >
+                                {moderating === s.id ? '…' : 'Approve'}
+                            </button>
+                            <button
+                                type="button"
+                                style={btnStyle}
+                                disabled={moderating === s.id}
+                                onClick={() => handleReject(s)}
+                            >
+                                {moderating === s.id ? '…' : 'Reject'}
+                            </button>
+                        </div>
+                    ))}
+                </div>
+            )}
+
+            {!isAdmin && !authLoading && (
+                <div style={{ margin: '1rem 0' }}>
+                    {showAdminLogin ? (
+                        <div
+                            style={{
+                                padding: '0.75rem 1rem',
+                                border: '1px solid rgba(127,127,127,0.4)',
+                                borderRadius: 6,
+                            }}
+                        >
+                            <div
+                                style={{
+                                    display: 'flex',
+                                    justifyContent: 'space-between',
+                                    alignItems: 'center',
+                                    marginBottom: '0.5rem',
+                                }}
+                            >
+                                <span style={{ fontWeight: 600 }}>Admin sign in</span>
+                                <button type="button" style={btnStyle} onClick={() => setShowAdminLogin(false)}>
+                                    Cancel
+                                </button>
+                            </div>
+                            <AdminLogin onSuccess={() => setShowAdminLogin(false)} />
+                        </div>
+                    ) : (
+                        <button type="button" style={btnStyle} onClick={() => setShowAdminLogin(true)}>
+                            Admin sign in
+                        </button>
+                    )}
+                </div>
+            )}
 
             {error && <p style={{ color: '#c0392b' }}>{error}</p>}
             {loading && <p style={{ opacity: 0.85 }}>Loading stories…</p>}
@@ -184,8 +323,18 @@ export default function StoryManager() {
                                 ) : (
                                     <>
                                         <div style={{ fontWeight: 600 }}>{s.title}</div>
-                                        <div style={{ opacity: 0.7, fontSize: '0.85rem' }}>
-                                            {s.visibility} · {s.status} · {s.created_at}
+                                        <div
+                                            style={{
+                                                opacity: 0.7,
+                                                fontSize: '0.85rem',
+                                                display: 'flex',
+                                                alignItems: 'center',
+                                                gap: '0.4rem',
+                                            }}
+                                        >
+                                            <span>{s.visibility}</span>
+                                            <StatusBadge status={s.status} />
+                                            <span>{s.created_at}</span>
                                         </div>
                                     </>
                                 )}
@@ -199,6 +348,26 @@ export default function StoryManager() {
                             <button type="button" style={btnStyle} onClick={() => startRename(s)}>
                                 Rename
                             </button>
+                            {isAdmin && s.status !== 'approved' && s.visibility === 'public' && (
+                                <button
+                                    type="button"
+                                    style={btnStyle}
+                                    disabled={moderating === s.id}
+                                    onClick={() => handleApprove(s)}
+                                >
+                                    {moderating === s.id ? '…' : 'Approve'}
+                                </button>
+                            )}
+                            {isAdmin && s.status === 'pending' && (
+                                <button
+                                    type="button"
+                                    style={btnStyle}
+                                    disabled={moderating === s.id}
+                                    onClick={() => handleReject(s)}
+                                >
+                                    {moderating === s.id ? '…' : 'Reject'}
+                                </button>
+                            )}
                             <button
                                 type="button"
                                 style={btnStyle}

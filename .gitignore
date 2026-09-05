@@ -17,3 +17,9 @@ smithers.db-wal
 logs/
 server/data/
 server/storymap-server
+
+# Internal tooling / project management (not part of the app)
+.smithers/
+delegation/
+handout-delegation.html
+audio-data-colleciton
